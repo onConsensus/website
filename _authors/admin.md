@@ -8,4 +8,4 @@ facebook: https://www.facebook.com/guilauzier
 twitter: https://twitter.com/guilauzier
 instagram: https://www.instagram.com/guillaumelauzier
 ---
-Guillaume Lauzier founded VJs Mag in 2013 to promote audiovisual art forms.
+Guillaume Lauzier founded VJs TV in 2011 and VJs Mag in 2013 to promote audiovisual art forms.
