@@ -1,7 +1,7 @@
 #-------------------------------
 # Site Settings
-title: Danto
-description: Danto is a news and magazine Jekyll theme
+title: VJs Mag
+description: Your source for the latest in vj technology and culture
 logo: "/images/logo.svg" # You can add own logo. For example "/images/logo.svg".
 logo_dark: "/images/logo-dark.svg"
 color_scheme: auto # You can choose three modes auto, light, and dark. By default, the auto mode is set, which means the user can choose the light or dark mode themself.
@@ -79,7 +79,6 @@ social:
 - {icon: "facebook", link: "https://facebook.com/vjsmag"}
 - {icon: "instagram", link: "https://instagram.com/vjsmag"}
 - {icon: "pinterest", link: "https://pinterest.com"}
-- {icon: "github", link: "https://github.com"}
 - {icon: "youtube", link: "https://www.youtube.com/user/vjstv"}
 
 # Example of adding a new link to the footer - {icon: "instagram", link: "https://instagram.com"}
