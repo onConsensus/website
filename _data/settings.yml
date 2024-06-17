@@ -41,8 +41,8 @@ cta_button:
 # Hero Settings
 hero:
   enable: true
-  hero_title: One Stop Daily News, Article, Inspiration, and Tips.
-  hero_description: Features productivity, tips, inspiration and strategies for massive profits. Find out how to set up a successful blog or how to make yours even better!
+  hero_title: 
+  hero_description: 
 
 
 #-------------------------------
