@@ -75,12 +75,12 @@ footer_description: Features productivity, tips, inspiration and strategies for 
 
 # Social Links
 social:
-- {icon: "twitter", link: "https://twitter.com"}
-- {icon: "facebook", link: "https://facebook.com"}
-- {icon: "codepen", link: "https://codepen.io"}
+- {icon: "twitter", link: "https://twitter.com/vjsmag"}
+- {icon: "facebook", link: "https://facebook.com/vjsmag"}
+- {icon: "instagram", link: "https://instagram.com/vjsmag"}
 - {icon: "pinterest", link: "https://pinterest.com"}
 - {icon: "github", link: "https://github.com"}
-- {icon: "youtube", link: "https://youtube.com"}
+- {icon: "youtube", link: "https://www.youtube.com/user/vjstv"}
 
 # Example of adding a new link to the footer - {icon: "instagram", link: "https://instagram.com"}
 # Other icons can be found at https://ionicons.com/v4/
