@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Elements
-permalink: /elements/
+title: Documentation
+permalink: /documentation/
 image:
 ---
 
