@@ -5,10 +5,8 @@ description: Mapping Festival 2023, a highly anticipated event celebrated for it
 date: 2023-05-07 15:01:35 +0300
 author: admin
 image: '/images/mapping-festival-2023.jpg'
-tags: [sport]
+tags: [news]
 ---
-<response>
-# Mapping Festival 2023
 
 [Mapping Festival 2023](https://mappingfestival.com/), a highly anticipated event celebrated for its innovative blend of art and technology, is scheduled to commence from Thursday, May 18th and extend till Sunday, May 28th. This year, the festival is shining a spotlight on low tech art, a testament to the creative potential of salvaged materials and human energy. Hosted at the [Jardin des Nations](https://www.jardin-des-nations.ch/en/evenement/mapping-festival-2/), this outdoor spectacle promises to captivate audiences with its unique, environmentally-conscious performances.
 
