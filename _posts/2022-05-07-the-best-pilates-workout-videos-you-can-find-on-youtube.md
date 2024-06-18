@@ -5,7 +5,7 @@ description: Mapping Festival 2023, a highly anticipated event celebrated for it
 date: 2023-05-07 15:01:35 +0300
 author: admin
 image: '/images/mapping-festival-2023.jpg'
-tags: [sport]
+tags: [news]
 ---
 <response>
 # Mapping Festival 2023
