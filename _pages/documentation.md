@@ -24,9 +24,9 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
   - [Vimeo Embed](#4.10)
   - [Links](#4.11)
 5. [Uploading Media](#5)
-6. [Link Text](#6)
-7. [Link Text](#7)
-8. [Link Text](#8)
+6. [Writing Format](#6)
+7. [Submitting Your Article](#7)
+8. [Review and Approval Process](#8)
 9. [Revenue Model Breakdown](#9)
 10. [Revenue Distribution](#10)
 11. [Hosting Media](#11)
@@ -125,6 +125,8 @@ Once you have created your first repository, you can start adding content by fol
 
 3. **Name Your File**:
    - Name your file in the format `year-month-day-article-title.md`. For example: `2022-05-07-my-article-title.md`.
+
+<a name="3.1"></a>
 
 ## Add a Header to Your Markdown File
 
@@ -384,6 +386,101 @@ li {
 ```markdown
 [Link text](http://example.com)
 ```
+
+***
+<a name="5"></a>
+
+# How to Upload Media on GitHub and Create an "Images" Folder
+
+To include media such as images in your GitHub repository, follow these steps to create a folder named "Images" in the same repository as your Markdown file:
+
+## Step-by-Step Instructions
+
+### 1. Navigate to Your Repository
+- Go to [GitHub](https://github.com/) and log in to your account.
+- Navigate to the repository where your Markdown file is located.
+
+### 2. Create the "Images" Folder
+- In the repository, click on the "Add file" button.
+- Select "Create new file" from the dropdown menu.
+- In the text field for the new file name, type `Images/image.jpg`. This will create a new folder named "Images" and a placeholder file within it.
+- Click "Commit new file" to create the folder. The placeholder file can be deleted later once you've uploaded your images.
+
+### 3. Upload Images to the "Images" Folder
+- Click on the "Images" folder to open it.
+- Click on the "Add file" button again and select "Upload files".
+- Drag and drop your image files into the upload area or click "choose your files" to select them from your computer.
+- After selecting the files, click "Commit changes" to upload the images to the "Images" folder.
+
+### 4. Reference Images in Your Markdown File
+- See [Header to Your Markdown File](#3.1)
+
+### Example
+If you uploaded an image named `/images/example.jpg`, your Markdown file should include:
+```markdown
+---
+layout: post
+title: My article title
+date: 2022-05-07 15:01:35 +0300
+author: First Lastname
+image: '/images/33.jpg'
+tags: [category]
+---
+```
+
+### Additional Tips
+- Ensure your image files have descriptive names for better organization and clarity.
+- Regularly commit and push your changes to keep your repository updated.
+
+***
+
+<a name="6"></a>
+
+A good writing format for an audiovisual art magazine should include clear sections, proper citation of audiovisual materials, and a consistent style to ensure readability and professionalism. Here’s a suggested format:
+
+### 1. Title and Author Information
+
+Go to [Title and Author Information](#3.1)
+
+### 2. Introduction
+- Brief introduction to the topic, setting the context for the readers.
+- Purpose and scope of the article.
+
+### 3. Main Content
+- **Subheadings**: Use subheadings to organize content into clear sections.
+- **Text**: Write clear, concise, and engaging text. Each section should cover different aspects of the topic.
+- **Visuals**: Include photographs or videos relevant to the content. Each visual should be accompanied by a caption and proper credit to the creator.
+
+### 4. Audiovisual Content
+- **Photographs**: 
+  - Include high-resolution images.
+  - Caption format: See [Images](#4.8)
+  - Example: _Sunset Over the Mountains [Photograph]. John Doe. 2024._
+- **Videos**:
+  - Embed or link videos.
+  - Caption format: "Title of the Video [Video]. Author. Year."
+  - Example: _Exploring Urban Art [Video]. Jane Smith. 2024._
+
+### 5. Citations and References
+- Use APA style for citing audiovisual materials.
+  - **Photographs**:
+    - Format: "Author, A. A. (Year). Title of the photograph [Photograph]. URL"
+  - **Videos**:
+    - Format: "Author, A. A. (Year, Month Date). Title of the video [Video]. URL"
+  - Example for a photograph: _Doe, J. (2024). Sunset over the mountains [Photograph]. Retrieved from https://example.com_
+  - Example for a video: _Smith, J. (2024, June 18). Exploring urban art [Video]. Retrieved from https://example.com_
+
+### 6. Conclusion
+- Summarize the key points discussed in the article.
+- Provide a closing statement or call to action.
+
+### 7. Author Bio and Contact Information
+- Include a brief bio of the author and contact information for readers to reach out.
+
+### 8. Additional Resources
+- List any additional resources or related articles for further reading.
+
+This format ensures that the content is well-organized, visually appealing, and provides proper credit to all audiovisual contributors.
 
 ***
 <a name="9"></a>
