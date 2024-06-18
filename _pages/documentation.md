@@ -44,7 +44,7 @@ VJ journalists will need to create an account on GitHub. If you already have an 
 ## How to Create an Account on GitHub
 
 1. **Go to GitHub's Sign-Up Page**:
-   - Navigate to [GitHub Join Page](https://github.com/join) [(https://github.com/join)].
+   - Navigate to [GitHub Join Page](https://github.com/join).
 
 2. **Fill Out the Registration Form**:
    - **Email Address**: Enter your email address.
