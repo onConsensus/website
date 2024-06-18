@@ -11,6 +11,8 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 1. [Create an Account on GitHub](#1)
 2. [Creating a private repository](#2)
 3. [Creating Your Content](#3)
+  - [Create a Markdown (.md) File](#3)
+  - [Add a Header to Your Markdown File](#3)
 4. [Adding Content](#4)
   - [Paragraphs](#4.1)
   - [Headings](#4.2)
@@ -30,7 +32,7 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 9. [Revenue Model Breakdown](#9)
 10. [Revenue Distribution](#10)
 11. [Hosting Media](#11)
-12. [Revenue Distribution](#12)
+12. [Youtube Revenue Distribution](#12)
 13. [Payouts](#13)
 
 ***
@@ -115,6 +117,8 @@ Following these steps will help you create a private repository on GitHub, ensur
 
 Once you have created your first repository, you can start adding content by following these steps:
 
+<a name="3.1"></a>
+
 ## Create a Markdown (.md) File
 
 1. **Navigate to Your Repository**:
@@ -126,7 +130,7 @@ Once you have created your first repository, you can start adding content by fol
 3. **Name Your File**:
    - Name your file in the format `year-month-day-article-title.md`. For example: `2022-05-07-my-article-title.md`.
 
-<a name="3.1"></a>
+<a name="3.2"></a>
 
 ## Add a Header to Your Markdown File
 
@@ -599,4 +603,46 @@ For instance, if a video generates $1,000 in YouTube ad revenue:
 By maintaining the magazine's share at 30% across various scenarios, this model ensures the magazine's operational costs are covered while fairly compensating the content creators based on their roles.
 
 ***
+<a name="13"></a>
 
+# Payouts
+
+Payouts will be made on a monthly basis, based on the total magazine revenue. Your total score, derived from various engagement metrics, will determine your share of the total revenue. Below is an example breakdown:
+
+## Example Breakdown
+- Total Monthly Revenue: $25,000
+- 100 Authors (Articles)
+- 20 Videographers (YouTube Videos)
+- 50% of revenue allocated to articles: $12,500
+- 30% of revenue allocated to YouTube videos: $7,500
+
+### Revenue Breakdown Model
+
+#### For Articles:
+1. **Number of Returning Visitors**:
+   - A good returning visitor rate is anything over 30%. For example, with 10,000 visitors, at least 3,000 should be returning visitors to indicate a healthy engagement rate.
+
+2. **Number of New Visitors**:
+   - New visitors typically represent a significant portion of your traffic. For example, if you have 10,000 visitors in a week, approximately 70% (or 7,000) might be new visitors, indicating effective outreach and marketing efforts.
+
+3. **Geographic Location**:
+   - The value of visitors varies by region. For instance, visitors from North America and Western Europe can be 1.5 to 2 times more valuable in terms of ad revenue and purchase power compared to visitors from other regions.
+
+4. **Time Spent on the Article**:
+   - A good average time spent on an article is around 2-3 minutes. If visitors are spending 5 minutes or more, it indicates highly engaging content. For instance, an article with an average read time of 5 minutes can be considered highly valuable.
+
+5. **Quality of Referring Links**:
+   - High-quality referring links typically come from websites with high domain authority (DA). A good benchmark is a DA score of 50 or higher. For example, a link from a site with a DA of 70 is significantly more valuable than one with a DA of 20.
+
+6. **Outgoing Clicks**:
+   - A good rate of outgoing clicks is around 5-10% of total visits. For example, if an article has 1,000 views, having 50 to 100 outgoing clicks indicates strong engagement with external links.
+
+#### For YouTube Videos:
+- Revenue is split among videographers based on similar engagement metrics adapted for video content.
+- Example: From the $7,500 allocated to YouTube revenue, if a video contributes 10% of the total engagement, it would earn $750.
+
+### Distribution:
+- **Authors (Articles)**: Share of $12,500 based on engagement metrics.
+- **Videographers (YouTube)**: Share of $7,500 based on YouTube metrics.
+
+Payouts will be made via Revolut.
