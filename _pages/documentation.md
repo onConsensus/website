@@ -27,8 +27,13 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 6. [Link Text](#6)
 7. [Link Text](#7)
 8. [Link Text](#8)
-9. [Link Text](#9)
-10. [Link Text](#10)
+9. [Revenue Model Breakdown](#9)
+10. [Revenue Distribution](#10)
+11. [Hosting Media](#11)
+12. [Revenue Distribution](#12)
+
+
+[Payouts](#10)
 
 ***
 
@@ -383,3 +388,114 @@ li {
 ```
 
 ***
+<a name="9"></a>
+
+## Revenue Model Breakdown
+
+The revenue model for journalists on the online magazine will be based on several key metrics:
+
+1. **Number of Returning Visitors**:
+   - A good returning visitor rate is anything over 30%. This means that if you have 10,000 visitors, at least 3,000 should be returning visitors to indicate a healthy engagement rate.
+
+2. **Number of New Visitors**:
+   - New visitors typically represent a significant portion of your traffic. For example, if you have 10,000 visitors in a week, approximately 70% (or 7,000) might be new visitors, indicating effective outreach and marketing efforts.
+
+3. **Geographic Location**:
+   - The value of visitors varies by region. For instance, visitors from North America and Western Europe can be 1.5 to 2 times more valuable in terms of ad revenue and purchase power compared to visitors from other regions.
+
+4. **Time Spent on the Article**:
+   - A good average time spent on an article is around 2-3 minutes. If visitors are spending 5 minutes or more, it indicates highly engaging content. For instance, an article with an average read time of 5 minutes can be considered highly valuable.
+
+5. **Quality of Referring Links**:
+   - High-quality referring links typically come from websites with high domain authority (DA). A good benchmark is a DA score of 50 or higher. For example, a link from a site with a DA of 70 is significantly more valuable than one with a DA of 20.
+
+6. **Outgoing Clicks**:
+   - A good rate of outgoing clicks is around 5-10% of total visits. For example, if an article has 1,000 views, having 50 to 100 outgoing clicks indicates strong engagement with external links.
+
+The magazine will take 50% of the total revenue generated. The remaining 50% will be distributed among the contributors: writers, photographers, and videographers.
+
+***
+<a name="10"></a>
+
+## Article Percentage Distribution for Contributors
+
+### Writer and Photographer Distribution
+- **Magazine**: 50%
+- **Writer**: 30%
+- **Photographer**: 20%
+
+### Writer and Videographer Distribution
+- **Magazine**: 50%
+- **Writer**: 30%
+- **Videographer**: 20%
+
+### Writer, Photographer, and Videographer Distribution
+If an article involves a writer, photographer, and videographer, the distribution will be:
+- **Magazine**: 50%
+- **Writer**: 20%
+- **Photographer**: 15%
+- **Videographer**: 15%
+
+***
+<a name="11"></a>
+
+## Hosting and Revenue Distribution for Media
+
+### Photos
+- All photos must be hosted on GitHub.
+- The revenue generated from articles including photographs will follow the distribution mentioned above.
+
+### Videos
+- All videos must be hosted on the VJs TV YouTube channel.
+- The revenue distribution for videographers will be calculated based on video performance metrics on YouTube, such as views, watch time, and engagement.
+
+### Credentials
+- All contributors (writers, photographers, videographers) will be credited appropriately in the article and any associated media.
+
+***
+<a name="12"></a>
+
+# YouTube Revenue Distribution for Contributors
+
+In addition to the article revenue distribution, the YouTube revenue generated from videos hosted on the VJs TV YouTube channel will be distributed among the magazine, videographer, and video journalist. Here is the detailed distribution model:
+
+## Distribution Model
+
+### Base Model
+- **Magazine**: 30%
+- **Remaining Revenue**: 70% (to be split among contributors)
+
+### Scenario 1: Magazine, Videographer, and Video Journalist
+- **Magazine**: 30%
+- **Videographer**: 40%
+- **Video Journalist**: 30%
+
+### Scenario 2: Magazine and Videographer Only
+- **Magazine**: 30%
+- **Videographer**: 70%
+
+### Scenario 3: Magazine and Video Journalist Only
+- **Magazine**: 30%
+- **Video Journalist**: 70%
+
+## Example Calculation
+
+For instance, if a video generates $1,000 in YouTube ad revenue:
+
+- **Scenario 1**:
+  - **Magazine**: $300
+  - **Videographer**: $400
+  - **Video Journalist**: $300
+
+- **Scenario 2**:
+  - **Magazine**: $300
+  - **Videographer**: $700
+
+- **Scenario 3**:
+  - **Magazine**: $300
+  - **Video Journalist**: $700
+
+By maintaining the magazine's share at 30% across various scenarios, this model ensures the magazine's operational costs are covered while fairly compensating the content creators based on their roles.
+
+***
+
