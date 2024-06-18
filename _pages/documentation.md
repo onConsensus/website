@@ -31,9 +31,7 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 10. [Revenue Distribution](#10)
 11. [Hosting Media](#11)
 12. [Revenue Distribution](#12)
-
-
-[Payouts](#10)
+13. [Payouts](#13)
 
 ***
 
@@ -46,7 +44,7 @@ VJ journalists will need to create an account on GitHub. If you already have an 
 ## How to Create an Account on GitHub
 
 1. **Go to GitHub's Sign-Up Page**:
-   - Navigate to [GitHub Join Page](https://github.com/join) [[1](https://github.com/join)].
+   - Navigate to [GitHub Join Page](https://github.com/join) [(https://github.com/join)].
 
 2. **Fill Out the Registration Form**:
    - **Email Address**: Enter your email address.
@@ -64,7 +62,7 @@ VJ journalists will need to create an account on GitHub. If you already have an 
    - GitHub will send a verification email to your provided email address. Open the email and click the verification link to activate your account.
 
 ## Additional Resources
-- For detailed instructions, you can refer to the GitHub documentation on [creating an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) [[2](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)].
+- For detailed instructions, you can refer to the GitHub documentation on [creating an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) [(https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)].
 
 By following these steps, you will have a GitHub account ready to use for publishing and collaborating on VJs Mag.
 
