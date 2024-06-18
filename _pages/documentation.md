@@ -7,7 +7,7 @@ image:
 Welcome to VJs Mag, your platform for sharing insights, articles, and visual content about the vibrant world of VJing and audiovisual art forms. To ensure your contributions reach our audience effectively, it is essential to understand the process of publishing documentation on our platform. This guide will walk you through the necessary steps and best practices for creating and publishing your work on VJs Mag.
 
 1. [Create an Account on GitHub](#1)
-2. [Link Text](#section-id)
+2. [Creating a private repository](#2)
 3. [Link Text](#section-id)
 4. [Link Text](#section-id)
 5. [Link Text](#section-id)
@@ -22,25 +22,75 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 <a name="1"></a>
 
 # How to Create an Account on GitHub
-1. Go to GitHub's Sign-Up Page:
-* Navigate to [GitHub Join Page](https://github.com/join).
 
-2. Fill Out the Registration Form:
-* Email Address: Enter your email address.
-* Password: Create a strong password.
-* Username: Choose a unique username.
-* Email Preferences: Select your email preferences.
+VJ journalists will need to create an account on GitHub. If you already have an account, you can skip this step.
 
-3. Verify Your Account:
-* Complete the CAPTCHA to verify that you are not a robot.
+## How to Create an Account on GitHub
 
-4. Choose Your Plan:
-* Select the plan that suits your needs (you can start with the free plan).
+1. **Go to GitHub's Sign-Up Page**:
+   - Navigate to [GitHub Join Page](https://github.com/join) [[1](https://github.com/join)].
 
-5. Verify Your Email Address:
-* GitHub will send a verification email to your provided email address. Open the email and click the verification link to activate your account.
+2. **Fill Out the Registration Form**:
+   - **Email Address**: Enter your email address.
+   - **Password**: Create a strong password.
+   - **Username**: Choose a unique username.
+   - **Email Preferences**: Select your email preferences.
+
+3. **Verify Your Account**:
+   - Complete the CAPTCHA to verify that you are not a robot.
+
+4. **Choose Your Plan**:
+   - Select the plan that suits your needs (you can start with the free plan).
+
+5. **Verify Your Email Address**:
+   - GitHub will send a verification email to your provided email address. Open the email and click the verification link to activate your account.
+
+## Additional Resources
+- For detailed instructions, you can refer to the GitHub documentation on [creating an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) [[2](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)].
 
 By following these steps, you will have a GitHub account ready to use for publishing and collaborating on VJs Mag.
+
+***
+
+<a name="2"></a>
+# Creating a private repository
+
+Creating a private repository on GitHub ensures that only you and your collaborators can access the repository. Here are the steps to create a private repository:
+
+1. **Open GitHub**:
+   - Navigate to [GitHub](https://github.com) and sign in to your account.
+
+2. **Go to Your Repositories**:
+   - Click on your profile icon in the upper-right corner of the page.
+   - From the dropdown menu, select "Your repositories."
+
+3. **Create a New Repository**:
+   - Click the "New" button to start creating a new repository.
+
+4. **Fill in Repository Details**:
+   - **Repository Name**: Type a memorable name for your repository.
+   - **Description**: Optionally, add a description for your repository.
+   - **Visibility**: Select the "Private" option to ensure the repository is not visible to the public.
+   - **Initialize Repository**: Optionally, you can initialize the repository with a README, .gitignore, or a license file.
+
+5. **Create Repository**:
+   - Click the "Create repository" button to finalize the creation of your private repository.
+
+### Additional Steps for Existing Repositories
+
+If you want to change an existing public repository to private:
+
+1. **Navigate to the Repository**:
+   - Go to the main page of your repository on GitHub.
+
+2. **Access Settings**:
+   - Under your repository name, click on "Settings."
+
+3. **Change Visibility**:
+   - In the "Danger Zone" section at the bottom, click "Change repository visibility."
+   - Select "Make private" and follow the prompts to confirm.
+
+Following these steps will help you create a private repository on GitHub, ensuring your project remains confidential and secure.
 
 ***
 
