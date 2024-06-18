@@ -62,7 +62,7 @@ VJ journalists will need to create an account on GitHub. If you already have an 
    - GitHub will send a verification email to your provided email address. Open the email and click the verification link to activate your account.
 
 ## Additional Resources
-- For detailed instructions, you can refer to the GitHub documentation on [creating an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) [(https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github)].
+- For detailed instructions, you can refer to the GitHub documentation on [creating an account](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github).
 
 By following these steps, you will have a GitHub account ready to use for publishing and collaborating on VJs Mag.
 
@@ -312,6 +312,12 @@ li {
       $('.top').removeClass("top-active");
     };
   });
+```
+
+```
+```
+content
+```
 ```
 
 ***
