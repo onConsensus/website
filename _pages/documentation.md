@@ -4,10 +4,54 @@ title: Documentation
 permalink: /documentation/
 image:
 ---
+Welcome to VJs Mag, your platform for sharing insights, articles, and visual content about the vibrant world of VJing and audiovisual art forms. To ensure your contributions reach our audience effectively, it is essential to understand the process of publishing documentation on our platform. This guide will walk you through the necessary steps and best practices for creating and publishing your work on VJs Mag.
+
+1. [Create an Account on GitHub](#1)
+2. [Link Text](#section-id)
+3. [Link Text](#section-id)
+4. [Link Text](#section-id)
+5. [Link Text](#section-id)
+6. [Link Text](#section-id)
+7. [Link Text](#section-id)
+8. [Link Text](#section-id)
+9. [Link Text](#section-id)
+10. [Link Text](#section-id)
+
+***
+
+<a name="1"></a>
+
+# How to Create an Account on GitHub
+1. Go to GitHub's Sign-Up Page:
+* Navigate to [GitHub Join Page](https://github.com/join).
+
+2. Fill Out the Registration Form:
+* Email Address: Enter your email address.
+* Password: Create a strong password.
+* Username: Choose a unique username.
+* Email Preferences: Select your email preferences.
+
+3. Verify Your Account:
+* Complete the CAPTCHA to verify that you are not a robot.
+
+4. Choose Your Plan:
+* Select the plan that suits your needs (you can start with the free plan).
+
+5. Verify Your Email Address:
+* GitHub will send a verification email to your provided email address. Open the email and click the verification link to activate your account.
+
+By following these steps, you will have a GitHub account ready to use for publishing and collaborating on VJs Mag.
+
+***
 
 A paragraph looks like this — Globally incubate standards compliant channels before scalable benefits. Quickly disseminate superior deliverables whereas web-enabled applications. Quickly drive clicks-and-mortar catalysts for change before vertical architectures. Credibly reintermediate backend ideas for cross-platform models. Continually reintermediate integrated processes through technically sound intellectual capital. Holistically foster superior methodologies.
 
+```
+A paragraph looks like this — Globally incubate standards compliant channels before scalable benefits. Quickly disseminate superior deliverables whereas web-enabled applications. Quickly drive clicks-and-mortar catalysts for change before vertical architectures. Credibly reintermediate backend ideas for cross-platform models. Continually reintermediate integrated processes through technically sound intellectual capital. Holistically foster superior methodologies.
+```
+
 ***
+<a name="section-id"></a>
 
 ## Headings by default:
 
