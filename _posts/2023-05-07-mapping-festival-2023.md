@@ -4,7 +4,7 @@ title: Mapping Festival 2023 Celebrates Low Tech Art
 description: Mapping Festival 2023, a highly anticipated event celebrated for its innovative blend of art and technology, is scheduled to commence from Thursday, May 18th and extend till Sunday, May 28th.
 date: 2023-05-07 15:01:35 +0300
 author: admin
-image: '/images/33.jpg'
+image: '/images/mapping-festival-2023.jpg'
 tags: [sport]
 ---
 <response>
