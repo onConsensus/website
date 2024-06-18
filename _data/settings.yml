@@ -77,8 +77,9 @@ social:
 - {icon: "facebook", link: "https://facebook.com/vjsmag"}
 - {icon: "instagram", link: "https://instagram.com/vjsmag"}
 - {icon: "linkedin", link: "https://linkedin.com/company/vjsmag"}
-- {icon: "pinterest", link: "https://pinterest.com"}
+- {icon: "pinterest", link: "https://pinterest.com/vjsmag/"}
 - {icon: "youtube", link: "https://www.youtube.com/user/vjstv"}
+- {icon: "vimeo", link: "https://vimeo.com/vjstv"}
 
 # Example of adding a new link to the footer - {icon: "instagram", link: "https://instagram.com"}
 # Other icons can be found at https://ionicons.com/v4/
