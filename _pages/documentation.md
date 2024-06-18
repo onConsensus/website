@@ -6,16 +6,29 @@ image:
 ---
 Welcome to VJs Mag, your platform for sharing insights, articles, and visual content about the vibrant world of VJing and audiovisual art forms. To ensure your contributions reach our audience effectively, it is essential to understand the process of publishing documentation on our platform. This guide will walk you through the necessary steps and best practices for creating and publishing your work on VJs Mag.
 
+### Table Of Contents
+
 1. [Create an Account on GitHub](#1)
 2. [Creating a private repository](#2)
-3. [Link Text](#section-id)
-4. [Link Text](#section-id)
-5. [Link Text](#section-id)
-6. [Link Text](#section-id)
-7. [Link Text](#section-id)
-8. [Link Text](#section-id)
-9. [Link Text](#section-id)
-10. [Link Text](#section-id)
+3. [Creating Your Content](#3)
+4. [Adding Content](#4)
+  - [Paragraphs](#4.1)
+  - [Headings](#4.2)
+  - [Ordered list](#4.3)
+  - [Unordered list](#4.4)
+  - [Table](#4.5)
+  - [Quotes](#4.6)
+  - [Syntax Highlighter](#4.7)
+  - [Images](#4.8)
+  - [Youtube Embed](#4.9)
+  - [Vimeo Embed](#4.10)
+  - [Links](#4.11)
+5. [Uploading Media](#5)
+6. [Link Text](#6)
+7. [Link Text](#7)
+8. [Link Text](#8)
+9. [Link Text](#9)
+10. [Link Text](#10)
 
 ***
 
@@ -94,6 +107,56 @@ Following these steps will help you create a private repository on GitHub, ensur
 
 ***
 
+<a name="3"></a>
+# How to Create Content in Your GitHub Repository
+
+Once you have created your first repository, you can start adding content by following these steps:
+
+## Create a Markdown (.md) File
+
+1. **Navigate to Your Repository**:
+   - Go to your repository on GitHub.
+
+2. **Create a New File**:
+   - Click on the "Add file" button and select "Create new file".
+
+3. **Name Your File**:
+   - Name your file in the format `year-month-day-article-title.md`. For example: `2022-05-07-my-article-title.md`.
+
+## Add a Header to Your Markdown File
+
+At the beginning of your Markdown file, add the following header to define the layout, title, date, author, image, and tags for your article:
+
+```markdown
+---
+layout: post
+title: My article title
+date: 2022-05-07 15:01:35 +0300
+author: First Lastname
+image: '/images/33.jpg'
+tags: [category]
+---
+```
+
+- **layout**: Indicates the layout template to be used.
+- **title**: The title of your article.
+- **date**: The publication date and time of the article.
+- **author**: Your name.
+- **image**: The path to an image that represents the article.
+- **tags**: A list of categories or tags related to the article.
+
+***
+
+<a name="4"></a>
+## Adding Content
+
+Below the header, you can start adding your content. Use Markdown syntax to format your article. Here are some basic elements:
+
+***
+
+<a name="4.1"></a>
+### Paragraphs
+
 A paragraph looks like this — Globally incubate standards compliant channels before scalable benefits. Quickly disseminate superior deliverables whereas web-enabled applications. Quickly drive clicks-and-mortar catalysts for change before vertical architectures. Credibly reintermediate backend ideas for cross-platform models. Continually reintermediate integrated processes through technically sound intellectual capital. Holistically foster superior methodologies.
 
 ```
@@ -101,9 +164,9 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 ```
 
 ***
-<a name="section-id"></a>
+<a name="4.2"></a>
 
-## Headings by default:
+### Headings
 
 # H1 Default styles for headings
 ## H2 Default styles for headings
@@ -122,8 +185,7 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 ```
 
 ***
-
-## Lists
+<a name="4.3"></a>
 
 ### Ordered list example:
 
@@ -142,6 +204,7 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 ```
 
 ***
+<a name="4.4"></a>
 
 ### Unordered list example:
 
@@ -160,6 +223,7 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 ```
 
 ***
+<a name="4.5"></a>
 
 ## Table
 
@@ -190,6 +254,7 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 ```
 
 ***
+<a name="4.6"></a>
 
 ## Quotes
 
@@ -206,8 +271,7 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 ```
 
 ***
-
-
+<a name="4.7"></a>
 
 ## Syntax Highlighter
 
@@ -246,6 +310,7 @@ li {
 ```
 
 ***
+<a name="4.8"></a>
 
 ## Images
 
@@ -288,6 +353,7 @@ li {
 ```
 
 ***
+<a name="4.9"></a>
 
 ## Youtube Embed
 
@@ -298,6 +364,7 @@ li {
 ```
 
 ***
+<a name="4.10"></a>
 
 ## Vimeo Embed
 
@@ -306,3 +373,13 @@ li {
 ```
 <p><iframe src="https://player.vimeo.com/video/55630271?h=d36b8b4cbb" loading="lazy" width="640" height="360" frameborder="0" allowfullscreen></iframe></p>
 ```
+
+***
+<a name="4.11"></a>
+
+### Links
+```markdown
+[Link text](http://example.com)
+```
+
+***
