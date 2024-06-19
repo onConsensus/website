@@ -332,6 +332,11 @@ content
 ![Shopping]({{site.baseurl}}/images/20.jpg#wide)
 *Photo by [Tim Douglas](https://www.pexels.com/photo/happy-woman-jumping-with-shopping-bags-6567607/) on [Pexels](https://www.pexels.com)*
 
+```
+![Shopping]({{site.baseurl}}/images/20.jpg#wide)
+*Photo by [Tim Douglas](https://www.pexels.com/photo/happy-woman-jumping-with-shopping-bags-6567607/) on [Pexels](https://www.pexels.com)*
+```
+
 <div class="gallery-box">
   <div class="gallery">
     <img src="/images/12.jpg" loading="lazy">
@@ -343,26 +348,25 @@ content
   </div>
   <em>Gallery / <a href="https://www.pexels.com" target="_blank">Pexels</a></em>
 </div>
+
+```
+<div class="gallery-box">
+  <div class="gallery">
+    <img src="/images/12.jpg" loading="lazy">
+    <img src="/images/24.jpg" loading="lazy">
+    <img src="/images/09.jpg" loading="lazy">
+    <img src="/images/14.jpg" loading="lazy">
+    <img src="/images/19-1.jpg" loading="lazy">
+    <img src="/images/06-2.jpg" loading="lazy">
+  </div>
+  <em>Gallery / <a href="https://www.pexels.com" target="_blank">Pexels</a></em>
+</div>
+```
 
 ![Salad]({{site.baseurl}}/images/23.jpg)
 *Photo by [Valeria Boltneva](https://www.pexels.com/photo/salmon-dish-with-vegetables-1516415/) on [Pexels](https://www.pexels.com)*
 
 ```
-![Shopping]({{site.baseurl}}/images/20.jpg#wide)
-*Photo by [Tim Douglas](https://www.pexels.com/photo/happy-woman-jumping-with-shopping-bags-6567607/) on [Pexels](https://www.pexels.com)*
-
-<div class="gallery-box">
-  <div class="gallery">
-    <img src="/images/12.jpg" loading="lazy">
-    <img src="/images/24.jpg" loading="lazy">
-    <img src="/images/09.jpg" loading="lazy">
-    <img src="/images/14.jpg" loading="lazy">
-    <img src="/images/19-1.jpg" loading="lazy">
-    <img src="/images/06-2.jpg" loading="lazy">
-  </div>
-  <em>Gallery / <a href="https://www.pexels.com" target="_blank">Pexels</a></em>
-</div>
-
 ![Salad]({{site.baseurl}}/images/23.jpg)
 *Photo by [Valeria Boltneva](https://www.pexels.com/photo/salmon-dish-with-vegetables-1516415/) on [Pexels](https://www.pexels.com)*
 ```
