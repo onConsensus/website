@@ -155,11 +155,3 @@ The Sandin Image Processor is a significant piece of equipment in the history of
 ### Sandin Image Processor
 15. [Wikipedia - Video synthesizer](https://en.wikipedia.org/wiki/Video_synthesizer)
 16. [Medium - Key Concepts in Video Synthesis](https://medium.com/modular-synthesis/basic-concepts-in-video-synthesis-83b76f726856)
-
-## 🌐 Sources
-1. [en.wikipedia.org - Video synthesizer](https://en.wikipedia.org/wiki/Video_synthesizer)
-2. [dictionary.cambridge.org - PROCESS | English meaning](https://dictionary.cambridge.org/dictionary/english/process)
-3. [help.rossvideo.com - To Set up an External Video Input](https://help.rossvideo.com/ultra/Tasks/Setup/Video/Input-Setup_Ext.html)
-4. [medium.com - Key Concepts in Video Synthesis](https://medium.com/modular-synthesis/basic-concepts-in-video-synthesis-83b76f726856)
-5. [merriam-webster.com - Process Definition & Meaning](https://www.merriam-webster.com/dictionary/process)
-6. [community.lzxindustries.net - New to video synthesis](https://community.lzxindustries.net/t/new-to-video-synthesis/3858)
