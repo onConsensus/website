@@ -329,46 +329,46 @@ content
 
 ## Images
 
-![Shopping]({{site.baseurl}}/images/20.jpg#wide)
-*Photo by [Tim Douglas](https://www.pexels.com/photo/happy-woman-jumping-with-shopping-bags-6567607/) on [Pexels](https://www.pexels.com)*
+![Shopping]({{site.baseurl}}/images/mapping-festival-2011-2.jpg#wide)
+*Photo by [Guillaume Lauzier](https://www.guillaumelauzier.com/) on [Mapping Festival](https://www.mappingfestival.com)*
 
 ```
-![Shopping]({{site.baseurl}}/images/20.jpg#wide)
-*Photo by [Tim Douglas](https://www.pexels.com/photo/happy-woman-jumping-with-shopping-bags-6567607/) on [Pexels](https://www.pexels.com)*
+![Shopping]({{site.baseurl}}/images/mapping-festival-2011-2.jpg#wide)
+*Photo by [Guillaume Lauzier](https://www.guillaumelauzier.com/) on [Mapping Festival](https://www.mappingfestival.com)*
 ```
 
 <div class="gallery-box">
   <div class="gallery">
-    <img src="/images/12.jpg" loading="lazy">
-    <img src="/images/24.jpg" loading="lazy">
-    <img src="/images/09.jpg" loading="lazy">
-    <img src="/images/14.jpg" loading="lazy">
-    <img src="/images/19-1.jpg" loading="lazy">
-    <img src="/images/06-2.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-3.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-4.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-5.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-6.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-7.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-2.jpg" loading="lazy">
   </div>
-  <em>Gallery / <a href="https://www.pexels.com" target="_blank">Pexels</a></em>
+  <em>Gallery / <a href="https://www.guillaumelauzier.com" target="_blank">Guillaume Lauzier</a></em>
 </div>
 
 ```
 <div class="gallery-box">
   <div class="gallery">
-    <img src="/images/12.jpg" loading="lazy">
-    <img src="/images/24.jpg" loading="lazy">
-    <img src="/images/09.jpg" loading="lazy">
-    <img src="/images/14.jpg" loading="lazy">
-    <img src="/images/19-1.jpg" loading="lazy">
-    <img src="/images/06-2.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-3.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-4.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-5.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-6.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-7.jpg" loading="lazy">
+    <img src="/images/mapping-festival-2011-2.jpg" loading="lazy">
   </div>
-  <em>Gallery / <a href="https://www.pexels.com" target="_blank">Pexels</a></em>
+  <em>Gallery / <a href="https://www.guillaumelauzier.com" target="_blank">Guillaume Lauzier</a></em>
 </div>
 ```
 
-![Salad]({{site.baseurl}}/images/23.jpg)
-*Photo by [Valeria Boltneva](https://www.pexels.com/photo/salmon-dish-with-vegetables-1516415/) on [Pexels](https://www.pexels.com)*
+![Mapping Festival]({{site.baseurl}}/images/mapping-festival-2011-2.jpg)
+*Photo by [Guillaume Lauzier](https://www.guillaumelauzier.com) on [Mapping Festival](https://www.mappingfestival.com)*
 
 ```
-![Salad]({{site.baseurl}}/images/23.jpg)
-*Photo by [Valeria Boltneva](https://www.pexels.com/photo/salmon-dish-with-vegetables-1516415/) on [Pexels](https://www.pexels.com)*
+![Mapping Festival]({{site.baseurl}}/images/mapping-festival-2011-2.jpg)
+*Photo by [Guillaume Lauzier](https://www.guillaumelauzier.com) on [Mapping Festival](https://www.mappingfestival.com)*
 ```
 
 ***
