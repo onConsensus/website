@@ -4,7 +4,7 @@ title: Bright Festival Florence 2023: A Celebration of Digital Creativity and In
 description: Discover the exciting program of workshops, immersive experiences, and international performances at the Bright Festival 2023, taking place from 28th to 30th April in Florence Italy.
 date: 2023-03-28 15:01:35 +0300
 author: admin
-image: '/images/bright-festival-florence-2023.png'
+image: '/images/bright-festival-florence-2023.jpg'
 tags: [news]
 ---
 
