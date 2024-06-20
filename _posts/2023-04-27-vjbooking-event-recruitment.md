@@ -1,7 +1,7 @@
 ---
 layout: post
 title: VJBooking, Revolutionizing Event Visuals through Artist Recruitment
-description: Mapping Festival 2023, a highly anticipated event celebrated for its innovative blend of art and technology, is scheduled to commence from Thursday, May 18th and extend till Sunday, May 28th.
+description: VJBooking connects talented visual artists with event organizers to create stunning visuals, enhancing event experiences. With over 762 registered artists globally, VJBooking offers a range of services including projection mapping, interactive installations, and live performances. Artists can showcase their work and gain exposure, while event organizers can elevate their events with high-quality visual content.
 date: 2023-05-07 15:01:35 +0300
 author: admin
 image: '/images/vjbooking-event-recruitment.png'
