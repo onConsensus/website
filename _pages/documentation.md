@@ -11,8 +11,9 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 1. [Create an Account on GitHub](#1)
 2. [Creating a private repository](#2)
 3. [Creating Your Content](#3)
-  - [Create a Markdown (.md) File](#3)
-  - [Add a Header to Your Markdown File](#3)
+  - [Create a Markdown (.md) File](#3.1)
+  - [Add a Header to Your Markdown File](#3.2)
+  - [Article copyrights](#3.2)
 4. [Adding Content](#4)
   - [Paragraphs](#4.1)
   - [Headings](#4.2)
@@ -26,6 +27,7 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
   - [Vimeo Embed](#4.10)
   - [Links](#4.11)
 5. [Uploading Media](#5)
+  - [Media copyrights](#5.1)
 6. [Writing Format](#6)
 7. [Submitting Your Article](#7)
 8. [Review and Approval Process](#8)
@@ -73,7 +75,7 @@ By following these steps, you will have a GitHub account ready to use for publis
 <a name="2"></a>
 # Creating a private repository
 
-Creating a private repository on GitHub ensures that only you and your collaborators can access the repository. Here are the steps to create a private repository:
+Creating a private repository on GitHub ensures that only you and your collaborators can access the repository. Here are the steps to create a private repository, which will be the same repository for all your articles and content:
 
 1. **Open GitHub**:
    - Navigate to [GitHub](https://github.com) and sign in to your account.
@@ -153,6 +155,23 @@ tags: [category]
 - **author**: Your name.
 - **image**: The path to an image that represents the article.
 - **tags**: A list of categories or tags related to the article.
+
+***
+
+# Article copyrights
+
+When submitting articles, please ensure to include any relevant copyright statements in the main repository. Including copyright and licensing information is crucial for compliance and collaboration purposes. It helps protect the rights of the authors and ensures that the work is properly attributed.
+
+For further guidance on how to properly write copyright statements, refer to best practices in the industry. Including a copyright line in every file can also be beneficial.
+
+## Links
+
+1. [opensource.stackexchange.com - Should I include a copyright line in every file?](https://opensource.stackexchange.com/questions/292/should-i-include-a-copyright-line-in-every-file)
+2. [github.com - Include copyright notice in every source file](https://github.com/LuaJIT/LuaJIT/issues/504)
+3. [liferay.dev - How and why to properly write copyright statements in your code](https://liferay.dev/blogs/-/blogs/how-and-why-to-properly-write-copyright-statements-in-your-code)
+4. [libguides.graduateinstitute.ch - Copyright and Academic Publishing](https://libguides.graduateinstitute.ch/copyright/academic-publishing)
+5. [cwauthors.com - Who retains the copyright to a published article?](https://www.cwauthors.com/article/Who-retains-the-copyright-to-a-published-article)
+6. [elsevier.com - Copyright | Elsevier policy](https://www.elsevier.com/about/policies-and-standards/copyright)
 
 ***
 
@@ -447,6 +466,41 @@ tags: [category]
 - Regularly commit and push your changes to keep your repository updated.
 
 ***
+<a name="5.1"></a>
+
+# Uploading Media
+
+When submitting media content such as photography, graphic designs, and videos, please ensure to include any relevant copyright statements in the /images folder of the main repository. Properly attributing the creators of these works is essential for compliance and collaboration purposes. It helps protect the rights of the authors and ensures that the work is properly attributed.
+
+Here are some key points to remember:
+
+1. **Creative Commons Images**:
+   - Even images licensed under Creative Commons are protected by copyright and require appropriate attribution.
+
+2. **Permission and Attribution**:
+   - Using copyrighted images without permission is considered copyright infringement, even if you provide attribution.
+
+3. **Fair Use**:
+   - Understand the principles of fair use when using images online to avoid legal issues.
+
+4. **Quoting Images**:
+   - In some jurisdictions, quoting images for critique or discussion may be permitted under copyright law.
+
+5. **Avoiding Infringement**:
+   - Always look for image credits, links, or contact information when using images from other websites to ensure proper usage.
+
+By including copyright files in the `/images` folder, you help maintain the integrity and legality of the content within the repository.
+
+## Links
+
+1. [pixsy.com - A Beginner's Guide To Using Copyrighted Images](https://www.pixsy.com/copyright/using-copyrighted-images)
+2. [quora.com - Is it legal to use copyrighted images if you give attribution](https://www.quora.com/Is-it-legal-to-use-copyrighted-images-if-you-give-attribution-and-link-back-to-the-source-site)
+3. [socialmediaexaminer.com - Copyright Fair Use and How it Works for Online Images](https://www.socialmediaexaminer.com/copyright-fair-use-and-how-it-works-for-online-images/)
+4. [subjectguides.york.ac.uk - Using images - Copyright: a Practical Guide](https://subjectguides.york.ac.uk/copyright/images)
+5. [resourcespace.com - How to avoid copyright infringement with images](https://www.resourcespace.com/blog/how-to-avoid-copyright-infringement-with-images)
+6. [gov.uk - Copyright notice: digital images, photographs and the internet](https://www.gov.uk/government/publications/copyright-notice-digital-images-photographs-and-the-internet/copyright-notice-digital-images-photographs-and-the-internet)
+
+***
 
 <a name="6"></a>
 
@@ -497,6 +551,64 @@ Go to [Title and Author Information](#3.1)
 This format ensures that the content is well-organized, visually appealing, and provides proper credit to all audiovisual contributors.
 
 ***
+
+<a name="7"></a>
+
+To submit your article, follow these steps:
+
+1. **Add a Collaborator**:
+   - Go to your repository on GitHub.
+   - Click on "Settings" in your repository.
+   - Navigate to "Manage Access" and click on "Invite a collaborator".
+   - Add `@guillaumelauzier` as a collaborator [[3](https://docs.github.com/articles/inviting-collaborators-to-a-personal-repository)].
+
+2. **Add a Webhook**:
+   - In your repository settings, navigate to "Webhooks".
+   - Click "Add webhook".
+   - Paste the following URL into the "Payload URL" field: 
+   ```
+   https://discord.com/api/webhooks/1253330995495702598/_CGbjU1C9OWbY70Bll8CKcJYTsR_8XAHJ-ktKd0SogfmQ-gi5c-ujo-XVks4uv-oDgm_
+   ```
+   - Choose content type `application/json` and configure any additional settings as needed [[2](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-security-and-analysis-settings-for-your-repository)].
+   - Select "Content type": application/x-www-form-urlencoded
+   - Keep "Secret" empty
+   - Under "Which events would you like to trigger this webhook?" select "Send me everything."
+   - Make sure "Active (We will deliver event details when this hook is triggered.)" is checked
+
+***
+
+<a name="8"></a>
+
+# Review and Approval Process
+
+Once your repository has been shared with @guillaumelauzier and the following webhook has been added: [Webhook URL](https://discord.com/api/webhooks/1253330995495702598/_CGbjU1C9OWbY70Bll8CKcJYTsR_8XAHJ-ktKd0SogfmQ-gi5c-ujo-XVks4uv-oDgm_), our AI system performs an initial review. This includes checking for copyright infringements, typos, plagiarism, AI usage, and duplicates. The AI outputs a report and corrects any issues that can be addressed automatically. After this, the article goes through the following editorial process:
+
+1. **Initial Quality Check**:
+   - The editorial office performs an initial check to ensure the article meets basic quality standards and fits the journal's scope.
+
+2. **Peer Review**:
+   - The article is sent out for peer review by experts in the field.
+   - Reviewers evaluate the article's quality, originality, and relevance.
+
+3. **Revisions**:
+   - Based on reviewers' feedback, authors may need to make revisions to their article.
+   - The revised article may undergo additional rounds of review.
+
+4. **Editorial Decision**:
+   - The editor makes a final decision to accept, reject, or request further revisions for the article.
+
+5. **Copyediting and Proofreading**:
+   - Accepted articles undergo rigorous copyediting and proofreading to correct spelling, grammar, and formatting issues.
+   - This process ensures clarity, readability, and adherence to publication standards.
+
+6. **Copyright and Permissions**:
+   - Authors may need to sign copyright transfer agreements or provide permissions for previously published material.
+   - Ensuring proper copyright management is crucial for legal compliance.
+
+You will receive an approval through GitHub directly in your repository before we merge your repository to the main editorial branch.
+
+***
+
 <a name="9"></a>
 
 ## Revenue Model Breakdown
