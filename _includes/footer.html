@@ -13,8 +13,11 @@
         </div>
 
         <div class="footer__info">
-          <div class="copyright">{{site.time | date: '%Y'}} &copy; <a href="/">{{site.data.settings.title}}</a>. All Rights Reserved.</div>
+          <div class="copyright">{{site.time | date: '%Y'}} &copy; <a href="/">{{site.data.settings.title}}</a>. All Rights Reserved.</div> 
           <div class="footer__info__right">
+            <div class="Advertise"><a href="/advertise">Advertise</a></div>
+            <div class="Privacy Policy"><a href="/privacy-policy">Privacy Policy</a></div>
+            <div class="Terms & Conditions"><a href="/terms-conditions">Terms & Conditions</a></div>
             {% if site.data.settings.color_scheme == "auto" %}
             <div class="toggle-theme">
               <div class="toggle-moon" title="Enable dark mode" aria-hidden="true"><i class="ion ion-ios-moon"></i> <span class="toggle-text">Dark</span></div>
