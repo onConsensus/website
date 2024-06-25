@@ -23,6 +23,8 @@ menu_settings:
       submenu:
       - url: "/about/"
         title: "About"
+      - url: "/advertise/"
+        title: "Advertise"
       - url: "/documentation/"
         title: "Docs"
       - url: "/contact/"
