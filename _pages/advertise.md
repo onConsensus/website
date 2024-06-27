@@ -1,3 +1,10 @@
+---
+layout: page
+title: Advertise
+permalink: /advertise/
+image: '/images/audio_visual_performance.png'
+---
+
 # Advertise
 
 Looking to promote your VJ-related products or projects? VJs Mag has got you covered! While we don’t offer ad or banner spaces on VJs Mag (vjsmag.com), we can help promote your products or projects through our articles. If you wish to buy banner spaces, we offer these on VJs TV (vjstv.com). 
