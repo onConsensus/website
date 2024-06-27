@@ -1,14 +1,12 @@
 ---
 layout: post
 title: Experience High-Quality Video with the V-600UHD
-description: A video synthesizer allows real-time creation and manipulation of video signals using modules for input, generation, processing, and output. Used in VJing and live performances, these devices have evolved since the 1960s, featuring models like the LZX Industries Visionary, Color Video Computer System, Elta Music TVB-1010, and more, each offering unique capabilities for video art and experimental film.
-date: 2023-01-07 15:01:35 +0300
+description: The V-600UHD is a 4K multi-format video switcher with full 60Hz frame rate support and 10-bit color depth processing. It supports HD to DCI 4K inputs, includes four HDMI and two SDI inputs, and offers advanced audio processing and Picture-in-Picture features. Ideal for event professionals, it excels in diverse lighting and display environments.
+date: 2022-11-03 15:01:35 +0300
 author: admin
 image: '/images/hero_sp.jpg'
 tags: [technology]
 ---
-
-## Overview
 
 The V-600UHD is a 4K multi-format video switcher providing smooth, crisp video with full 60Hz frame rate support and internal 10-bit color depth processing. It supports input and scaling of HD, Full HD, UHD 4K, and DCI 4K, as well as PC resolutions from UXGA to DCI 4K. The switcher includes four HDMI 2.0 and two 12G SDI inputs, supporting downscaling to Full HD for output to streaming encoders or other HD displays. A configurable multi-view monitor allows users to see all sources, programs, and previews at a glance.
 
