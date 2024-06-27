@@ -5,7 +5,7 @@ description: Videopong is a global community for VJs, content creators, and vide
 date: 2022-09-30 15:01:35 +0300
 author: admin
 image: '/images/videopong.png'
-tags: [news]
+tags: [spotlight]
 ---
 
 Videopong is a community dedicated to expanding and connecting VJs, content creators, and video artists. It is a hub for sharing video clips, source code, interactive patches, executables, and more.
