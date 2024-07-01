@@ -1,23 +1,31 @@
 ---
-layout: default
+layout: page
 title: Submit News
 permalink: /submit/
 image: '/images/visual_performance.png'
 ---
 
-<!-- modify this form HTML and place wherever you want your form -->
-<form
-  action="https://formspree.io/f/mblrjddz"
-  method="POST"
->
-  <label>
-    Your email:
-    <input type="email" name="email">
-  </label>
-  <label>
-    Your Links:
-    <textarea name="message"></textarea>
-  </label>
-  <!-- your other form fields go here -->
-  <button type="submit">Send news</button>
-</form>
+<div class="form-box">
+    <div class="contact-head">
+    {% if site.data.settings.contact.description %}
+      <p class="contact-description">{{site.data.settings.contact.description}}</p>
+    {% endif %}
+    </div>
+    <form class="form" action="https://formspree.io/f/mblrjddz" method="POST">
+      <div class="form__group">
+        <label class="form__label screen-reader-text" for="form-name">Your Name</label>
+        <input class="form__input" id="form-name" type="text" name="name" placeholder="Your name..." required>
+      </div>
+      <div class="form__group">
+        <label class="form__label screen-reader-text" for="form-email">Your Email</label>
+        <input class="form__input" id="form-email" type="email" name="_replyto" placeholder="Your email..." required>
+      </div>
+      <div class="form__group">
+        <label class="form__label screen-reader-text" for="form-text">Your Message</label>
+        <textarea class="form__input" id="form-text" name="text" rows="4" placeholder="Your links..." required></textarea>
+      </div>
+      <div class="form__group">
+        <button class="button button--big" type="submit">Send News</button>
+      </div>
+    </form>
+  </div>
