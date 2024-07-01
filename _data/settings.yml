@@ -36,7 +36,7 @@ menu_settings:
 cta_button:
   enable: true
   cta_button_link: '/contact/'
-  cta_button_text: Get in touch
+  cta_button_text: Submit News
 
 
 #-------------------------------
