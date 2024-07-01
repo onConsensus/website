@@ -52,6 +52,12 @@ For more information, visit the [LPM Live Performers Meeting official website](h
 
 <a name="13"></a>
 
+## Mapping Festival
+
+The Mapping Festival is an annual event held in Geneva, Switzerland, dedicated to promoting digital arts and new technologies through conferences, projections, and other activities. Founded in 2005, it explores the possibilities of digital media and innovative technologies, offering a platform for visual and audio artists to showcase their work and engage with the public.
+
+You can learn more about the Mapping Festival on their official website: [Mapping Festival](https://www.mappingfestival.com/)  .
+
 <a name="14"></a>
 
 <a name="15"></a>
