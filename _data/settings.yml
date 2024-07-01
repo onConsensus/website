@@ -96,7 +96,7 @@ mailchimp_settings:
   enable: true
   mailchimp_title: Get interesting news
   mailchimp_description: Subscribe to our newsletter and we’ll send you the emails of latest posts.
-  mailchimp_identifier: frnla.us6.list-manage.com/subscribe/post?u=6314d69a3f315af7ce3fb00a0&amp;id=89e5d17e3e # Add your MailChimp form identifier. For example - frnla.us6.list-manage.com/subscribe/post?u=6314d69a3f315af7ce3fb00a0&amp;id=3038727cc3
+  mailchimp_identifier: http://eepurl.com/iSYAQw # Add your MailChimp form identifier. For example - frnla.us6.list-manage.com/subscribe/post?u=6314d69a3f315af7ce3fb00a0&amp;id=3038727cc3
   mailchimp_input_text: Your email address
   mailchimp_button_text: Subscribe
 
