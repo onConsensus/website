@@ -23,6 +23,8 @@ menu_settings:
       submenu:
       - url: "/about/"
         title: "About"
+      - url: "/partners/"
+        title: "Partners"
       - url: "/advertise/"
         title: "Advertise"
       - url: "/documentation/"
