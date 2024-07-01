@@ -5,7 +5,11 @@ permalink: /submit/
 ---
 
 <div class="form-box">
-
+    <div class="contact-head">
+        {% if site.data.settings.contact.description %}
+          <p class="contact-description">{{site.data.settings.contact.description}}</p>
+        {% endif %}
+    </div>
     <form class="form" action="https://formspree.io/f/mblrjddz" method="POST">
       <div class="form__group">
         <label class="form__label screen-reader-text" for="form-name">Your Name</label>
