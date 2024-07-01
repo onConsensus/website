@@ -19,6 +19,18 @@
   }
 }
 
+.submit-head {
+  margin-bottom: 32px;
+}
+
+.submit-description {
+  font-size: 18px;
+
+  @media (max-width: $mobile) {
+    font-size: inherit;
+  }
+}
+
 .form__group {
   margin-bottom: 20px;
 
