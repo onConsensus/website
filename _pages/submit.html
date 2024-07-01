@@ -5,9 +5,9 @@ permalink: /submit/
 ---
 
 <div class="form-box">
-    <div class="submit-head">
+    <div class="contact-head">
     {% if site.data.settings.contact.description %}
-      <p class="submit-description">{{site.data.settings.contact.description}}</p>
+      <p class="contact-description">{{site.data.settings.contact.description}}</p>
     {% endif %}
     </div>
     <form class="form" action="https://formspree.io/f/mblrjddz" method="POST">
@@ -20,11 +20,10 @@ permalink: /submit/
         <input class="form__input" id="form-email" type="email" name="_replyto" placeholder="Your email..." required>
       </div>
       <div class="form__group">
-        <label class="form__label screen-reader-text" for="form-text">Add Links</label>
+        <label class="form__label screen-reader-text" for="form-text">Links</label>
         <textarea class="form__input" id="form-text" name="text" rows="4" placeholder="Your message..." required></textarea>
       </div>
       <div class="form__group">
         <button class="button button--big" type="submit">Send News</button>
       </div>
     </form>
-  </div>
