@@ -504,6 +504,8 @@ By including copyright files in the `/images` folder, you help maintain the inte
 
 <a name="6"></a>
 
+# Writing Format
+
 A good writing format for an audiovisual art magazine should include clear sections, proper citation of audiovisual materials, and a consistent style to ensure readability and professionalism. Here’s a suggested format:
 
 ### 1. Title and Author Information
@@ -553,6 +555,8 @@ This format ensures that the content is well-organized, visually appealing, and 
 ***
 
 <a name="7"></a>
+
+# Submitting Your Article
 
 To submit your article, follow these steps:
 
