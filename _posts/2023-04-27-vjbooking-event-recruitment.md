@@ -8,7 +8,7 @@ image: '/images/vjbooking-event-recruitment.png'
 tags: [spotlight]
 ---
 
-# In an age where visual aesthetics play a crucial role in the success of an event, VJBooking is a game changer. Specializing in graphic design and artist recruitment services, VJBooking connects talented artists with event organizers to create signature visuals that enhance event experiences. With a global network of over 762 registered artists, VJBooking is the ultimate platform to showcase creative work and elevate events to new heights.
+In an age where visual aesthetics play a crucial role in the success of an event, VJBooking is a game changer. Specializing in graphic design and artist recruitment services, VJBooking connects talented artists with event organizers to create signature visuals that enhance event experiences. With a global network of over 762 registered artists, VJBooking is the ultimate platform to showcase creative work and elevate events to new heights.
 
 ## Creating Augmented Event Experiences
 A well-executed visual design can transform an ordinary event into an immersive and unforgettable experience. VJBooking understands the importance of high-quality visual content and provides event organizers access to a diverse range of talented artists. The platform allows event professionals to [book an introduction session](https://www.vjbooking.com/book-session) and collaborate with artists to create stunning visuals that cater to their brand and event requirements.
