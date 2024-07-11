@@ -853,12 +853,3 @@ The reputation of the writer will be based on historical performance metrics and
 <p>
         <code>Total Score = 0.20 * Score<sub>RV</sub> + 0.15 * Score<sub>NV</sub> + 0.15 * Score<sub>GL</sub> + 0.15 * Score<sub>TS</sub> + 0.15 * Score<sub>QR</sub> + 0.10 * Score<sub>OC</sub> + 0.05 * Score<sub>NA</sub> + 0.05 * Score<sub>VS</sub></code>
 </p>
-### Example Calculation:
-Assume the following metrics for a writer’s article:
-
-- Total Visitors: 10,000
-- Returning Visitors: 3,500 (35%)
-- New Visitors: 6,500 (65%)
-- High-value Region Visitors: 4,000 (40%)
-- Average Time Spent: 4 minutes
-- Average DA of Ref
