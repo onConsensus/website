@@ -2,7 +2,7 @@
 username: guillaumelauzier
 name: Guillaume Lauzier
 image: '/images/100.jpg'
-location:
+location: Geneva, Switzerland
 website: https://guillaumelauzier.com
 facebook: https://www.facebook.com/guilauzier
 twitter: https://twitter.com/guilauzier
