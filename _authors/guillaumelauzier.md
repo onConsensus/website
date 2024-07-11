@@ -1,5 +1,5 @@
 ---
-username: admin
+username: guillaumelauzier
 name: Guillaume Lauzier
 image: '/images/100.jpg'
 location:
