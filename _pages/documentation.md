@@ -36,6 +36,7 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 11. [Hosting Media](#11)
 12. [Youtube Revenue Distribution](#12)
 13. [Payouts](#13)
+14. [Scoring Algorithm](#14)
 
 ***
 
@@ -766,3 +767,152 @@ Payouts will be made on a monthly basis, based on the total magazine revenue. Yo
 - **Videographers (YouTube)**: Share of $7,500 based on YouTube metrics.
 
 Payouts will be made via Revolut.
+
+<a name="14"></a>
+
+# Scoring Algorithm for Rating Writers and Contributors
+
+This algorithm will rate writers and contributors based on several key metrics that contribute to the overall value and engagement of their articles. The metrics and their weights are:
+
+1. **Returning Visitors** (20%)
+2. **New Visitors** (15%)
+3. **Geographic Location** (15%)
+4. **Time Spent on the Article** (15%)
+5. **Quality of Referring Links** (15%)
+6. **Outgoing Clicks** (10%)
+7. **Number of Articles Published** (5%)
+8. **Value of the Section** (5%)
+
+### Metric Formulas and Normalization
+
+Each metric is normalized to a scale of 0 to 100.
+
+1. **Returning Visitors (RV)**:
+   \[
+   \text{Score}_{RV} = \min\left(100, \frac{\text{Returning Visitors}}{\text{Total Visitors}} \times 333.33\right)
+   \]
+   - 30% returning visitors correspond to a full score (100).
+
+2. **New Visitors (NV)**:
+   \[
+   \text{Score}_{NV} = \min\left(100, \frac{\text{New Visitors}}{\text{Total Visitors}} \times 142.86\right)
+   \]
+   - 70% new visitors correspond to a full score (100).
+
+3. **Geographic Location (GL)**:
+   \[
+   \text{Score}_{GL} = \min\left(100, \frac{\text{High-value Region Visitors}}{\text{Total Visitors}} \times 200\right)
+   \]
+   - 50% high-value region visitors correspond to a full score (100).
+
+4. **Time Spent on the Article (TS)**:
+   \[
+   \text{Score}_{TS} = \min\left(100, \frac{\text{Average Time Spent}}{5} \times 100\right)
+   \]
+   - 5 minutes average time spent correspond to a full score (100).
+
+5. **Quality of Referring Links (QR)**:
+   \[
+   \text{Score}_{QR} = \min\left(100, \frac{\text{Average DA of Referring Links}}{50} \times 100\right)
+   \]
+   - DA of 50 correspond to a full score (100).
+
+6. **Outgoing Clicks (OC)**:
+   \[
+   \text{Score}_{OC} = \min\left(100, \frac{\text{Outgoing Clicks}}{\text{Total Views}} \times 1000\right)
+   \]
+   - 10% outgoing clicks correspond to a full score (100).
+
+7. **Number of Articles Published (NA)**:
+   \[
+   \text{Score}_{NA} = \min\left(100, \frac{\text{Articles Published}}{\text{Target Number of Articles}} \times 100\right)
+   \]
+   - Normalized so that the target number of articles corresponds to a full score (100).
+
+8. **Value of the Section (VS)**:
+   \[
+   \text{Score}_{VS} = \min\left(100, \frac{\text{Section Weight}}{\text{Total Sections Weight}} \times 100\right)
+   \]
+   - Based on the relative weight of the section. Sections with fewer articles have higher weight.
+
+### Reputation Scoring System:
+The reputation of the writer will be based on historical performance metrics and qualitative assessments:
+- **Article Performance** (average score of previous articles)
+- **Peer Reviews** (average score from peer reviews)
+- **Editorial Feedback** (average score from editorial reviews)
+
+\[
+\text{Reputation Score} = 0.5 \times \text{Article Performance} + 0.3 \times \text{Peer Reviews} + 0.2 \times \text{Editorial Feedback}
+\]
+
+### Overall Score Calculation:
+
+\[
+\text{Total Score} = 0.20 \times \text{Score}_{RV} + 0.15 \times \text{Score}_{NV} + 0.15 \times \text{Score}_{GL} + 0.15 \times \text{Score}_{TS} + 0.15 \times \text{Score}_{QR} + 0.10 \times \text{Score}_{OC} + 0.05 \times \text{Score}_{NA} + 0.05 \times \text{Score}_{VS}
+\]
+
+### Example Calculation:
+Assume the following metrics for a writer’s article:
+
+- Total Visitors: 10,000
+- Returning Visitors: 3,500 (35%)
+- New Visitors: 6,500 (65%)
+- High-value Region Visitors: 4,000 (40%)
+- Average Time Spent: 4 minutes
+- Average DA of Referring Links: 60
+- Outgoing Clicks: 800 (8%)
+- Articles Published: 12 (target 15)
+- Section Weight: 20 (total section weight 100)
+
+1. **Returning Visitors**:
+   \[
+   \text{Score}_{RV} = \min(100, \frac{3,500}{10,000} \times 333.33) = 100
+   \]
+
+2. **New Visitors**:
+   \[
+   \text{Score}_{NV} = \min(100, \frac{6,500}{10,000} \times 142.86) = 92.86
+   \]
+
+3. **Geographic Location**:
+   \[
+   \text{Score}_{GL} = \min(100, \frac{4,000}{10,000} \times 200) = 80
+   \]
+
+4. **Time Spent on Article**:
+   \[
+   \text{Score}_{TS} = \min(100, \frac{4}{5} \times 100) = 80
+   \]
+
+5. **Quality of Referring Links**:
+   \[
+   \text{Score}_{QR} = \min(100, \frac{60}{50} \times 100) = 100
+   \]
+
+6. **Outgoing Clicks**:
+   \[
+   \text{Score}_{OC} = \min(100, \frac{800}{10,000} \times 1000) = 80
+   \]
+
+7. **Number of Articles Published**:
+   \[
+   \text{Score}_{NA} = \min(100, \frac{12}{15} \times 100) = 80
+   \]
+
+8. **Value of the Section**:
+   \[
+   \text{Score}_{VS} = \min(100, \frac{20}{100} \times 100) = 20
+   \]
+
+#### Total Score:
+\[
+\text{Total Score} = 0.20 \times 100 + 0.15 \times 92.86 + 0.15 \times 80 + 0.15 \times 80 + 0.15 \times 100 + 0.10 \times 80 + 0.05 \times 80 + 0.05 \times 20
+\]
+\[
+\text{Total Score} = 20 + 13.93 + 12 + 12 + 15 + 8 + 4 + 1
+\]
+\[
+\text{Total Score} = 85.93
+\]
+
+This algorithm can be implemented in a script or automated system using GitHub for version control and continuous integration to track and rate the performance of writers and contributors based on their articles' engagement metrics. The scoring system helps to incentivize high-quality content creation and engagement, tailored to the magazine's goals and audience.
