@@ -788,51 +788,51 @@ This algorithm will rate writers and contributors based on several key metrics t
 Each metric is normalized to a scale of 0 to 100.
 
 1. **Returning Visitors (RV)**:
-            <p>
+
                 <code>Score<sub>RV</sub> = min(100, (Returning Visitors / Total Visitors) * 333.33)</code>
-            </p>
+
    - 30% returning visitors correspond to a full score (100).
 
 2. **New Visitors (NV)**:
-   <p>
+
                 <code>Score<sub>NV</sub> = min(100, (New Visitors / Total Visitors) * 142.86)</code>
-   </p>
+
    - 70% new visitors correspond to a full score (100).
 
 3. **Geographic Location (GL)**:
-   <p>
+
                 <code>Score<sub>GL</sub> = min(100, (High-value Region Visitors / Total Visitors) * 200)</code>
-   </p>
+
    - 50% high-value region visitors correspond to a full score (100).
 
 4. **Time Spent on the Article (TS)**:
-   <p>
+
                 <code>Score<sub>TS</sub> = min(100, (Average Time Spent / 5) * 100)</code>
-   </p>
+
    - 5 minutes average time spent correspond to a full score (100).
 
 5. **Quality of Referring Links (QR)**:
-   <p>
+
                 <code>Score<sub>QR</sub> = min(100, (Average DA of Referring Links / 50) * 100)</code>
-   </p>
+
    - DA of 50 correspond to a full score (100).
 
 6. **Outgoing Clicks (OC)**:
-   <p>
+
                 <code>Score<sub>OC</sub> = min(100, (Outgoing Clicks / Total Views) * 1000)</code>
-   </p>
+
    - 10% outgoing clicks correspond to a full score (100).
 
 7. **Number of Articles Published (NA)**:
-   <p>
+
                 <code>Score<sub>NA</sub> = min(100, (Articles Published / Target Number of Articles) * 100)</code>
-   </p>
+
    - Normalized so that the target number of articles corresponds to a full score (100).
 
 8. **Value of the Section (VS)**:
-   <p>
+
                 <code>Score<sub>VS</sub> = min(100, (Section Weight / Total Sections Weight) * 100)</code>
-   </p>
+
    - Based on the relative weight of the section. Sections with fewer articles have higher weight.
 
 ### Reputation Scoring System:
@@ -841,15 +841,11 @@ The reputation of the writer will be based on historical performance metrics and
 - **Peer Reviews** (average score from peer reviews)
 - **Editorial Feedback** (average score from editorial reviews)
 
-<p>
         <code>Reputation Score = 0.5 * Article Performance + 0.3 * Peer Reviews + 0.2 * Editorial Feedback</code>
-</p>
 
 ### Overall Score Calculation:
 
-    <p>
         <code>Total Score = 0.20 * Score<sub>RV</sub> + 0.15 * Score<sub>NV</sub> + 0.15 * Score<sub>GL</sub> + 0.15 * Score<sub>TS</sub> + 0.15 * Score<sub>QR</sub> + 0.10 * Score<sub>OC</sub> + 0.05 * Score<sub>NA</sub> + 0.05 * Score<sub>VS</sub></code>
-    </p>
 
 ### Example Calculation:
 Assume the following metrics for a writer’s article:
