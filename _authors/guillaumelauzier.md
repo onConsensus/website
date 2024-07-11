@@ -1,8 +1,8 @@
 ---
-username: guillaumelauzier
+username: admin
 name: Guillaume Lauzier
 image: '/images/100.jpg'
-location: Geneva, Switzerland
+location:
 website: https://guillaumelauzier.com
 facebook: https://www.facebook.com/guilauzier
 twitter: https://twitter.com/guilauzier

@@ -3,7 +3,7 @@ layout: post
 title: VJBooking, Revolutionizing Event Visuals through Artist Recruitment
 description: VJBooking connects talented visual artists with event organizers to create stunning visuals, enhancing event experiences. With over 762 registered artists globally, VJBooking offers a range of services including projection mapping, interactive installations, and live performances. Artists can showcase their work and gain exposure, while event organizers can elevate their events with high-quality visual content.
 date: 2023-05-07 15:01:35 +0300
-author: admin
+author: guillaumelauzier
 image: '/images/vjbooking-event-recruitment.png'
 tags: [spotlight]
 ---

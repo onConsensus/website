@@ -3,7 +3,7 @@ layout: post
 title: Videopong, A Community for VJs, Content Creators, and Video Artists
 description: Videopong is a global community for VJs, content creators, and video artists to share, remix, and perform visual media. Users can access clips, source code, and interactive patches, while enjoying features like the Onyx Online VJ Mixer, clip remix tracking, and regular contests. Supported by donations and partnerships, Videopong fosters creativity and collaboration in the visual arts.
 date: 2022-09-30 15:01:35 +0300
-author: admin
+author: guillaumelauzier
 image: '/images/videopong.png'
 tags: [spotlight]
 ---

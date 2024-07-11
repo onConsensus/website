@@ -3,7 +3,7 @@ layout: post
 title: 10 Popular Video Synthesizers
 description: A video synthesizer allows real-time creation and manipulation of video signals using modules for input, generation, processing, and output. Used in VJing and live performances, these devices have evolved since the 1960s, featuring models like the LZX Industries Visionary, Color Video Computer System, Elta Music TVB-1010, and more, each offering unique capabilities for video art and experimental film.
 date: 2023-01-07 15:01:35 +0300
-author: admin
+author: guillaumelauzier
 image: '/images/10-popular-video-synthesizers.png'
 tags: [technology]
 ---

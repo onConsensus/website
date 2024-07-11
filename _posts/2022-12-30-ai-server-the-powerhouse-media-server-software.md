@@ -3,7 +3,7 @@ layout: post
 title: AI Server, The Powerhouse Media Server Software for Large Scale Shows
 description: AI Server v12, developed by Avolites, is a versatile media server software for large-scale setups and permanent installations. It features a Media Transcoder, redesigned timeline, keyboard shortcuts, updated UI, and advanced functionalities like BPM Sync, Spout and HDSDI inputs, Notch integration, and NDI support. AI Server v12 offers improved performance and user-friendly interfaces for professional show management.
 date: 2022-12-30 15:01:35 +0300
-author: admin
+author: guillaumelauzier
 image: '/images/Synergy_Web.jpg'
 tags: [technology]
 ---

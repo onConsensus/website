@@ -3,7 +3,7 @@ layout: post
 title: Experience High-Quality Video with the V-600UHD
 description: The V-600UHD is a 4K multi-format video switcher with full 60Hz frame rate support and 10-bit color depth processing. It supports HD to DCI 4K inputs, includes four HDMI and two SDI inputs, and offers advanced audio processing and Picture-in-Picture features. Ideal for event professionals, it excels in diverse lighting and display environments.
 date: 2022-11-03 15:01:35 +0300
-author: admin
+author: guillaumelauzier
 image: '/images/hero_sp.jpg'
 tags: [technology]
 ---
