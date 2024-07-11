@@ -791,49 +791,49 @@ Each metric is normalized to a scale of 0 to 100.
 
 1. **Returning Visitors (RV)**:
 
-                <code>Score<sub>RV</sub> = min(100, (Returning Visitors / Total Visitors) * 333.33)</code>
+                Score<sub>RV</sub> = min(100, (Returning Visitors / Total Visitors) * 333.33)
 
    - 30% returning visitors correspond to a full score (100).
 
 2. **New Visitors (NV)**:
 
-                <code>Score<sub>NV</sub> = min(100, (New Visitors / Total Visitors) * 142.86)</code>
+                Score<sub>NV</sub> = min(100, (New Visitors / Total Visitors) * 142.86)
 
    - 70% new visitors correspond to a full score (100).
 
 3. **Geographic Location (GL)**:
 
-                <code>Score<sub>GL</sub> = min(100, (High-value Region Visitors / Total Visitors) * 200)</code>
+                Score<sub>GL</sub> = min(100, (High-value Region Visitors / Total Visitors) * 200)
 
    - 50% high-value region visitors correspond to a full score (100).
 
 4. **Time Spent on the Article (TS)**:
 
-                <code>Score<sub>TS</sub> = min(100, (Average Time Spent / 5) * 100)</code>
+                Score<sub>TS</sub> = min(100, (Average Time Spent / 5) * 100)
 
    - 5 minutes average time spent correspond to a full score (100).
 
 5. **Quality of Referring Links (QR)**:
 
-                <code>Score<sub>QR</sub> = min(100, (Average DA of Referring Links / 50) * 100)</code>
+                Score<sub>QR</sub> = min(100, (Average DA of Referring Links / 50) * 100)
 
    - DA of 50 correspond to a full score (100).
 
 6. **Outgoing Clicks (OC)**:
 
-                <code>Score<sub>OC</sub> = min(100, (Outgoing Clicks / Total Views) * 1000)</code>
+                Score<sub>OC</sub> = min(100, (Outgoing Clicks / Total Views) * 1000)
 
    - 10% outgoing clicks correspond to a full score (100).
 
 7. **Number of Articles Published (NA)**:
 
-                <code>Score<sub>NA</sub> = min(100, (Articles Published / Target Number of Articles) * 100)</code>
+                Score<sub>NA</sub> = min(100, (Articles Published / Target Number of Articles) * 100)
 
    - Normalized so that the target number of articles corresponds to a full score (100).
 
 8. **Value of the Section (VS)**:
 
-                <code>Score<sub>VS</sub> = min(100, (Section Weight / Total Sections Weight) * 100)</code>
+                Score<sub>VS</sub> = min(100, (Section Weight / Total Sections Weight) * 100)
 
    - Based on the relative weight of the section. Sections with fewer articles have higher weight.
 
@@ -845,13 +845,13 @@ The reputation of the writer will be based on historical performance metrics and
 - **Peer Reviews** (average score from peer reviews)
 - **Editorial Feedback** (average score from editorial reviews)
 
-        <code>Reputation Score = 0.5 * Article Performance + 0.3 * Peer Reviews + 0.2 * Editorial Feedback</code>
+        Reputation Score = 0.5 * Article Performance + 0.3 * Peer Reviews + 0.2 * Editorial Feedback
 
 <a name="14.2"></a>
 
 # Overall Score Calculation:
 
-        <code>Total Score = 0.20 * Score<sub>RV</sub> + 0.15 * Score<sub>NV</sub> + 0.15 * Score<sub>GL</sub> + 0.15 * Score<sub>TS</sub> + 0.15 * Score<sub>QR</sub> + 0.10 * Score<sub>OC</sub> + 0.05 * Score<sub>NA</sub> + 0.05 * Score<sub>VS</sub></code>
+        Total Score = 0.20 * Score<sub>RV</sub> + 0.15 * Score<sub>NV</sub> + 0.15 * Score<sub>GL</sub> + 0.15 * Score<sub>TS</sub> + 0.15 * Score<sub>QR</sub> + 0.10 * Score<sub>OC</sub> + 0.05 * Score<sub>NA</sub> + 0.05 * Score<sub>VS</sub>
 
 ### Example Calculation:
 Assume the following metrics for a writer’s article:
