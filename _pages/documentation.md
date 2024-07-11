@@ -37,6 +37,8 @@ Welcome to VJs Mag, your platform for sharing insights, articles, and visual con
 12. [Youtube Revenue Distribution](#12)
 13. [Payouts](#13)
 14. [Scoring Algorithm](#14)
+   - [Reputation Scoring System](#14.1)
+   - [Overall Score Calculation](#14.2)
 
 ***
 
@@ -835,7 +837,9 @@ Each metric is normalized to a scale of 0 to 100.
 
    - Based on the relative weight of the section. Sections with fewer articles have higher weight.
 
-### Reputation Scoring System:
+<a name="14.1"></a>
+
+# Reputation Scoring System:
 The reputation of the writer will be based on historical performance metrics and qualitative assessments:
 - **Article Performance** (average score of previous articles)
 - **Peer Reviews** (average score from peer reviews)
@@ -843,7 +847,9 @@ The reputation of the writer will be based on historical performance metrics and
 
         <code>Reputation Score = 0.5 * Article Performance + 0.3 * Peer Reviews + 0.2 * Editorial Feedback</code>
 
-### Overall Score Calculation:
+<a name="14.2"></a>
+
+# Overall Score Calculation:
 
         <code>Total Score = 0.20 * Score<sub>RV</sub> + 0.15 * Score<sub>NV</sub> + 0.15 * Score<sub>GL</sub> + 0.15 * Score<sub>TS</sub> + 0.15 * Score<sub>QR</sub> + 0.10 * Score<sub>OC</sub> + 0.05 * Score<sub>NA</sub> + 0.05 * Score<sub>VS</sub></code>
 
