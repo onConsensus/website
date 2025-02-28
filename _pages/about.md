@@ -1,14 +1,12 @@
 ---
 layout: page
-title: About VJs Mag
+title: About onConsensus
 permalink: /about/
 image: '/images/audio_visual_performance.png'
 ---
 
-VJs TV created in 2011 and VJs Mag created in 2013 by [Guillaume Lauzier](https://guillaumelauzier.com) out of passion for vjing, VJs Mag is a digital publication dedicated to exploring and promoting audiovisual art forms. Our team is made up of artists, professionals, and enthusiasts who are passionate about the intersection of sound and visual media. We strive to provide a platform for creators and audiences to connect, share knowledge, and discover new and exciting work in the field.
+onConsensus was founded in 2022 by [Guillaume Lauzier](https://guillaumelauzier.com) out of a deep passion for decentralized technologies and the transformative potential they hold. As an online news platform, onConsensus is dedicated to exploring and promoting the latest developments in blockchain, cryptocurrency, DeFi, and cybersecurity. Our team is composed of tech experts, journalists, and enthusiasts who are driven by a shared interest in the intersection of technology, finance, and digital security. We aim to create a space where readers, innovators, and industry professionals can connect, exchange ideas, and stay informed about the rapidly evolving world of decentralized systems.
 
-Our content includes interviews with industry leaders, reviews of new and emerging technologies, and profiles of up-and-coming artists.
+We have now implemented a contribution system using GitHub for writers, researchers, and content creators passionate about blockchain, cryptocurrency, decentralized finance (DeFi), and cybersecurity. This fair and transparent contribution system encourages anyone with expertise or interest in these fields to join the team and contribute. More information is available on our [documentation page](https://onconsensus.com/documentation/).
 
-We have now implemented a contribution system using GitHub for audiovisual art journalists and content producers. This fair and transparent contribution system encourages anyone to join the team and contribute. More information is available on our [documentation page](https://vjsmag.com/documentation/).
-
-We aim to support the community of audiovisual artists, event organizers, and communities. We hope that VJs Mag will serve as a valuable resource for anyone interested in audiovisual art forms, and we welcome you to join us in our mission to celebrate and support the vibrant world of AV art.
+onConsensus is committed to empowering the community of blockchain developers, crypto investors, DeFi pioneers, and cybersecurity professionals. We aim to provide a trusted resource for anyone passionate about decentralized technologies through in-depth insights and a collaborative platform. We invite you to join us in our mission to drive innovation and celebrate the transformative power of this decentralized future.
