@@ -2,7 +2,7 @@
 layout: page
 title: About onConsensus
 permalink: /about/
-image: '/images/audio_visual_performance.png'
+image: '/images/h1.png'
 ---
 
 onConsensus was founded in 2022 by [Guillaume Lauzier](https://guillaumelauzier.com) out of a deep passion for decentralized technologies and the transformative potential they hold. As an online news platform, onConsensus is dedicated to exploring and promoting the latest developments in blockchain, cryptocurrency, DeFi, and cybersecurity. Our team is composed of tech experts, journalists, and enthusiasts who are driven by a shared interest in the intersection of technology, finance, and digital security. We aim to create a space where readers, innovators, and industry professionals can connect, exchange ideas, and stay informed about the rapidly evolving world of decentralized systems.

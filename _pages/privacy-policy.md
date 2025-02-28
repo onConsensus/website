@@ -2,7 +2,7 @@
 layout: page
 title: Privacy Policy
 permalink: /privacy-policy/
-image: '/images/audio_visual_performance.png'
+image: '/images/h5.png'
 ---
 
 # Privacy Policy

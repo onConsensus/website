@@ -2,7 +2,7 @@
 layout: page
 title: Advertise
 permalink: /advertise/
-image: '/images/audio_visual_performance.png'
+image: '/images/h2.png'
 ---
 
 # Advertise
