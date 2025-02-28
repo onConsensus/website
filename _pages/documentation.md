@@ -4,7 +4,7 @@ title: Documentation
 permalink: /documentation/
 image:
 ---
-Welcome to VJs Mag, your platform for sharing insights, articles, and visual content about the vibrant world of VJing and audiovisual art forms. To ensure your contributions reach our audience effectively, it is essential to understand the process of publishing documentation on our platform. This guide will walk you through the necessary steps and best practices for creating and publishing your work on VJs Mag.
+Welcome to onConsensus, your platform for sharing insights, articles, and technical analyses about the dynamic world of blockchain, cryptocurrency, decentralized finance (DeFi), and cybersecurity. To ensure your contributions reach our audience effectively, it is essential to understand the process of publishing on our platform. This guide will walk you through the necessary steps and best practices for creating and publishing your work on onConsensus.
 
 ### Table Of Contents
 
