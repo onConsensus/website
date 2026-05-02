@@ -63,6 +63,19 @@ def shallow?
 end
 
 def repo_url
+  # Single source of truth: `repository: "owner/name"` in _config.yml.
+  # This matches what `site.repository` resolves to in Liquid (used by
+  # the standards page and other provenance links), so all GitHub URLs
+  # in the build agree on the canonical repo.
+  cfg_path = File.join(ROOT, '_config.yml')
+  if File.exist?(cfg_path)
+    File.foreach(cfg_path) do |line|
+      if line =~ /\A\s*repository:\s*["']?([^"'\s#]+)/
+        return "https://github.com/#{$1}"
+      end
+    end
+  end
+  # Fallback: derive from `git remote get-url origin`.
   remote = git('config', '--get', 'remote.origin.url')
   return nil unless remote
   url = remote.strip
