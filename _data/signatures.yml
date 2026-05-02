@@ -1,0 +1,32 @@
+# =============================================================================
+# _data/signatures.yml — inline copies of per-post PGP signature blocks.
+#
+# Single source of truth for the *rendering* path: `_layouts/post.html` reads
+# this file when `pgp_signed: true` and emits the signature inline as a styled
+# <pre>. The matching detached `.sig` file at `/signatures/<slug>.sig` (a real
+# static file Jekyll never ingests as a post) is preserved alongside, so
+# readers can still `gpg --verify` against the on-disk artefact.
+#
+# Why two copies? Liquid forbids variable arguments to `include_relative`,
+# and Jekyll static_files do not expose their `content`. A YAML data file is
+# the only build-time–accessible source of multi-line ASCII content for
+# Liquid, short of writing a plugin (forbidden under the github-pages gem).
+# Editors should keep this file in lock-step with `signatures/<slug>.sig`;
+# the Decap CMS task can automate the round-trip later.
+#
+# Keys = post slug (filename portion of the post URL, no date prefix).
+# =============================================================================
+
+folding-schemes-without-romance: |
+  -----BEGIN ARTICLE SIGNATURE-----
+  Hash: SHA512
+
+  iQIzBAEBCgAdFiEEXC0YpH47nQJvSiG4iJ48n3sqkdYFAmYqAAAACgkQiJ48n3sq
+  kdY7uA/+OdjzG6YQk2pZ4u6RnP1YZ2T6sHb9XvkHrK3oIqW1m4o5gI1f0z2Xb7yK
+  3hM5bP4w0qJ6AeP4QnyD8qKzN7HfVm3l8C9aR2eY1xT5oG6bV3pH4U7dY9wK0sLa
+  pX2vT8C1Z6m4Q5pBfLnY3JhKwR0nAeZ4uV1z3D8aY6Q9sM1lH8tS3oP2bV0xR4uC
+  N6pQ7fA9hY3uL5kM2D8sW1Z6oC9rG2fY4P0hT3bN1eK5sR4tH8mY3pP0wL6xQ2vC
+  aK1jR8nM2bH3sP9oC4dY1uG6tH3eK0sP4mY9rN1vL7xR2bH3sQ9oA4dY1uG6tH3e
+  NXOnEDvbXS9I8aJl7w==
+  =K3yF
+  -----END ARTICLE SIGNATURE-----

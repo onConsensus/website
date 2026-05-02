@@ -5,6 +5,16 @@ layout: default
 
 <article class="article" itemscope itemtype="https://schema.org/Article">
 
+  {%- comment -%}
+    Reading-progress bar. Modern browsers drive `.reading-progress__bar`
+    width via CSS `animation-timeline: scroll(root)` (see _sass/_article.scss);
+    `js/reading.js` provides a requestAnimationFrame fallback for the rest.
+    `prefers-reduced-motion` hides the chrome entirely.
+  {%- endcomment -%}
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress__bar"></div>
+  </div>
+
   <div class="reading">
 
     <div class="reading__body">
@@ -23,7 +33,7 @@ layout: default
           <p class="article__deck" itemprop="alternativeHeadline">{{ page.subtitle }}</p>
         {%- endif -%}
 
-        {% include byline.html post=page %}
+        {% include byline.html post=page show_words=true %}
       </header>
 
       {%- if page.featured_image -%}
@@ -46,28 +56,42 @@ layout: default
       </div>
 
       {%- comment -%}
-        PGP signature block — markup hook for `pgp_signed: true` posts.
-        Signatures live at /signatures/<slug>.sig (outside `_posts/` so
-        Jekyll never ingests them). We surface the sig as a downloadable
-        link + verification recipe; the Editorial Trust Signals task can
-        replace the link with an inlined `<pre>` once a build-time include
-        helper is in place (Jekyll Liquid does not allow variables inside
-        `include_relative`).
+        PGP signature block — when `pgp_signed: true`, render the signature
+        inline as a styled <pre> from `_data/signatures.yml`. We also surface
+        a download link to the matching detached `.sig` static file at
+        `/signatures/<slug>.sig` so verifiers can run `gpg --verify` against
+        the byte-identical artefact on disk.
+
+        Editorial decision: sigs live OUTSIDE `_posts/` (Jekyll would
+        otherwise treat any non-Markdown file there as a static asset
+        without a usable URL). The `_data/signatures.yml` map is the build-
+        time–accessible mirror; Liquid forbids variable arguments to
+        `include_relative` and Jekyll static_files don't expose `content`,
+        so this duplication is unavoidable under the github-pages gem.
       {%- endcomment -%}
       {%- if page.pgp_signed -%}
+        {%- assign sig_inline = site.data.signatures[page.slug] -%}
         {%- assign sig_path = "/signatures/" | append: page.slug | append: ".sig" -%}
-        {%- assign sig = site.static_files | where: "path", sig_path | first -%}
-        {%- if sig -%}
-          <aside class="pgp-signature pgp-signature--link" aria-labelledby="pgp-sig-heading">
-            <h2 class="pgp-signature__heading" id="pgp-sig-heading">PGP signed</h2>
-            <p>
-              This article is signed by its author.
-              <a href="{{ sig_path | relative_url }}" download rel="external">
-                Download the detached signature ({{ page.slug }}.sig)
-              </a>
-              and verify with <code>gpg --verify {{ page.slug }}.sig</code>.
-            </p>
-          </aside>
+        {%- assign sig_static = site.static_files | where: "path", sig_path | first -%}
+
+        {%- if sig_inline or sig_static -%}
+          <section class="pgp-signature-block" aria-labelledby="pgp-sig-heading">
+            <h2 class="pgp-signature-block__heading" id="pgp-sig-heading">PGP signed</h2>
+
+            {%- if sig_inline -%}
+              <pre class="pgp-signature" aria-describedby="pgp-sig-heading">{{ sig_inline | strip }}</pre>
+            {%- endif -%}
+
+            {%- if sig_static -%}
+              <p class="pgp-signature-block__verify">
+                Verify the detached signature with
+                <code>gpg --verify {{ page.slug }}.sig</code>.
+                <a href="{{ sig_path | relative_url }}" download rel="external">
+                  Download {{ page.slug }}.sig
+                </a>.
+              </p>
+            {%- endif -%}
+          </section>
         {%- endif -%}
       {%- endif -%}
 
@@ -103,8 +127,11 @@ layout: default
     </div>
 
     {%- comment -%}
-      Footnote rail scaffold — Reading Experience task hydrates this with
-      the kramdown-emitted `.footnotes` items.
+      Footnote rail — `js/reading.js` clones the kramdown-emitted `<li>`
+      items into this aside on desktop and observes their references for
+      scroll-position highlight. Below `--bp-marginalia` the rail is hidden
+      by CSS and the inline kramdown block (wrapped by JS in <details>)
+      drives a mobile accordion instead.
     {%- endcomment -%}
     {% include footnotes.html %}
 
@@ -113,5 +140,11 @@ layout: default
   <div class="container container--measure-wide">
     {% include related.html limit=3 %}
   </div>
+
+  {%- comment -%}
+    Inline glossary JSON island — read by `js/reading.js` to hydrate
+    `<dfn data-term="…">` popovers. Empty data file is tolerated.
+  {%- endcomment -%}
+  {% include glossary-data.html %}
 
 </article>

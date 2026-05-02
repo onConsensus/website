@@ -17,6 +17,14 @@ dfn {
   cursor: help;
   color: var(--ink);
 
+  // Keyboard-focusable dfns (js/reading.js sets `tabindex="0"` on terms it
+  // hydrates with a definition) deserve a real focus ring on the rail.
+  &[data-definition]:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   // Mono `?` after the term to telegraph "definition available".
   &[data-definition]::after {
     content: "?";

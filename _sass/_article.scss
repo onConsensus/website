@@ -174,8 +174,14 @@
 }
 
 // -----------------------------------------------------------------------------
-// Pull quote — desktop pulls into right marginalia, mobile inline.
-// Markup: <aside class="pullquote">…</aside>
+// Pull quote — inline below `--bp-marginalia`, floats into the right-hand
+// marginalia gutter on desktop. Markup: <aside class="pullquote">…</aside>
+//
+// The desktop float uses a negative `margin-right` to escape the body box
+// (which is locked to `var(--measure)` by `.reading__body`) into the
+// marginalia column allocated by the `.reading` grid. The float still
+// participates in the article flow, so authors can place a `<aside>` right
+// before the paragraph it should sit beside.
 // -----------------------------------------------------------------------------
 
 .pullquote {
@@ -201,6 +207,22 @@
     color: var(--muted);
 
     &::before { content: "— "; }
+  }
+}
+
+// Desktop marginalia: float right and pull through the column gap into the
+// adjacent rail's column space. Smaller type, looser line height — these
+// quotes are decorative pull-outs, not full-bleed callouts.
+@media (min-width: 72em) {
+  .article__body .pullquote {
+    float: right;
+    clear: right;
+    width: var(--marginalia-w);
+    margin: var(--space-2xs) 0 var(--space-m) var(--space-m);
+    margin-right: calc(-1 * (var(--marginalia-w) + var(--marginalia-gap)));
+    padding: var(--space-2xs) 0;
+    font-size: var(--step-1);
+    line-height: 1.2;
   }
 }
 
@@ -254,6 +276,88 @@ a.footnote {
   }
 }
 
+// Desktop: hide the inline kramdown block — its `<li>` items have been
+// cloned into `.reading__rail--footnotes` by `js/reading.js`. We keep them
+// in the source order on mobile (the rail is hidden there) and as a
+// no-script fallback at every viewport.
+@media (min-width: 72em) {
+  .article__body > .footnotes { display: none; }
+}
+
+// Mobile accordion: `js/reading.js` wraps the kramdown `<ol>` in a
+// <details class="footnotes-accordion"> with a "Footnotes (N)" summary.
+.footnotes-accordion {
+  > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: var(--space-2xs) 0;
+    border-bottom: var(--rule-hairline);
+
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--accent);
+
+    &::-webkit-details-marker { display: none; }
+
+    &::before {
+      content: "▸  ";
+      display: inline-block;
+      color: var(--muted);
+    }
+  }
+
+  &[open] > summary::before { content: "▾  "; }
+
+  > ol { margin-top: var(--space-s); }
+}
+
+// -----------------------------------------------------------------------------
+// Footnote rail — populated by `js/reading.js` from the kramdown-emitted
+// `<div class="footnotes">` block. Visible only on desktop (the inline block
+// drives the mobile accordion below `--bp-marginalia`).
+// -----------------------------------------------------------------------------
+
+.reading__rail--footnotes {
+  // Initially hidden (the include emits `hidden` on the <aside>); JS removes
+  // the attribute once it has cloned at least one item into the target.
+  &[hidden] { display: none !important; }
+
+  // Mobile: never show the rail (the inline accordion handles small viewports).
+  @media (max-width: 71.999em) { display: none; }
+
+  ol {
+    list-style: decimal outside;
+    padding-left: 1.5em;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  li {
+    margin-top: var(--space-s);
+    padding: 0.25em 0.5em;
+    margin-left: -0.5em;
+    border-left: 2px solid transparent;
+    transition: background var(--motion-fast) linear,
+                border-color var(--motion-fast) linear;
+
+    &:first-child { margin-top: 0; }
+
+    &.is-active {
+      background: var(--highlight);
+      border-left-color: var(--accent);
+      color: var(--ink);
+    }
+
+    p { margin: 0; }
+    p + p { margin-top: var(--space-2xs); }
+  }
+}
+
 // -----------------------------------------------------------------------------
 // Article foot — share buttons, license stamp, edit link, errata.
 // -----------------------------------------------------------------------------
@@ -288,12 +392,44 @@ a.footnote {
 }
 
 // -----------------------------------------------------------------------------
-// PGP signature block — ASCII-art frame at end of `pgp_signed: true` posts.
-// Markup: <pre class="pgp-signature">…</pre>
+// PGP signature — ASCII-art `<pre>` rendered at end of `pgp_signed: true`
+// posts. The wrapping `<section class="pgp-signature-block">` carries the
+// heading + verification recipe; the `<pre class="pgp-signature">` is the
+// signature itself.
 // -----------------------------------------------------------------------------
 
-.pgp-signature {
+.pgp-signature-block {
   margin: var(--space-2xl) 0 0;
+}
+
+.pgp-signature-block__heading {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-2xs);
+}
+
+.pgp-signature-block__verify {
+  margin-top: var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  color: var(--muted);
+
+  code {
+    background: var(--paper-2);
+    border: var(--rule-hairline);
+    border-radius: 2px;
+    padding: 0.05em 0.35em;
+    color: var(--ink);
+  }
+}
+
+.pgp-signature {
+  margin: 0;
   padding: var(--space-s) var(--space-m);
   background: var(--paper-2);
   border: var(--rule-hairline);
@@ -305,6 +441,7 @@ a.footnote {
   color: var(--ink-2);
   white-space: pre-wrap;
   overflow-wrap: break-word;
+  overflow-x: auto;
 }
 
 // -----------------------------------------------------------------------------
@@ -339,8 +476,15 @@ a.footnote {
 }
 
 // -----------------------------------------------------------------------------
-// Reading-progress bar — sits at very top of viewport on post pages.
-// Animated by Reading-Experience task; CSS just styles the chrome.
+// Reading-progress bar — sits at the very top of the viewport on post pages.
+//
+// Modern browsers drive `&__bar` width via CSS `animation-timeline:
+// scroll(root)` — completely scroll-driven, no JS, no rAF. Browsers without
+// the scroll-timeline keyword get a JS fallback in `js/reading.js` that
+// writes `style.width` from a throttled scroll listener.
+//
+// `prefers-reduced-motion` hides the bar entirely; the JS fallback also
+// bows out under that media query.
 // -----------------------------------------------------------------------------
 
 .reading-progress {
@@ -358,5 +502,31 @@ a.footnote {
     width: 0%;
     background: var(--accent);
     transition: width var(--motion-fast) linear;
+    transform-origin: 0 50%;
   }
+}
+
+// Modern path — entirely scroll-driven via the L2 scroll-timeline keyword.
+// `@supports` keeps non-supporting browsers on the JS fallback in
+// `js/reading.js` (which sniffs the same feature via `CSS.supports`).
+@supports (animation-timeline: scroll()) {
+  .reading-progress__bar {
+    width: 100%;
+    transform: scaleX(0);
+    transition: none;
+    animation: reading-progress-fill linear both;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes reading-progress-fill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+
+// Reduced motion — hide the chrome entirely. The bar is decorative; readers
+// asking for less motion should not see a moving bar at the top of every
+// article.
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress { display: none; }
 }

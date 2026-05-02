@@ -15,9 +15,9 @@ license: CC-BY-SA-4.0
 
 Most decentralized protocols arrive with a constitution. Often it is gestured
 at — a forum post, a snapshot vote, a yellow paper — and rarely is it
-reckoned with as a constitution in the political sense. Buried inside almost
-every one of these documents, however, is a clause whose plain reading is
-this: *in case of emergency, the rules do not apply.*
+reckoned with as a constitution in the political sense.[^1] Buried inside
+almost every one of these documents, however, is a clause whose plain reading
+is this: *in case of emergency, the rules do not apply.*
 
 ## What the multisig actually does
 
@@ -67,7 +67,7 @@ makes it harder to govern.
 
 The next entries in this dispatch will look at three case studies — Lido,
 Optimism, and a now-defunct lending protocol whose name we will redact for
-legal reasons — to see what the multisig was *actually* asked to do, and
+legal reasons[^2] — to see what the multisig was *actually* asked to do, and
 what it did instead.
 
 [^1]: We borrow the framing from Carl Schmitt — uncomfortably, knowingly —

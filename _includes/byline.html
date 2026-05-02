@@ -9,18 +9,22 @@
 {%- assign post = include.post | default: page -%}
 {%- assign show_date = include.show_date -%}
 {%- if show_date == nil -%}{%- assign show_date = true -%}{%- endif -%}
+{%- assign show_words = include.show_words -%}
+{%- if show_words == nil -%}{%- assign show_words = false -%}{%- endif -%}
 
 {%- assign author = site.authors | where: "slug", post.author | first -%}
 
 {%- comment -%}
-  Reading time. Per the editorial schema:
+  Reading time + word count. Per the editorial schema:
     minutes = words / 220, with `reading_time_override` (integer minutes)
-    available as an explicit override.
+    available as an explicit override. Word count is always computed (cheap)
+    so callers asking for `show_words=true` get the same ground truth that
+    drives the reading-time math.
 {%- endcomment -%}
+{%- assign words = post.content | strip_html | number_of_words -%}
 {%- if post.reading_time_override -%}
   {%- assign rt = post.reading_time_override -%}
 {%- else -%}
-  {%- assign words = post.content | strip_html | number_of_words -%}
   {%- assign rt = words | divided_by: 220 -%}
   {%- if rt < 1 -%}{%- assign rt = 1 -%}{%- endif -%}
 {%- endif -%}
@@ -54,4 +58,10 @@
   <span class="byline__group" title="Reading time at 220 words/min">
     {{ rt }} min read
   </span>
+
+  {%- if show_words -%}
+    <span class="byline__group byline__words" title="Word count">
+      {{ words }} words
+    </span>
+  {%- endif -%}
 </p>

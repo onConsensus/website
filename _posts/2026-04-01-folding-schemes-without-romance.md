@@ -14,10 +14,11 @@ pgp_signed: true
 license: CC-BY-SA-4.0
 ---
 
-Folding schemes are the most discussed and least understood family of
-cryptographic constructions of the last three years. The discussion is loud
-because the asymptotic story is genuinely beautiful. The understanding is
-thin because the engineering story is, as always, where the cost lives.
+A <dfn data-term="folding-scheme">folding scheme</dfn> is the most discussed
+and least understood family of cryptographic constructions of the last three
+years. The discussion is loud because the asymptotic story is genuinely
+beautiful. The understanding is thin because the engineering story is, as
+always, where the cost lives.
 
 ## The asymptotic story, briefly
 
@@ -37,14 +38,16 @@ The engineering bill comes in three line items.
 
 - **Curve choice.** Nova-family schemes want a *cycle* of curves so that
   scalar arithmetic on one curve can be checked by a circuit over the
-  other. The cycles available to us are not free. The pasta cycle is
-  excellent for proof generation and bad for many existing verifier
-  ecosystems. The bn254/grumpkin cycle is the inverse trade-off.
+  other. The cycles available to us are not free. The
+  <dfn data-term="pasta-cycle">pasta cycle</dfn> is excellent for proof
+  generation and bad for many existing verifier ecosystems. The
+  <dfn data-term="bn254">bn254</dfn>/grumpkin cycle is the inverse
+  trade-off.
 - **Witness generation.** The folded instance grows in dimensionality, not
   size. Witness generation for the next fold therefore involves matrix
   operations whose cost is asymptotically negligible and whose constant
   factors are not. We have measured constant factors of three to four
-  times the optimistic estimates in three out of four open implementations.
+  times the optimistic estimates in three out of four open implementations.[^1]
 - **Final SNARK.** The asymptotic story says you only need one final SNARK.
   This is true. The size of the final SNARK is, however, a function of the
   arithmetization used during folding, and that arithmetization is
@@ -57,6 +60,11 @@ The engineering bill comes in three line items.
 > not published.
 
 ## Where folding wins
+
+<aside class="pullquote">
+The savings are real. They are smaller than the talks suggest.
+<cite>The engineering bill</cite>
+</aside>
 
 Folding wins clearly and unambiguously when:
 

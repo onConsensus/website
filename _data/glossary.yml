@@ -1,0 +1,106 @@
+# =============================================================================
+# _data/glossary.yml — definition source for `<dfn data-term="...">` popovers.
+#
+# Keys are URL-safe slugs; the JS in `/js/reading.js` reads the inlined JSON
+# block emitted by `_includes/glossary-data.html` and attaches the matching
+# definition as `data-definition` on every <dfn data-term="…"> on the page.
+# The popover itself is CSS-only (`_sass/_glossary.scss`).
+#
+# Definitions are intentionally short — one or two sentences, body-prose
+# voice, no marketing. Keep the editorial register in mind: working
+# practitioners and informed lay readers, neither pandered to nor talked
+# down to.
+# =============================================================================
+
+merkle-tree:
+  display: "Merkle tree"
+  definition: >-
+    A binary tree of hashes in which every internal node is the hash of its
+    children. Used to commit to large datasets and prove membership of any
+    leaf with a logarithmic-size path.
+
+folding-scheme:
+  display: "Folding scheme"
+  definition: >-
+    A cryptographic primitive that combines two satisfiability instances of
+    a relation into a single instance whose validity implies both, at
+    sub-linear cost. Underpins Nova-family incrementally verifiable
+    computation.
+
+fork-choice:
+  display: "Fork choice"
+  definition: >-
+    The rule a node uses to decide which of several competing chain heads
+    is canonical. Variants include longest-chain, GHOST, and LMD-GHOST;
+    each makes different assumptions about the network and the validator
+    set.
+
+multisig:
+  display: "Multisig"
+  definition: >-
+    A wallet or contract that requires signatures from M of N designated
+    keys before authorising a transaction. Often the un-amendable layer of
+    a protocol's de facto constitution.
+
+sequencer:
+  display: "Sequencer"
+  definition: >-
+    The actor in a Layer-2 rollup that orders user transactions before they
+    are committed to the underlying L1. Frequently centralised in early
+    deployments and a recurring locus of governance debate.
+
+zk-snark:
+  display: "zk-SNARK"
+  definition: >-
+    A zero-knowledge succinct non-interactive argument of knowledge — a
+    proof system whose proofs are small and fast to verify, and which
+    reveal nothing about the witness beyond its existence.
+
+prover:
+  display: "Prover"
+  definition: >-
+    The party in a SNARK protocol that generates a proof. In modern
+    rollups, often a specialised entity operating GPU or FPGA hardware at
+    capital scale.
+
+attestation:
+  display: "Attestation"
+  definition: >-
+    A signed message from a validator endorsing a particular view of the
+    chain head. The fundamental unit of voting in modern proof-of-stake
+    consensus.
+
+finality:
+  display: "Finality"
+  definition: >-
+    The property of a block being economically or cryptographically
+    irreversible. Distinct from confirmation depth: a block can be deeply
+    confirmed without being final.
+
+reorg:
+  display: "Reorg"
+  definition: >-
+    A reorganisation of the canonical chain when a longer or
+    higher-weighted fork supplants the previously-accepted head. Shallow
+    reorgs are routine on most chains; deep reorgs are incidents.
+
+pasta-cycle:
+  display: "Pasta cycle"
+  definition: >-
+    A cycle of elliptic curves (Pallas and Vesta) engineered for efficient
+    recursive proving. Excellent for proof generation; poorly supported by
+    EVM-era verifier ecosystems.
+
+bn254:
+  display: "BN254"
+  definition: >-
+    A pairing-friendly elliptic curve widely used by Ethereum-aligned
+    SNARK systems. Older and less efficient for recursive proving than the
+    Pasta or BLS-12-381 curves, but ubiquitously implemented.
+
+incremental-verifiable-computation:
+  display: "Incrementally Verifiable Computation"
+  definition: >-
+    A computation whose progress is endorsed step-by-step by a succinct
+    proof, so a verifier can check the final state in time independent of
+    the number of steps.

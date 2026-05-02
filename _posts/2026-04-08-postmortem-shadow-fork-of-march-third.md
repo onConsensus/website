@@ -22,8 +22,8 @@ mundane.
 ## The timeline
 
 What follows is reconstructed from operator logs voluntarily shared by three
-of the four implicated node operators, and from a draft client-team incident
-report we were shown on background.
+of the four implicated node operators,[^1] and from a draft client-team
+incident report we were shown on background.
 
 - **20:58** — A consensus client release candidate is shipped to a small
   pre-production cohort. The release contains an off-by-one in the

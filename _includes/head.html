@@ -65,4 +65,13 @@
   {%- endif -%}
   <script defer src="{{ '/js/search.js' | relative_url }}"
           data-search-index="{{ '/search.json' | relative_url }}"></script>
+
+  {%- comment -%}
+    Reading-Experience JS: footnote rail, glossary popovers, reading-progress
+    JS fallback. Post-pages-only — drop caps, pull-quotes, and the
+    scroll-timeline progress bar are CSS-only and ride for free elsewhere.
+  {%- endcomment -%}
+  {%- if page.layout == 'post' -%}
+    <script defer src="{{ '/js/reading.js' | relative_url }}"></script>
+  {%- endif -%}
 </head>

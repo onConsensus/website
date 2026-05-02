@@ -1,0 +1,18 @@
+{%- comment -%}
+  glossary-data.html — emits the glossary as an inlined JSON island the
+  Reading-Experience JS reads at runtime to hydrate `<dfn data-term="…">`
+  popovers.
+
+  The JSON is the *only* network egress this feature has — there is none.
+  Definitions are baked at Jekyll build time and ship with the page. The
+  popover chrome is CSS-only (`_sass/_glossary.scss`); JS just maps slug →
+  definition.
+
+  Output shape:
+    { "<slug>": { "display": "Term", "definition": "…" }, … }
+
+  Empty data file is tolerated: the script tag is skipped.
+{%- endcomment -%}
+{%- if site.data.glossary -%}
+<script id="glossary-data" type="application/json">{{ site.data.glossary | jsonify }}</script>
+{%- endif -%}

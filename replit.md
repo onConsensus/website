@@ -42,9 +42,15 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - `_includes/`, `_layouts/` — *Plaintext Cypherpunk Broadsheet* layouts and
   reusable includes (Task #3). Layouts: `default`, `home`, `page`, `post`,
   `author`, `section`, `series`. Includes: `head`, `masthead`, `footer`,
-  `article-card` (lead/standard/dispatch variants), `byline` (with reading
-  time), `series-banner`, `related`, `footnotes` (marginalia hook),
-  `analytics` (off by default).
+  `article-card` (lead/standard/dispatch variants), `byline` (reading time +
+  word count), `series-banner`, `related`, `footnotes` (marginalia hook),
+  `glossary-data` (JSON island for `<dfn>` popovers — Task #6), `analytics`
+  (off by default).
+- `_data/glossary.yml` — slug-keyed term definitions for `<dfn data-term>`
+  popovers (Task #6).
+- `_data/signatures.yml` — slug-keyed inline copies of per-post PGP signature
+  blocks. Mirror of `signatures/<slug>.sig` (Liquid can't `include_relative`
+  with variables; static_files don't expose `content`). Task #6.
 - `_sass/` — *Plaintext Cypherpunk Broadsheet* design system partials.
 - `assets/css/main.scss` — single SCSS entry point that wires the cascade.
 - `assets/fonts/` — self-hosted woff2 (Newsreader, Source Serif 4,
@@ -114,7 +120,7 @@ so dark/print modes inherit them and Liquid never has to know about colour.
 3. **Layouts & includes** — *complete.*
 4. **Home, sections, archives & feeds** — *complete.*
 5. **Client-side search** — *complete.*
-6. Reading experience polish.
+6. **Reading experience polish** — *complete.*
 7. Accessibility, SEO & editorial pages.
 8. Decap CMS, GitHub workflows & pre-launch QA.
 
@@ -140,3 +146,51 @@ so dark/print modes inherit them and Liquid never has to know about colour.
   `_includes/masthead.html`. Both forms `GET` to `/search/?q=…` so they
   degrade to a normal page navigation without JS. Styles in
   `_sass/_search.scss`.
+
+## Reading experience polish
+*Built in Task #6.* Long-form reading affordances on post pages, all wired
+to the Plaintext Cypherpunk Broadsheet design system and degraded gracefully
+under no-JS / `prefers-reduced-motion`.
+
+- **Drop caps & pull-quotes.** CSS-only. The first paragraph of `.article__body`
+  drops a Cormorant Garamond italic capital. `<aside class="pullquote">` is
+  inline below `--bp-marginalia` and floats into the right-hand marginalia
+  gutter on desktop via a negative `margin-right` that escapes the body's
+  measure-locked column.
+- **Footnote rail (kramdown).** Posts use the standard `[^1]` /
+  `[^1]: …` syntax. `js/reading.js` clones every kramdown-emitted `<li>`
+  from `.article__body .footnotes` into the right-hand rail
+  (`_includes/footnotes.html` → `[data-footnotes-target]`) on desktop, and
+  wraps the original block in a `<details class="footnotes-accordion">` for
+  the mobile accordion. An IntersectionObserver (rootMargin
+  `-20% 0 -55% 0`) tracks the topmost visible `sup[id^="fnref"]` and adds
+  `.is-active` to the matching rail item. CSS keeps the rail desktop-only
+  and hides the inline kramdown block on desktop.
+- **Glossary popovers.** `_data/glossary.yml` defines slug → `{display,
+  definition}`. `_includes/glossary-data.html` emits the whole map as an
+  inlined JSON island (`#glossary-data`) on every post page;
+  `js/reading.js` walks `dfn[data-term]` and copies the matching definition
+  onto `data-definition` (the popover itself is CSS-only in
+  `_sass/_glossary.scss`). Hydrated `<dfn>` are made keyboard-focusable
+  with a real focus ring.
+- **Reading-progress bar.** `<div class="reading-progress">` at the top of
+  every post. Modern browsers drive the bar entirely from CSS via
+  `animation-timeline: scroll(root)` (gated behind
+  `@supports (animation-timeline: scroll())`). Browsers without the
+  scroll-timeline keyword get a `requestAnimationFrame`-throttled JS
+  fallback. `prefers-reduced-motion` hides the bar entirely (CSS), and the
+  JS fallback bows out under that media query.
+- **Article header metadata.** `_includes/byline.html` always computes word
+  count from `post.content | strip_html | number_of_words`; the post layout
+  passes `show_words=true` so the article header surfaces *N* min read,
+  *N* words, and (when present) `block_height` at publish.
+- **Inline PGP signatures.** Posts with `pgp_signed: true` render a styled
+  `<pre class="pgp-signature">` from `site.data.signatures[page.slug]`
+  inline at the foot of the article, wrapped in a
+  `<section class="pgp-signature-block">` with a `gpg --verify …` recipe
+  and a download link to the matching detached `/signatures/<slug>.sig`
+  static file.
+- **JS loading.** `js/reading.js` is loaded with `defer` from
+  `_includes/head.html`, but only when `page.layout == 'post'` — drop caps,
+  pull-quotes, and the scroll-timeline progress bar are CSS-only and ride
+  for free elsewhere.

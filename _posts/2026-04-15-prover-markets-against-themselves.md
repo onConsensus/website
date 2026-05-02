@@ -33,9 +33,9 @@ the field.
 
 ## What the field actually shows
 
-The four largest rollup ecosystems with publicly inspectable prover sets, as
-of the first quarter of 2026, share a striking property: each has fewer than
-five active prover entities, and the top entity in each case generates
+The four largest rollup ecosystems with publicly inspectable prover sets,[^1]
+as of the first quarter of 2026, share a striking property: each has fewer
+than five active prover entities, and the top entity in each case generates
 between sixty and seventy-five percent of submitted proofs.
 
 This is not a transient state. It is what we will tentatively call the
