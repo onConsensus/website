@@ -1,0 +1,23 @@
+extends: existence
+message: "Banned phrase — '%s'. The publication does not ship this construction. See /standards/#voice for the editorial reasoning."
+level: error
+ignorecase: true
+# Each entry is a phrase the desk has explicitly committed to never
+# print. New entries require an editor's note in /standards/.
+tokens:
+  - blockchain technology
+  - the blockchain
+  - distributed ledger technology
+  - smart contract technology
+  - web3 technology
+  - crypto space
+  - crypto industry experts
+  - thought leader
+  - thought leadership
+  - in this article, we will
+  - this article will explore
+  - in conclusion
+  - to sum up
+  - it is worth noting that
+  - needless to say
+  - at the end of the day

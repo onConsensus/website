@@ -1,0 +1,214 @@
+name: pr-preview
+
+# Per-PR preview deployment + visual diff against `main`.
+#
+# Pipeline
+#   1. `build` — checkout the PR HEAD, run the full content pipeline
+#      (changelog, timestamps, methodology, embargoes, permaids,
+#      feeds), and `jekyll build`. Upload `_site/` as an artifact.
+#   2. `deploy` — push the built site to Cloudflare Pages, which
+#      issues a unique preview URL of the form
+#      `<commit>.<project>.pages.dev`. The URL is captured as a job
+#      output for the visual-diff step.
+#   3. `visual-diff` — Playwright takes screenshots of a curated set
+#      of pages on the preview build, compares them against baseline
+#      screenshots stored on the `gh-pages-screenshot-baselines`
+#      branch (refreshed by a separate `main`-branch workflow), and
+#      posts the diff to the PR.
+#
+# Required repository secrets
+#   CLOUDFLARE_API_TOKEN     — token with Pages:Edit scope.
+#   CLOUDFLARE_ACCOUNT_ID    — Cloudflare account UUID.
+#
+# If those secrets are not configured (e.g. a fork), the `deploy` and
+# `visual-diff` jobs skip cleanly and the workflow reports success on
+# the build alone — opens the door for adopters to enable when ready.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  deployments: write
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CLOUDFLARE_PAGES_PROJECT: onconsensus
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+      BUNDLE_PATH: vendor/bundle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Generate content data
+        run: |
+          ruby scripts/build_changelog.rb
+          ruby scripts/build_timestamps.rb
+          ruby scripts/build_methodology.rb
+          ruby scripts/build_embargoes.rb
+          ruby scripts/build_permaids.rb
+          ruby scripts/build_feeds.rb
+
+      - name: Jekyll build
+        run: bundle exec jekyll build --trace
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: _site
+          retention-days: 7
+
+  deploy:
+    name: Deploy preview to Cloudflare Pages
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    outputs:
+      preview_url: ${{ steps.cf.outputs.url }}
+      deployed: ${{ steps.cf.outputs.deployed }}
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: _site
+
+      - name: Publish to Cloudflare Pages
+        id: cf
+        # Skip cleanly when the secret isn't configured. This makes the
+        # workflow safe to merge even before Cloudflare provisioning is
+        # done; once the secrets are set, preview URLs start showing up.
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CF_TOKEN" ] || [ -z "$CF_ACCOUNT" ]; then
+            echo "[deploy] Cloudflare credentials not configured; skipping preview deploy."
+            echo "deployed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          npm install -g wrangler@3
+          out=$(CLOUDFLARE_API_TOKEN="$CF_TOKEN" CLOUDFLARE_ACCOUNT_ID="$CF_ACCOUNT" \
+            wrangler pages deploy _site \
+              --project-name "$CLOUDFLARE_PAGES_PROJECT" \
+              --branch "pr-${{ github.event.pull_request.number }}" \
+              --commit-hash "${{ github.event.pull_request.head.sha }}")
+          url=$(echo "$out" | grep -oE 'https://[a-z0-9.-]+\.pages\.dev' | head -1)
+          echo "[deploy] preview URL: $url"
+          echo "url=$url"      >> "$GITHUB_OUTPUT"
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL on PR
+        if: steps.cf.outputs.deployed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = "${{ steps.cf.outputs.url }}";
+            const body = [
+              "**Preview deploy**: " + url,
+              "",
+              "Visual-diff screenshots will be posted in a follow-up comment once the comparator finishes.",
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+  visual-diff:
+    name: Visual diff against main
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: needs.deploy.outputs.deployed == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save \
+            @playwright/test@^1.47 \
+            pixelmatch@^5.3 \
+            pngjs@^7.0
+          npx playwright install --with-deps chromium
+
+      - name: Fetch baseline screenshots
+        id: baselines
+        # Baselines live on a long-lived `screenshot-baselines` branch
+        # refreshed by a `main`-branch workflow. Treat absence as a
+        # first-run case and produce baselines from the preview URL
+        # instead of failing.
+        run: |
+          mkdir -p baselines
+          if git fetch origin screenshot-baselines:screenshot-baselines 2>/dev/null; then
+            git --work-tree=baselines checkout screenshot-baselines -- screenshots 2>/dev/null || true
+            mv baselines/screenshots/* baselines/ 2>/dev/null || true
+            rmdir baselines/screenshots 2>/dev/null || true
+            echo "baselines_exist=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "[visual-diff] no baselines branch; this run will publish a new baseline"
+            echo "baselines_exist=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run screenshot comparator
+        env:
+          PREVIEW_URL: ${{ needs.deploy.outputs.preview_url }}
+          BASELINES_EXIST: ${{ steps.baselines.outputs.baselines_exist }}
+        run: node scripts/visual_diff.js
+
+      - name: Upload diff artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diff
+          path: |
+            screenshots/
+            diffs/
+            visual-diff-report.md
+          retention-days: 14
+
+      - name: Post diff summary on PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('visual-diff-report.md')) {
+              core.info('no visual-diff-report.md to post');
+              return;
+            }
+            const body = fs.readFileSync('visual-diff-report.md', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });

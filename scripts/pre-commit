@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# pre-commit — run frontmatter validation on staged markdown changes.
+#
+# Install:
+#   ln -s ../../scripts/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# (Or run `scripts/install-hooks.sh` once.)
+#
+# The hook only fires when staged changes touch `_posts/`, `_authors/`,
+# `_series/`, `_lists/`, or `_data/sections.yml`. It runs the full
+# validator against the working tree (not just staged files), because
+# cross-references — e.g. a list entry pointing at a post — only make
+# sense when evaluated together.
+
+set -e
+
+if git diff --cached --name-only --diff-filter=ACMR | \
+     grep -E '^(_posts|_authors|_series|_lists)/|^_data/sections\.yml$' \
+     >/dev/null; then
+  echo "[pre-commit] running scripts/validate_frontmatter.rb"
+  ruby "$(git rev-parse --show-toplevel)/scripts/validate_frontmatter.rb" || {
+    echo
+    echo "[pre-commit] frontmatter validation failed; commit aborted."
+    echo "[pre-commit] fix the issues above, or run 'git commit --no-verify'"
+    echo "[pre-commit] (the no-verify escape hatch is for genuine emergencies — CI will still reject)."
+    exit 1
+  }
+fi

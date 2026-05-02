@@ -1,0 +1,34 @@
+extends: existence
+message: "Avoid hype phrasing — '%s'. The publication's standing editorial commitment is to plain description over marketing rhetoric. See /standards/."
+level: error
+ignorecase: true
+# Word-boundary anchored so 'unprecedented' matches but 'precedential'
+# (hypothetical) doesn't. Each entry is an independent commitment in
+# `/standards/#voice`; before adding one, confirm there's a real
+# editorial reason no acceptable usage exists.
+tokens:
+  - revolutionary
+  - revolutionize
+  - game-changing
+  - game-changer
+  - unprecedented
+  - disruptive
+  - disrupt
+  - disruption
+  - cutting-edge
+  - bleeding-edge
+  - paradigm shift
+  - paradigm-shifting
+  - next-generation
+  - next-gen
+  - world-class
+  - best-in-class
+  - mission-critical
+  - synergy
+  - synergistic
+  - leverage
+  - leveraging
+  - hyper-scale
+  - hyperscale
+  - turnkey
+  - to the moon

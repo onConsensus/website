@@ -1,0 +1,80 @@
+name: editorial
+
+# Editorial DX guardrails: prose linting (Vale) + frontmatter
+# validation. Runs on every pull request and on pushes to `main`.
+#
+# Vale enforces house voice (hype words, banned phrases, capitalization
+# of the publication's core technical vocabulary, weasel words, acronym
+# discipline). The rule pack is at .github/vale/styles/OnConsensus/.
+#
+# The frontmatter validator asserts the contract in _data/schemas.yml
+# for posts, authors, series, and reading lists.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "_posts/**"
+      - "_pages/**"
+      - "_authors/**"
+      - "_series/**"
+      - "_lists/**"
+      - "_data/**"
+      - ".github/vale/**"
+      - ".vale.ini"
+      - "scripts/validate_frontmatter.rb"
+      - ".github/workflows/editorial.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: editorial-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  vale:
+    name: Vale prose linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Vale
+        # `errata-ai/vale-action` posts results as a PR review when the
+        # workflow runs in a pull-request context, and as a workflow
+        # annotation otherwise. `fail_on_error: true` blocks merge on
+        # any rule with `level: error` (hype words, banned phrases,
+        # capitalization). `level: warning` rules surface as comments
+        # but do not fail the run.
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          version: 3.7.1
+          fail_on_error: true
+          filter_mode: nofilter
+          reporter: github-pr-review
+          files: '_posts/ _pages/ _authors/ _series/ _lists/'
+          vale_flags: "--config=.vale.ini --minAlertLevel=suggestion"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  frontmatter:
+    name: Frontmatter validator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        # The validator is dependency-free, so we don't need
+        # `bundler-cache` here — system Ruby with stdlib is sufficient.
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+
+      - name: Validate frontmatter against _data/schemas.yml
+        run: ruby scripts/validate_frontmatter.rb

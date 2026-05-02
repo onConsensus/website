@@ -1,0 +1,32 @@
+extends: existence
+message: "Weasel word — '%s'. State the claim plainly or remove the hedge. See /standards/#voice."
+level: warning
+ignorecase: true
+# Weasel words signal an unwillingness to make the claim concrete.
+# These are warnings, not errors, because there are legitimate uses
+# (an author quoting another's vague claim, or genuine epistemic
+# uncertainty); the editor's job is to read each instance.
+tokens:
+  - very
+  - really
+  - quite
+  - somewhat
+  - rather
+  - basically
+  - essentially
+  - virtually
+  - largely
+  - mostly
+  - generally
+  - clearly
+  - obviously
+  - simply
+  - just
+  - of course
+  - it goes without saying
+  - many believe
+  - some say
+  - most experts
+  - the community thinks
+  - widely considered
+  - generally regarded

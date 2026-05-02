@@ -1,0 +1,97 @@
+name: screenshot-baselines
+
+# Refresh the visual-diff baselines on every push to `main`.
+#
+# How it works
+#   1. Build the site from the latest `main`.
+#   2. Serve `_site/` on a localhost port.
+#   3. Run the same `visual_diff.js` comparator with PREVIEW_URL
+#      pointing at localhost and BASELINES_EXIST=false, which causes
+#      it to capture screenshots without diffing.
+#   4. Push the resulting `screenshots/` directory to a long-lived
+#      `screenshot-baselines` branch (orphan, content-only).
+#
+# The PR preview workflow (`preview.yml`) checks out that branch's
+# `screenshots/` into its own `baselines/` directory before running
+# the comparator against the PR's preview deploy.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: screenshot-baselines
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+      BUNDLE_PATH: vendor/bundle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate content data
+        run: |
+          ruby scripts/build_changelog.rb
+          ruby scripts/build_timestamps.rb
+          ruby scripts/build_methodology.rb
+          ruby scripts/build_embargoes.rb
+          ruby scripts/build_permaids.rb
+          ruby scripts/build_feeds.rb
+
+      - name: Jekyll build
+        run: bundle exec jekyll build --trace
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null
+          npm install --no-save \
+            @playwright/test@^1.47 \
+            pixelmatch@^5.3 \
+            pngjs@^7.0
+          npx playwright install --with-deps chromium
+
+      - name: Serve _site on localhost
+        run: |
+          (cd _site && python3 -m http.server 4000 >/tmp/server.log 2>&1 &)
+          sleep 2
+          curl -fsSL http://127.0.0.1:4000/ >/dev/null
+
+      - name: Capture baselines
+        env:
+          PREVIEW_URL: "http://127.0.0.1:4000"
+          BASELINES_EXIST: "false"
+        run: node scripts/visual_diff.js || true  # no diffing on baselines run
+
+      - name: Commit baselines to `screenshot-baselines` branch
+        run: |
+          mkdir -p out/screenshots
+          cp screenshots/*.png out/screenshots/ 2>/dev/null || true
+          cd out
+          git init -b screenshot-baselines >/dev/null
+          git config user.email "actions@github.com"
+          git config user.name  "github-actions"
+          git add screenshots
+          git commit -m "Refresh baselines from ${{ github.sha }}" >/dev/null
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin screenshot-baselines

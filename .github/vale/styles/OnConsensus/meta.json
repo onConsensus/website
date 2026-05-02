@@ -1,0 +1,9 @@
+{
+  "feed":     "https://onconsensus.com/feed.xml",
+  "vale_version": ">=2.30.0",
+  "name":     "OnConsensus",
+  "lang":     "en",
+  "license":  "CC-BY-SA-4.0",
+  "homepage": "https://onconsensus.com/standards/",
+  "description": "On Consensus house-voice rule pack. Hand-authored. Each rule corresponds to a published editorial commitment in /standards/."
+}

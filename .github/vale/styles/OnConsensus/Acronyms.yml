@@ -1,0 +1,45 @@
+extends: conditional
+message: "Acronym '%s' is used without an expansion on first appearance in this file. Expand it on first use, e.g. 'Bonneau-Naehrig 254-bit (BN254) curve'. See /standards/#voice."
+level: warning
+scope: text
+ignorecase: false
+
+# A `conditional` rule fires when `first` matches but `second` does
+# not occur in the same scope (here: the whole document body). We use
+# this to enforce expansion of in-house technical acronyms on first
+# appearance. The expectation is that the expansion be either:
+#
+#   · provided in parentheses immediately after the acronym, OR
+#   · provided in parentheses immediately before, e.g.
+#     "Bonneau-Naehrig (BN254)".
+#
+# So `second` is the regex that should match somewhere in the doc if
+# the acronym is properly introduced. We allow either order.
+#
+# The acronym list intentionally excludes ones we treat as fully
+# absorbed into the publication's domain vocabulary (BTC, ETH, EVM,
+# RPC, JSON, HTTP, URL, RSS, ATOM, CSS, HTML, JS).
+first:  '\b(MEV|EIP|ERC|VRF|VDF|IVC|PCS|KZG|FRI|PLONK|FFLONK|R1CS|AIR|DA|EOA|MPC|RANDAO|BFT|HotStuff|Tendermint|FTSO|TEE|SGX|HSM|TLS|DKG)\b'
+# Match either "(EXPANSION)\s+\(MEV\)" or "MEV\s*\(EXPANSION\)".
+# Vale's `conditional` checks scope-wide presence of `second`,
+# regardless of position relative to `first`.
+second: '\b(MEV|EIP|ERC|VRF|VDF|IVC|PCS|KZG|FRI|PLONK|FFLONK|R1CS|AIR|DA|EOA|MPC|RANDAO|BFT|HotStuff|Tendermint|FTSO|TEE|SGX|HSM|TLS|DKG)\b\s*\([^)]+\)|\([^)]+\)\s*\b(MEV|EIP|ERC|VRF|VDF|IVC|PCS|KZG|FRI|PLONK|FFLONK|R1CS|AIR|DA|EOA|MPC|RANDAO|BFT|HotStuff|Tendermint|FTSO|TEE|SGX|HSM|TLS|DKG)\b'
+exceptions:
+  - 'JSON-RPC'
+  - 'HTTP'
+  - 'HTTPS'
+  - 'URL'
+  - 'URI'
+  - 'RSS'
+  - 'CSS'
+  - 'HTML'
+  - 'API'
+  - 'CLI'
+  - 'SDK'
+  - 'BTC'
+  - 'ETH'
+  - 'EVM'
+  - 'PGP'
+  - 'GPG'
+  - 'PR'
+  - 'CI'

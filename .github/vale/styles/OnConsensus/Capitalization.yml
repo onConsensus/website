@@ -1,0 +1,50 @@
+extends: substitution
+message: "Use the house capitalization: '%s' → '%s'."
+level: error
+ignorecase: false
+# Substitution rules. Keys are forbidden spellings; values are the
+# canonical form. Order matters in `existence`-style checks but not
+# here — Vale does longest-match first.
+#
+# House conventions:
+#   · Bitcoin (the network and protocol) is capitalized. The unit
+#     (bitcoin / BTC) is lowercase. We can't mechanically distinguish
+#     these from prose, so this rule only catches obviously wrong
+#     spellings of the protocol name itself ('BitCoin', 'BITCOIN').
+#   · Ethereum is always title-case. Same logic for Solana, Polygon,
+#     Arbitrum, Optimism, Cosmos, Polkadot.
+#   · ZK-SNARK and ZK-STARK take the hyphenated all-caps form.
+#     ('zk-snark', 'ZkSnark', 'zksnark' all become 'ZK-SNARK'.)
+#   · 'mainnet' and 'testnet' are one word, lowercase.
+#   · 'EVM' is always all-caps.
+swap:
+  '\bBitCoin\b':       Bitcoin
+  '\bBITCOIN\b':       Bitcoin
+  '\bbitCoin\b':       Bitcoin
+  '\bethereum\b':      Ethereum
+  '\bETHEREUM\b':      Ethereum
+  '\bEtherium\b':      Ethereum
+  '\bsolana\b':        Solana
+  '\bSOLANA\b':        Solana
+  '\bpolygon network\b': Polygon
+  '\barbitrum\b':      Arbitrum
+  '\boptimism\b':      Optimism
+  '\bcosmos network\b': Cosmos
+  '\bpolkadot\b':      Polkadot
+  '\bzk-snark\b':      ZK-SNARK
+  '\bZkSnark\b':       ZK-SNARK
+  '\bzksnark\b':       ZK-SNARK
+  '\bzk-stark\b':      ZK-STARK
+  '\bZkStark\b':       ZK-STARK
+  '\bzkstark\b':       ZK-STARK
+  '\bSnark\b':         SNARK
+  '\bsnark\b':         SNARK
+  '\bStark\b':         STARK
+  '\bMainnet\b':       mainnet
+  '\bMAINNET\b':       mainnet
+  '\bMain Net\b':      mainnet
+  '\bmain-net\b':      mainnet
+  '\bTestnet\b':       testnet
+  '\bTEST-NET\b':      testnet
+  '\bevm\b':           EVM
+  '\bEvm\b':           EVM
