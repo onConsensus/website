@@ -5,10 +5,12 @@ on:
     branches: [main]
   push:
     branches: [main]
-  # Daily cron: lifts time-based embargoes whose deadline has passed by
-  # rebuilding the site without any source change. The post layout reads
-  # `site.time` against `page.embargo_until`, so a fresh build is the
-  # whole reveal mechanism.
+  # Daily cron here is a *build-health* sanity check only — it confirms
+  # the site still compiles cleanly and that the timestamp / methodology /
+  # embargo data generators succeed. It does NOT publish the site.
+  # The deterministic public reveal is driven by the hourly cron in
+  # `deploy.yml`, which actually republishes Pages once an embargo
+  # deadline has passed.
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:
