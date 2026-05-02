@@ -1,0 +1,9 @@
+---
+layout: podcast-rss
+sitemap: false
+permalink: "/podcast/development.xml"
+podcast_section: development
+title: On Consensus — Development podcast
+description: Audio editions of On Consensus Development. Implementation reports, post-mortems,
+  and notes from node operators.
+---

@@ -1,0 +1,9 @@
+---
+layout: podcast-rss
+sitemap: false
+permalink: "/podcast.xml"
+podcast_section: all
+title: On Consensus — Podcast
+description: Audio editions of every On Consensus article. Synthetic narration unless
+  marked otherwise.
+---

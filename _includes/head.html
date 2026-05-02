@@ -134,6 +134,7 @@
   {%- endcomment -%}
   {%- if page.layout == 'post' -%}
     <script defer src="{{ '/js/reading.js' | relative_url }}"></script>
+    <script defer src="{{ '/js/audio-player.js' | relative_url }}"></script>
     {%- comment -%}
       On-chain reference rewriter — only needed where prose may contain
       tx hashes, addresses, ENS names, or block-height markers. The

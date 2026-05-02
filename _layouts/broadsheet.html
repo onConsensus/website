@@ -1,0 +1,84 @@
+---
+layout: null
+sitemap: false
+---
+{%- comment -%}
+  broadsheet.html — monthly print broadsheet (HTML source for PDF).
+
+  page.month — "YYYY-MM"; selects which posts appear.
+
+  This template renders a self-contained HTML document loaded by
+  `scripts/render_print.js` into headless Chromium and printed to a
+  four-column A3 PDF. Stylesheet: assets/css/broadsheet.css.
+{%- endcomment -%}
+{%- assign _ym = page.month -%}
+{% include visible-posts.html %}
+{%- assign _posts = "" | split: "" -%}
+{%- for p in visible_posts -%}
+  {%- assign p_ym = p.date | date: "%Y-%m" -%}
+  {%- if p_ym == _ym -%}{%- assign _posts = _posts | push: p -%}{%- endif -%}
+{%- endfor -%}
+{%- assign _posts = _posts | sort: "date" -%}
+{%- assign _ym_label = _ym | append: "-01" | date: "%B %Y" -%}
+{%- assign _year = _ym | slice: 0, 4 -%}
+<!doctype html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <title>On Consensus — {{ _ym_label }} broadsheet</title>
+  <meta name="generator" content="On Consensus broadsheet ({{ site.time | date_to_xmlschema }})">
+  <link rel="stylesheet" href="{{ '/assets/css/broadsheet.css' | relative_url }}">
+</head>
+<body class="broadsheet" data-month="{{ _ym }}">
+
+  <header class="broadsheet__masthead">
+    <p class="broadsheet__kicker">Vol. {{ _year }} · {{ _ym_label }} edition · onconsensus.com</p>
+    <h1 class="broadsheet__wordmark">On Consensus</h1>
+    <p class="broadsheet__tagline">{{ site.tagline | default: site.description }}</p>
+    <p class="broadsheet__strap">A plaintext cypherpunk broadsheet · {{ _posts.size }} article{% if _posts.size != 1 %}s{% endif %} · compiled {{ site.time | date: "%-d %B %Y" }}</p>
+  </header>
+
+  <section class="broadsheet__toc" aria-labelledby="broadsheet-toc-heading">
+    <h2 id="broadsheet-toc-heading">Inside this edition</h2>
+    {%- if _posts.size == 0 -%}
+      <p><em>No articles were published in this month.</em></p>
+    {%- else -%}
+      <ol>
+        {%- for p in _posts -%}
+          {%- assign s = site.data.sections | where: "slug", p.section | first -%}
+          <li>
+            <span class="broadsheet__toc-section">{{ s.title | default: p.section }}</span>
+            <a href="#post-{{ p.slug }}">{{ p.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+  </section>
+
+  {%- for p in _posts -%}
+    {%- assign s = site.data.sections | where: "slug", p.section | first -%}
+    {%- assign a = site.authors | where: "slug", p.author | first -%}
+    <article class="broadsheet__article" id="post-{{ p.slug }}">
+      <header class="broadsheet__article-head">
+        <p class="broadsheet__article-kicker">{{ s.title | default: p.section | upcase }}</p>
+        <h2 class="broadsheet__article-title">{{ p.title }}</h2>
+        {%- if p.subtitle -%}
+          <p class="broadsheet__article-deck">{{ p.subtitle }}</p>
+        {%- endif -%}
+        <p class="broadsheet__article-byline">
+          By {{ a.name | default: p.author }}
+          · <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: "%-d %B %Y" }}</time>
+        </p>
+      </header>
+      <div class="broadsheet__article-body">
+        {{ p.content }}
+      </div>
+    </article>
+  {%- endfor -%}
+
+  <footer class="broadsheet__colophon">
+    <p>© {{ _year }} On Consensus contributors. Released under {{ site.license.content }}. Set in IBM Plex Serif and Plex Mono. Compiled {{ site.time | date: "%-d %B %Y" }} from <a href="{{ site.url }}">{{ site.url }}</a>.</p>
+  </footer>
+
+</body>
+</html>

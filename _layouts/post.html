@@ -166,6 +166,20 @@ layout: default
         {%- endif -%}
 
         {% include edit-history.html post=page %}
+
+        {%- comment -%}
+          Audio edition: HTML5 player at the top of the article, between
+          the trust signals and the hero. The include resolves
+          `audio_override` first, then falls back to the build-time TTS
+          manifest (`_data/audio.yml`). It self-renders to nothing when
+          neither source is available, so a fresh checkout (or a post
+          whose narration has not yet been generated) degrades quietly.
+          Suppressed for embargoed pieces — narration would leak the
+          held body.
+        {%- endcomment -%}
+        {%- unless embargoed -%}
+          {% include audio-player.html %}
+        {%- endunless -%}
       </header>
 
       {%- comment -%}
@@ -298,6 +312,17 @@ layout: default
             <a href="{{ page.canonical_url }}" rel="canonical external">{{ page.canonical_url }}</a>
           </span>
         {%- endif -%}
+        {%- comment -%}
+          Monthly broadsheet PDF — each article links to the print
+          edition that contains it. The PDF is published by the
+          `broadsheet` workflow on the 1st of the following month;
+          before that runs the link 404s, which is acceptable: the
+          archive page at /print/ explains the cadence.
+        {%- endcomment -%}
+        {%- assign _post_ym = page.date | date: "%Y-%m" -%}
+        <a href="{{ '/print/' | append: _post_ym | append: '.pdf' | relative_url }}" rel="external">
+          Print edition ({{ page.date | date: "%B %Y" }})
+        </a>
         <a href="{{ '/standards/' | relative_url }}" rel="bookmark">Editorial standards</a>
         {%- if site.github.repository_url -%}
           <a href="{{ site.github.repository_url }}/edit/main/_posts/{{ page.path | remove_first: '_posts/' }}"

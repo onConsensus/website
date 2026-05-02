@@ -1,0 +1,19 @@
+{%- comment -%}
+  podcast-subscribe.html — "Subscribe in podcasts" CTA for a section.
+
+  Inputs:
+    section_slug  — slug of the section
+    section_title — display title (used in the link's title attribute)
+{%- endcomment -%}
+{%- assign _slug = include.section_slug | default: page.section_slug | default: page.slug -%}
+{%- assign _title = include.section_title | default: page.title -%}
+{%- assign _feed = "/podcast/" | append: _slug | append: ".xml" -%}
+<p class="podcast-subscribe" aria-label="{{ _title | xml_escape }} podcast">
+  <span class="podcast-subscribe__label">Listen:</span>
+  <a class="podcast-subscribe__link"
+     href="{{ _feed | relative_url }}"
+     type="application/rss+xml"
+     rel="alternate"
+     title="{{ _title }} — Podcast feed">Subscribe in podcasts</a>
+  <span class="podcast-subscribe__hint">— paste the link into any podcast client.</span>
+</p>

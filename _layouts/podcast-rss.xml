@@ -1,0 +1,103 @@
+---
+layout: null
+sitemap: false
+---
+{%- comment -%}
+  podcast-rss.xml — RSS 2.0 with Apple Podcasts (iTunes) extensions.
+
+  Pages selecting this layout supply:
+    podcast_section — section slug, or "all" for the combined feed
+    title           — channel title
+    description     — channel description
+
+  Items are drawn from posts that have either:
+    · `audio_override` (author-supplied), or
+    · an entry in `site.data.audio[slug]` (build-time TTS).
+  Posts without either are skipped — a section feed only ships
+  episodes whose enclosure is reachable.
+{%- endcomment -%}
+{% include visible-posts.html %}
+{%- assign _scope = page.podcast_section -%}
+{%- if _scope and _scope != "all" -%}
+  {%- assign _candidates = visible_posts | where: "section", _scope -%}
+{%- else -%}
+  {%- assign _candidates = visible_posts -%}
+{%- endif -%}
+{%- assign _candidates = _candidates | sort: "date" | reverse -%}
+{%- assign feed_url = page.url | absolute_url -%}
+{%- assign artwork_path = "/images/podcast/" | append: _scope | append: ".png" -%}
+{%- assign artwork_static = site.static_files | where: "path", artwork_path | first -%}
+{%- if artwork_static -%}
+  {%- assign artwork = artwork_path | absolute_url -%}
+{%- else -%}
+  {%- assign artwork = "/images/podcast/all.png" | absolute_url -%}
+{%- endif -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>{{ page.title | xml_escape }}</title>
+    <description>{{ page.description | xml_escape }}</description>
+    <link>{{ '/' | absolute_url }}</link>
+    <atom:link href="{{ feed_url }}" rel="self" type="application/rss+xml"/>
+    <language>{{ site.lang | default: "en" }}</language>
+    <copyright>{{ site.license.content | default: "CC-BY-SA-4.0" | xml_escape }}</copyright>
+    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    <generator>On Consensus podcast generator</generator>
+    <itunes:author>{{ site.author.name | xml_escape }}</itunes:author>
+    <itunes:summary>{{ page.description | xml_escape }}</itunes:summary>
+    <itunes:owner>
+      <itunes:name>{{ site.author.name | xml_escape }}</itunes:name>
+      <itunes:email>{{ site.email | xml_escape }}</itunes:email>
+    </itunes:owner>
+    <itunes:image href="{{ artwork }}"/>
+    <itunes:category text="Technology"/>
+    <itunes:category text="News">
+      <itunes:category text="Tech News"/>
+    </itunes:category>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    {%- for post in _candidates limit: 100 -%}
+      {%- assign _entry = site.data.audio[post.slug] -%}
+      {%- assign _override = post.audio_override -%}
+      {%- assign _audio_url = nil -%}
+      {%- assign _audio_size = 0 -%}
+      {%- assign _audio_dur = nil -%}
+      {%- if _override and _override != "" -%}
+        {%- assign _audio_url = _override | absolute_url -%}
+      {%- elsif _entry and _entry.url -%}
+        {%- assign _audio_url = _entry.url | absolute_url -%}
+        {%- assign _audio_size = _entry.bytes | default: 0 -%}
+        {%- assign _audio_dur = _entry.duration -%}
+      {%- endif -%}
+      {%- if _audio_url -%}
+      {%- assign author = site.authors | where: "slug", post.author | first -%}
+      {%- assign post_section = site.data.sections | where: "slug", post.section | first -%}
+      <item>
+        <title>{{ post.title | xml_escape }}</title>
+        <link>{{ post.url | absolute_url }}</link>
+        <guid isPermaLink="false">audio:{{ post.slug }}</guid>
+        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+        {%- if author -%}<dc:creator>{{ author.name | xml_escape }}</dc:creator>{%- endif -%}
+        {%- if post_section -%}<category>{{ post_section.title | xml_escape }}</category>{%- endif -%}
+        {%- if post.subtitle -%}
+          <description>{{ post.subtitle | strip_html | strip_newlines | xml_escape }}</description>
+          <itunes:subtitle>{{ post.subtitle | strip_html | strip_newlines | xml_escape }}</itunes:subtitle>
+        {%- elsif post.excerpt -%}
+          <description>{{ post.excerpt | strip_html | strip_newlines | xml_escape }}</description>
+          <itunes:subtitle>{{ post.excerpt | strip_html | strip_newlines | xml_escape }}</itunes:subtitle>
+        {%- endif -%}
+        {%- if author -%}<itunes:author>{{ author.name | xml_escape }}</itunes:author>{%- endif -%}
+        {%- if _audio_dur -%}<itunes:duration>{{ _audio_dur }}</itunes:duration>{%- endif -%}
+        <itunes:explicit>false</itunes:explicit>
+        <itunes:episodeType>full</itunes:episodeType>
+        <enclosure url="{{ _audio_url }}" length="{{ _audio_size }}" type="audio/mpeg"/>
+      </item>
+      {%- endif -%}
+    {%- endfor -%}
+  </channel>
+</rss>

@@ -1,0 +1,117 @@
+// =============================================================================
+// _audio.scss — audio narration player on article pages, and the
+// "Subscribe in podcasts" CTA on section archives.
+//
+// Plain HTML5 <audio> with hand-rolled speed-control buttons; no
+// third-party widget. The chrome stays close to the rest of the
+// editorial palette: hairline rules, mono labels, no colour beyond
+// the global accent.
+// =============================================================================
+
+.audio-player {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.75rem 0;
+  margin: 1.25rem 0 1.75rem;
+  font-family: var(--font-sans);
+
+  &__heading {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.5rem;
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+
+  &__audio {
+    width: 100%;
+    display: block;
+    margin: 0.25rem 0 0.6rem;
+  }
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+
+  &__label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-right: 0.4rem;
+  }
+
+  &__speed {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    cursor: pointer;
+    line-height: 1.1;
+
+    &[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    &:hover { border-color: var(--ink); }
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+  }
+
+  &__credit {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--muted);
+
+    a { color: inherit; text-decoration: underline; }
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.95em;
+    }
+  }
+}
+
+@media print {
+  .audio-player { display: none !important; }
+}
+
+// -----------------------------------------------------------------------------
+// Section-archive "Subscribe in podcasts" CTA. Sits next to the existing
+// feed-icons row.
+// -----------------------------------------------------------------------------
+.podcast-subscribe {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  margin: 0.25rem 0 0;
+  color: var(--ink-2);
+
+  &__label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-right: 0.35rem;
+  }
+
+  &__link {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  &__hint {
+    color: var(--muted);
+    margin-left: 0.35rem;
+  }
+}

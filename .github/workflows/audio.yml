@@ -1,0 +1,75 @@
+name: audio
+
+# Build-time TTS narration for every post.
+#
+# This workflow runs on pushes to `main` that touch posts and on
+# manual dispatch. It installs Piper + ffmpeg, regenerates any
+# missing or stale `audio/<slug>.mp3` files (content-hash skip),
+# refreshes `_data/audio.yml`, and commits the result back to `main`
+# so the next deploy picks up the new audio.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_posts/**"
+      - "scripts/build_audio.rb"
+      - ".github/workflows/audio.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audio
+  cancel-in-progress: false
+
+jobs:
+  tts:
+    name: Generate narration
+    runs-on: ubuntu-latest
+    env:
+      PIPER_VOICE: ${{ github.workspace }}/.voices/en_US-amy-medium.onnx
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg + piper
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg python3-pip curl
+          pip install --user piper-tts
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Cache voice model
+        uses: actions/cache@v4
+        with:
+          path: .voices
+          key: piper-voice-en_US-amy-medium-v1
+
+      - name: Fetch voice model
+        run: |
+          mkdir -p .voices
+          if [ ! -f .voices/en_US-amy-medium.onnx ]; then
+            curl -L -o .voices/en_US-amy-medium.onnx \
+              https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/amy/medium/en_US-amy-medium.onnx
+            curl -L -o .voices/en_US-amy-medium.onnx.json \
+              https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/amy/medium/en_US-amy-medium.onnx.json
+          fi
+
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: "3.2" }
+
+      - name: Generate narration
+        run: ruby scripts/build_audio.rb
+
+      - name: Commit audio + manifest
+        run: |
+          git config user.name  "on-consensus-audio-bot"
+          git config user.email "audio@onconsensus.com"
+          git add audio _data/audio.yml
+          if git diff --cached --quiet; then
+            echo "no audio changes"
+          else
+            git commit -m "audio: regenerate narration"
+            git push
+          fi

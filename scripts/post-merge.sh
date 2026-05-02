@@ -11,3 +11,7 @@ ruby scripts/build_methodology.rb  || echo "[post-merge] methodology regen skipp
 ruby scripts/build_embargoes.rb    || echo "[post-merge] embargoes regen skipped"
 ruby scripts/build_permaids.rb     || echo "[post-merge] permaids regen skipped"
 ruby scripts/build_feeds.rb        || echo "[post-merge] feeds regen skipped"
+ruby scripts/build_audio.rb        || echo "[post-merge] audio regen skipped"
+ruby scripts/build_podcast.rb      || echo "[post-merge] podcast regen skipped"
+ruby scripts/build_podcast_artwork.rb || echo "[post-merge] podcast artwork regen skipped"
+ruby scripts/build_print.rb        || echo "[post-merge] print regen skipped"

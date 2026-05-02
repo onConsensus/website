@@ -89,6 +89,7 @@ TYPES = {
     'embargo_until'           => :date_or_time,
     'embargo_block'           => :positive_int,
     'intent_statement'        => :nonempty_string,
+    'audio_override'          => :nonempty_string,
   },
   'author' => {
     'name'                    => :nonempty_string,

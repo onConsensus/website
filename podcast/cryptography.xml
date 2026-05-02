@@ -1,0 +1,9 @@
+---
+layout: podcast-rss
+sitemap: false
+permalink: "/podcast/cryptography.xml"
+podcast_section: cryptography
+title: On Consensus — Cryptography podcast
+description: Audio editions of On Consensus Cryptography. Primitives, proofs, and
+  the math underneath the chains.
+---

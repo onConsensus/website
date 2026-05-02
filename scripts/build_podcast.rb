@@ -1,0 +1,104 @@
+#!/usr/bin/env ruby
+# build_podcast.rb — emit the per-section and combined podcast feed
+# stubs plus the human-readable /podcast/ directory page.
+#
+# Each stub is a thin frontmatter-only file that selects the
+# `_layouts/podcast-rss.xml` layout and supplies a section scope. The
+# layout pulls items from posts that have either an `audio_override`
+# in frontmatter or an entry in `_data/audio.yml` (produced by
+# `scripts/build_audio.rb`).
+#
+# Idempotent: re-running just rewrites the stubs. Source files are
+# checked into git so GitHub Pages (which doesn't run our scripts)
+# sees the same output as a CI build.
+
+require 'yaml'
+require 'fileutils'
+
+ROOT = File.expand_path('..', __dir__)
+SECTIONS = YAML.load_file(File.join(ROOT, '_data', 'sections.yml'))
+WROTE = []
+
+def write_if_changed(path, content)
+  if File.exist?(path) && File.read(path) == content
+    return false
+  end
+  FileUtils.mkdir_p(File.dirname(path))
+  File.write(path, content)
+  WROTE << path
+  true
+end
+
+def stub(layout:, permalink:, podcast_section:, title:, description:)
+  fm = {
+    'layout'          => layout,
+    'sitemap'         => false,
+    'permalink'       => permalink,
+    'podcast_section' => podcast_section,
+    'title'           => title,
+    'description'     => description
+  }
+  fm.to_yaml + "---\n"
+end
+
+# Per-section feeds.
+SECTIONS.each do |s|
+  slug  = s['slug']
+  title = s['title']
+  blurb = s['blurb']
+  write_if_changed(
+    File.join(ROOT, 'podcast', "#{slug}.xml"),
+    stub(layout: 'podcast-rss',
+         permalink: "/podcast/#{slug}.xml",
+         podcast_section: slug,
+         title: "On Consensus — #{title} podcast",
+         description: "Audio editions of On Consensus #{title}. #{blurb}")
+  )
+end
+
+# Combined feed.
+write_if_changed(
+  File.join(ROOT, 'podcast.xml'),
+  stub(layout: 'podcast-rss',
+       permalink: '/podcast.xml',
+       podcast_section: 'all',
+       title: 'On Consensus — Podcast',
+       description: 'Audio editions of every On Consensus article. Synthetic narration unless marked otherwise.')
+)
+
+# Human-readable /podcast/ index linking every feed URL.
+listing = +<<~HTML
+  ---
+  layout: page
+  title: Podcast
+  permalink: /podcast/
+  sitemap: true
+  ---
+
+  <p class="article__deck">
+    Every On Consensus article ships with a build-time narration. Subscribe in
+    any podcast client by pasting one of the feed URLs below. Authors may
+    replace the synthetic narration with a hand-recorded edition by setting
+    <code>audio_override:</code> in the article's frontmatter.
+  </p>
+
+  <h2>Combined feed</h2>
+  <ul class="podcast-feeds">
+    <li>
+      <a href="/podcast.xml" type="application/rss+xml" rel="alternate">/podcast.xml</a>
+      &mdash; everything On Consensus publishes.
+    </li>
+  </ul>
+
+  <h2>Per-section feeds</h2>
+  <ul class="podcast-feeds">
+HTML
+SECTIONS.each do |s|
+  listing << "    <li><a href=\"/podcast/#{s['slug']}.xml\" type=\"application/rss+xml\" rel=\"alternate\">/podcast/#{s['slug']}.xml</a> &mdash; <strong>#{s['title']}.</strong> #{s['blurb']}</li>\n"
+end
+listing << "  </ul>\n"
+
+write_if_changed(File.join(ROOT, 'podcast', 'index.html'), listing)
+
+puts "[build_podcast] wrote #{WROTE.size} file(s)"
+WROTE.each { |p| puts "  · #{p.sub(ROOT + '/', '')}" }

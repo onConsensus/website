@@ -1,0 +1,87 @@
+name: broadsheet
+
+# Monthly print broadsheet PDF.
+#
+# On the first of each month (and on demand), build the site, render
+# the previous month's `_site/print/YYYY-MM/index.html` to a four-
+# column A3 PDF via headless Chromium, and commit the resulting
+# `print/YYYY-MM.pdf` so the next deploy picks it up.
+
+on:
+  schedule:
+    - cron: "5 6 1 * *"        # 06:05 UTC on the 1st of each month
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "YYYY-MM (defaults to the previous calendar month)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: broadsheet
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build broadsheet PDF
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+      BUNDLE_PATH: vendor/bundle
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+
+      - name: Install Playwright + Chromium
+        run: |
+          npm init -y >/dev/null
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Refresh stubs and build site
+        run: |
+          ruby scripts/build_podcast.rb
+          ruby scripts/build_print.rb
+          bundle exec jekyll build
+
+      - name: Determine target month
+        id: m
+        run: |
+          M="${{ github.event.inputs.month }}"
+          if [ -z "$M" ]; then
+            M=$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)
+          fi
+          echo "ym=$M" >> "$GITHUB_OUTPUT"
+
+      - name: Render PDF
+        run: node scripts/render_print.js "${{ steps.m.outputs.ym }}"
+
+      - name: Commit PDF
+        run: |
+          mkdir -p print
+          SRC="_site/print/${{ steps.m.outputs.ym }}.pdf"
+          DST="print/${{ steps.m.outputs.ym }}.pdf"
+          if [ ! -f "$SRC" ]; then
+            echo "::warning::no PDF produced for ${{ steps.m.outputs.ym }} — skipping commit"
+            exit 0
+          fi
+          cp "$SRC" "$DST"
+          git config user.name  "on-consensus-press-bot"
+          git config user.email "press@onconsensus.com"
+          git add "$DST"
+          if git diff --cached --quiet; then
+            echo "no broadsheet changes"
+          else
+            git commit -m "press: ${{ steps.m.outputs.ym }} broadsheet"
+            git push
+          fi

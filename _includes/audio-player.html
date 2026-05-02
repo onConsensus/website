@@ -1,0 +1,60 @@
+{%- comment -%}
+  audio-player.html — narration player for an article.
+
+  Resolution order:
+    1. page.audio_override   — author-supplied path (preferred)
+    2. site.data.audio[slug] — build-time TTS entry from
+                                scripts/build_audio.rb
+
+  Renders nothing when neither is available, so a fresh checkout (or
+  a post whose audio has not yet been generated) degrades gracefully.
+
+  The post layout gates this include behind `unless embargoed` — we
+  do not synthesize or surface audio for embargoed articles.
+{%- endcomment -%}
+{%- assign _override = page.audio_override -%}
+{%- assign _entry = site.data.audio[page.slug] -%}
+{%- assign _src = nil -%}
+{%- assign _kind = nil -%}
+{%- if _override and _override != "" -%}
+  {%- assign _src = _override -%}
+  {%- assign _kind = "human" -%}
+{%- elsif _entry and _entry.url -%}
+  {%- assign _src = _entry.url -%}
+  {%- assign _kind = "tts" -%}
+{%- endif -%}
+{%- if _src -%}
+<aside class="audio-player" data-audio-kind="{{ _kind }}" aria-labelledby="audio-player-heading">
+  <h2 class="audio-player__heading" id="audio-player-heading">
+    {%- if _kind == "human" -%}Listen — narrated edition{%- else -%}Listen to this article{%- endif -%}
+  </h2>
+  <audio class="audio-player__audio" controls preload="none" src="{{ _src | relative_url }}">
+    Your browser does not support inline audio.
+    <a href="{{ _src | relative_url }}" download>Download the MP3</a>.
+  </audio>
+  <div class="audio-player__controls" role="group" aria-label="Playback speed">
+    <span class="audio-player__label">Speed</span>
+    <button type="button" class="audio-player__speed" data-speed="0.85" aria-pressed="false">0.85×</button>
+    <button type="button" class="audio-player__speed audio-player__speed--default" data-speed="1" aria-pressed="true">1×</button>
+    <button type="button" class="audio-player__speed" data-speed="1.25" aria-pressed="false">1.25×</button>
+    <button type="button" class="audio-player__speed" data-speed="1.5" aria-pressed="false">1.5×</button>
+    <button type="button" class="audio-player__speed" data-speed="2" aria-pressed="false">2×</button>
+  </div>
+  <p class="audio-player__credit">
+    {%- if _kind == "human" -%}
+      Hand-narrated by the author.
+    {%- else -%}
+      Synthetic narration generated at build time (Piper). Authors may
+      ship a hand-narrated <code>audio_override:</code> instead.
+    {%- endif -%}
+    {%- if _entry and _entry.duration -%}
+      · <span class="audio-player__duration">{{ _entry.duration }}</span>
+    {%- endif -%}
+    · <a href="{{ _src | relative_url }}" download>Download MP3</a>
+    {%- if page.section -%}
+      · <a href="{{ '/podcast/' | append: page.section | append: '.xml' | relative_url }}"
+           type="application/rss+xml" rel="alternate">Subscribe in podcasts</a>
+    {%- endif -%}
+  </p>
+</aside>
+{%- endif -%}

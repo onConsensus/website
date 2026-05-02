@@ -26,6 +26,15 @@ sitemap: true
     {%- else -%}
       <p class="feed-archive__page">{{ posts.size }} article{% if posts.size != 1 %}s{% endif %}</p>
     {%- endif -%}
+    {%- comment -%}
+      Off-platform reach. Audio editions ship via per-section + combined
+      podcast feeds; the four-column print broadsheet is compiled monthly
+      and archived at /print/.
+    {%- endcomment -%}
+    <p class="feed-archive__off-platform">
+      <a href="{{ '/podcast/' | relative_url }}">Listen — podcast feeds</a>
+      · <a href="{{ '/print/' | relative_url }}">Read in print — monthly broadsheet PDF</a>
+    </p>
   </header>
 
   {%- if posts and posts.size > 0 -%}

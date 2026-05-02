@@ -1,0 +1,9 @@
+---
+layout: podcast-rss
+sitemap: false
+permalink: "/podcast/governance.xml"
+podcast_section: governance
+title: On Consensus — Governance podcast
+description: Audio editions of On Consensus Governance. DAOs, slashing, voting, and
+  the politics of protocols.
+---

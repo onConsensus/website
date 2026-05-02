@@ -28,6 +28,7 @@ layout: default
     {%- endif -%}
     {%- capture _section_feed_base -%}/sections/{{ section_slug }}/{%- endcapture -%}
     {% include feed-icons.html base=_section_feed_base label=section.title %}
+    {% include podcast-subscribe.html section_slug=section_slug section_title=section.title %}
   </header>
 
   {%- if content and content != "" -%}
