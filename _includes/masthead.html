@@ -1,0 +1,65 @@
+{%- comment -%}
+  masthead.html — site header.
+  Wordmark, dateline (ISO date + latest block-height stub + edition), section
+  nav (one item per entry in `_config.yml :: sections`), search affordance, RSS.
+{%- endcomment -%}
+
+{%- assign now_iso = site.time | date: "%Y-%m-%d" -%}
+{%- assign latest_height = site.posts | map: "block_height" | compact | first -%}
+{%- assign post_count = site.posts | size -%}
+
+<header class="masthead page__masthead" role="banner">
+  <div class="masthead__inner">
+
+    {%- comment -%} Top dateline strip — ISO date · block height · edition number. {%- endcomment -%}
+    <div class="masthead__dateline" aria-label="Issue dateline">
+      <time datetime="{{ now_iso }}">{{ now_iso }}</time>
+      <span class="masthead__block-height">
+        {%- if latest_height -%}
+          BLOCK ≈ {{ latest_height }}
+        {%- else -%}
+          BLOCK ≈ —
+        {%- endif -%}
+      </span>
+      <span class="masthead__edition">
+        ED. {{ post_count }} · {{ site.title | upcase }}
+      </span>
+    </div>
+
+    {%- comment -%} Wordmark + tagline. {%- endcomment -%}
+    <a class="masthead__wordmark" href="{{ '/' | relative_url }}" rel="home">
+      {{ site.title }}
+    </a>
+    {%- if site.tagline -%}
+      <p class="masthead__tagline">{{ site.tagline }}</p>
+    {%- endif -%}
+
+    {%- comment -%} Section nav. Sections come from _config.yml. {%- endcomment -%}
+    <nav class="masthead__nav" aria-label="Sections">
+      <ul class="masthead__nav-list">
+        {%- for section in site.sections -%}
+          {%- assign section_url = '/sections/' | append: section.slug | append: '/' -%}
+          <li class="masthead__nav-item">
+            <a class="masthead__nav-link"
+               href="{{ section_url | relative_url }}"
+               {% if page.section == section.slug or page.url == section_url %}aria-current="page"{% endif %}>
+              {{ section.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="masthead__tools">
+        <a class="masthead__tool" href="{{ '/search/' | relative_url }}" aria-label="Search the archive">
+          <span aria-hidden="true">⌕</span>
+          <span>Search</span>
+        </a>
+        <a class="masthead__tool" href="{{ '/feed.xml' | relative_url }}" aria-label="RSS feed">
+          <span aria-hidden="true">»</span>
+          <span>RSS</span>
+        </a>
+      </div>
+    </nav>
+
+  </div>
+</header>

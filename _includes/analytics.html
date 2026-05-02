@@ -1,0 +1,26 @@
+{%- comment -%}
+  analytics.html — opt-in only.
+
+  Off by default. Editorial decision (see /colophon): no third-party scripts
+  ship unless `analytics.enabled: true` is explicitly set in `_config.yml`.
+
+  Two providers are stubbed in:
+    site.analytics.plausible_domain — privacy-respecting; no cookies.
+    site.analytics.umami_id         — privacy-respecting; self-hostable.
+
+  Google Analytics is intentionally NOT wired here.
+{%- endcomment -%}
+
+{%- if site.analytics.enabled -%}
+  {%- if site.analytics.plausible_domain -%}
+    <script defer
+            data-domain="{{ site.analytics.plausible_domain }}"
+            src="https://plausible.io/js/script.js"></script>
+  {%- endif -%}
+
+  {%- if site.analytics.umami_id and site.analytics.umami_src -%}
+    <script defer
+            src="{{ site.analytics.umami_src }}"
+            data-website-id="{{ site.analytics.umami_id }}"></script>
+  {%- endif -%}
+{%- endif -%}

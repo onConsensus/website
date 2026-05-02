@@ -1,0 +1,50 @@
+---
+layout: default
+---
+{%- comment -%}
+  section.html — section archive layout.
+  Expects either:
+    page.section_slug — explicit slug, OR
+    page.slug         — falls back to the page slug.
+  The Home/Archive task wires actual /sections/<slug>/ pages on top of this.
+{%- endcomment -%}
+
+{%- assign section_slug = page.section_slug | default: page.slug -%}
+{%- assign section = site.sections | where: "slug", section_slug | first -%}
+{%- assign section_posts = site.posts | where: "section", section_slug | sort: "date" | reverse -%}
+
+<section class="section-archive container container--wide">
+
+  <header class="section-archive__head">
+    <p class="section-archive__kicker" style="--section-accent: {{ section.accent | default: '#b8412e' }};">
+      Section
+    </p>
+    <h1 class="section-archive__title article__title">
+      {{ section.title | default: page.title | default: section_slug | capitalize }}
+    </h1>
+    {%- if section.blurb -%}
+      <p class="section-archive__deck article__deck">{{ section.blurb }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if content and content != "" -%}
+    <div class="section-archive__intro article__body container--measure">
+      {{ content }}
+    </div>
+  {%- endif -%}
+
+  {%- if section_posts.size > 0 -%}
+    <div class="section-archive__list card-grid card-grid--3">
+      {%- for post in section_posts -%}
+        {% if forloop.first and section_slug != "dispatches" %}
+          {% include article-card.html post=post variant="lead" %}
+        {% else %}
+          {% include article-card.html post=post variant="standard" %}
+        {% endif %}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="section-archive__empty"><em>No articles in this section yet.</em></p>
+  {%- endif -%}
+
+</section>

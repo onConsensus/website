@@ -1,41 +1,44 @@
 ---
 layout: default
-title: Authors
+title: Editors
 permalink: /authors/
+description: The masthead. Bylines on On Consensus link back here.
 ---
 
-<!-- begin authors -->
-<section class="section authors">
+<section class="authors-archive container container--wide">
+  <header class="page-article__head">
+    <p class="page-article__kicker">The masthead</p>
+    <h1 class="page-article__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="page-article__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+  </header>
 
-  <div class="authors__inner">
-    <div class="container">
-
-      <div class="authors__head">
-        <h1 class="authors__title">{{ page.title }}</h1>
-      </div>
-
-      <div class="row">
-        {% for author in site.authors %}
-        {% assign post_count = site.posts | where:"author", author.username %}
-        <div class="col col-3 col-w-6 col-t-12 animate">
-          <div class="authors__info">
-            <a class="authors__image" href="{{ author.url }}"><img class="lazy" data-src="{{ author.image }}" alt="{{ author.name }}"></a>
-            <div class="authors__meta">
-              <h2 class="authors__name"><a class="authors__link" href="{{ author.url }}">{{ author.name }}</a></h2>
-              {% if post_count.size >= 1 %}
-              <span class="authors__posts__count">{{ post_count.size }} {% if post_count.size < 2 %}Post{% else %}Posts{% endif %}</span>
-              {% endif %}
-            </div>
-            {% if author.content %}
-            <p class="authors__description">{{ author.content }}</p>
-            {% endif %}
-          </div>
+  <div class="authors-grid">
+    {%- for author in site.authors -%}
+      {%- assign author_posts = site.posts | where: "author", author.slug -%}
+      <article class="author-card">
+        {%- if author.avatar -%}
+          <a href="{{ author.url | relative_url }}" tabindex="-1" aria-hidden="true">
+            <img class="author-card__avatar"
+                 src="{{ author.avatar | relative_url }}"
+                 alt=""
+                 loading="lazy"
+                 decoding="async">
+          </a>
+        {%- endif -%}
+        <div class="author-card__body">
+          <h2 class="author-card__name">
+            <a href="{{ author.url | relative_url }}">{{ author.name }}</a>
+          </h2>
+          <span class="author-card__role">
+            {{ author_posts.size }} article{% if author_posts.size != 1 %}s{% endif %}
+          </span>
+          {%- if author.bio -%}
+            <p class="author-card__bio">{{ author.bio | strip_newlines | truncate: 220 }}</p>
+          {%- endif -%}
         </div>
-        {% endfor %}
-      </div>
-
-    </div>
+      </article>
+    {%- endfor -%}
   </div>
-
 </section>
-<!-- end authors -->

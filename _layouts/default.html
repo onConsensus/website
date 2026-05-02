@@ -1,31 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ site.lang | default: 'en' }}" data-theme="auto">
 
 {% include head.html %}
 
-<body class="{% if page.url == '/' %}home-page{% endif %}">
+<body class="page{% if page.layout %} page--{{ page.layout }}{% endif %}{% if page.section %} page--section-{{ page.section }}{% endif %}">
 
-  {% if site.data.settings.google_analytics %}
-    {% include google-analytics.html %}
-  {% endif %}
+  {%- comment -%} Skip-to-content link — first focusable element on the page. {%- endcomment -%}
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- begin global wrap -->
-  <div class="global-wrap">
-  
-    {% include header.html %}
-  
-    <!-- begin content -->
-    <main class="content" aria-label="Content">
-      {{ content }}
-    </main>
-    <!-- end content -->
+  {% include masthead.html %}
 
-    {% include footer.html %}
-  </div>
-  <!-- end global wrap -->
+  <main id="main" class="page__main" role="main">
+    {{ content }}
+  </main>
 
-  <script src="{{ site.baseurl }}/js/scripts.js"></script>
-  <script src="{{ site.baseurl }}/js/common.js"></script>
+  {% include footer.html %}
+
+  {%- comment -%}
+    Analytics include is opt-in (off by default). See _includes/analytics.html.
+  {%- endcomment -%}
+  {% include analytics.html %}
+
 </body>
-
 </html>

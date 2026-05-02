@@ -1,0 +1,51 @@
+{%- comment -%}
+  series-banner.html — surfaces the parent series for any post that belongs
+  to one. Lists every entry in publication order, with the current entry
+  marked.
+
+  Parameters (all optional):
+    series_slug — defaults to page.series.
+    current_url — defaults to page.url. Marks the matching entry.
+{%- endcomment -%}
+
+{%- assign series_slug = include.series_slug | default: page.series -%}
+{%- assign current_url = include.current_url | default: page.url -%}
+
+{%- if series_slug -%}
+  {%- assign series  = site.series | where: "slug", series_slug | first -%}
+  {%- assign entries = site.posts  | where: "series", series_slug | sort: "date" -%}
+
+  {%- if series -%}
+    <aside class="series-banner" aria-labelledby="series-banner-title">
+      <header class="series-banner__head">
+        <p class="series-banner__kicker">Part of a series</p>
+        <h2 class="series-banner__title" id="series-banner-title">
+          <a href="{{ series.url | relative_url }}">{{ series.title }}</a>
+        </h2>
+        {%- if series.description -%}
+          <p class="series-banner__deck">{{ series.description | strip_newlines }}</p>
+        {%- endif -%}
+      </header>
+
+      {%- if entries.size > 0 -%}
+        <ol class="series-banner__entries" reversed="false">
+          {%- for entry in entries -%}
+            {%- assign is_current = false -%}
+            {%- if entry.url == current_url -%}{%- assign is_current = true -%}{%- endif -%}
+            <li class="series-banner__entry{% if is_current %} is-current{% endif %}">
+              <span class="series-banner__num" aria-hidden="true">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+              {%- if is_current -%}
+                <span class="series-banner__link" aria-current="true">{{ entry.title }}</span>
+              {%- else -%}
+                <a class="series-banner__link" href="{{ entry.url | relative_url }}">{{ entry.title }}</a>
+              {%- endif -%}
+              <time class="series-banner__date" datetime="{{ entry.date | date_to_xmlschema }}">
+                {{ entry.date | date: "%-d %b %Y" }}
+              </time>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+    </aside>
+  {%- endif -%}
+{%- endif -%}

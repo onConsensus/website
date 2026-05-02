@@ -1,0 +1,21 @@
+{%- comment -%}
+  footnotes.html — markup scaffold for the marginalia rail.
+
+  Kramdown emits `[^n]` footnotes inline as a `.footnotes` block at the end
+  of the rendered article body. The Reading Experience task wires the JS that
+  *moves* those `<li>` items into this rail on desktop (sidebar) and rolls
+  them into an accordion on mobile.
+
+  This include is the empty container the JS will hydrate into; it is safe
+  to render even when a post has no footnotes — it stays empty.
+{%- endcomment -%}
+
+<aside class="reading__rail reading__rail--footnotes"
+       data-footnotes-rail
+       aria-labelledby="footnote-rail-heading"
+       hidden>
+  <h2 class="reading__rail-heading visually-hidden" id="footnote-rail-heading">
+    Footnotes
+  </h2>
+  <ol class="reading__rail-list" data-footnotes-target></ol>
+</aside>

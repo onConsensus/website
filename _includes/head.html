@@ -5,20 +5,29 @@
   <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#14130f" media="(prefers-color-scheme: dark)">
 
-  <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-  <meta name="description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  {%- comment -%}
+    SEO + canonical + OG/Twitter + JSON-LD are handled by jekyll-seo-tag.
+    The Accessibility/SEO task will tighten the JSON-LD output; this layout
+    task just wires the plugin in.
+  {%- endcomment -%}
+  {% seo %}
 
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
-  <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
+  {%- comment -%} Feed autodiscovery — RSS, Atom, JSON Feed. {%- endcomment -%}
+  <link rel="alternate" type="application/rss+xml"
+        title="{{ site.title | escape }} — RSS"
+        href="{{ '/feed.xml' | relative_url }}">
+  <link rel="alternate" type="application/atom+xml"
+        title="{{ site.title | escape }} — Atom"
+        href="{{ '/feed.atom' | relative_url }}">
+  <link rel="alternate" type="application/feed+json"
+        title="{{ site.title | escape }} — JSON Feed"
+        href="{{ '/feed.json' | relative_url }}">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="{% if page.url == '/' %}{{ site.title }}{% else %}{{ page.title }} – {{ site.title }}{% endif %}">
-  <meta property="og:description" content="{% if page.url == '/' %}{{ site.description | strip_html | xml_escape }}{% elsif page.description %}{{ page.description | strip_html | xml_escape }}{% else %}{{ page.excerpt | strip_html | xml_escape }}{% endif %}">
-  {% if page.image %}<meta property="og:image" content="{{ page.image | absolute_url }}">{% endif %}
-
-  <!-- Self-hosted fonts (woff2). Preload the body face only — the others
-       hydrate as they are referenced. font-display: swap is set per @font-face
-       in _sass/_typography.scss. -->
+  {%- comment -%}
+    Self-hosted fonts (woff2). Preload the body face + display 700 + mono 400
+    only — italic display hydrates as referenced. font-display: swap is set
+    per @font-face in _sass/_typography.scss.
+  {%- endcomment -%}
   <link rel="preload" as="font" type="font/woff2"
         href="{{ '/assets/fonts/source-serif-4-400.woff2' | relative_url }}" crossorigin>
   <link rel="preload" as="font" type="font/woff2"
@@ -26,7 +35,7 @@
   <link rel="preload" as="font" type="font/woff2"
         href="{{ '/assets/fonts/ibm-plex-mono-400.woff2' | relative_url }}" crossorigin>
 
-  <!-- Compiled stylesheet — assets/css/main.scss → /assets/css/main.css -->
+  {%- comment -%} Compiled stylesheet — assets/css/main.scss → /assets/css/main.css {%- endcomment -%}
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 
   <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">

@@ -1,0 +1,72 @@
+{%- comment -%}
+  article-card.html — single card include with three variants.
+
+  Parameters:
+    post     — the post object (required).
+    variant  — "lead" | "standard" | "dispatch". Defaults to "standard".
+               If omitted and post.section == "dispatches", auto-selects
+               "dispatch".
+    show_excerpt — bool, default false. Standard cards stay tight; lead
+                   cards always show excerpt; dispatches show their excerpt
+                   as the body line.
+{%- endcomment -%}
+
+{%- assign post     = include.post -%}
+{%- assign variant  = include.variant | default: "standard" -%}
+{%- if include.variant == nil and post.section == "dispatches" -%}
+  {%- assign variant = "dispatch" -%}
+{%- endif -%}
+
+{%- assign show_excerpt = include.show_excerpt | default: false -%}
+{%- if variant == "lead" -%}{%- assign show_excerpt = true -%}{%- endif -%}
+{%- if variant == "dispatch" -%}{%- assign show_excerpt = true -%}{%- endif -%}
+
+{%- assign section = site.sections | where: "slug", post.section | first -%}
+{%- assign author  = site.authors  | where: "slug", post.author  | first -%}
+
+{%- assign card_class = "card card--" | append: variant -%}
+
+<article class="{{ card_class }}">
+
+  {%- if variant != "dispatch" and post.featured_image -%}
+    <a class="card__media" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+      <img src="{{ post.featured_image | relative_url }}"
+           alt=""
+           loading="lazy"
+           decoding="async">
+    </a>
+  {%- endif -%}
+
+  <div class="card__body">
+    {%- if section -%}
+      <a class="card__kicker" href="{{ '/sections/' | append: section.slug | append: '/' | relative_url }}">
+        {{ section.title }}
+      </a>
+    {%- endif -%}
+
+    <h3 class="card__title">
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </h3>
+
+    {%- if variant == "lead" and post.subtitle -%}
+      <p class="card__deck">{{ post.subtitle }}</p>
+    {%- endif -%}
+
+    {%- if show_excerpt and post.excerpt -%}
+      <p class="card__excerpt">{{ post.excerpt | strip_html | strip_newlines }}</p>
+    {%- endif -%}
+
+    <div class="card__meta">
+      {%- if author -%}
+        <a href="{{ author.url | relative_url }}">{{ author.name }}</a>
+      {%- endif -%}
+      <time datetime="{{ post.date | date_to_xmlschema }}">
+        {{ post.date | date: "%-d %b %Y" }}
+      </time>
+      {%- if post.block_height -%}
+        <span class="card__block-height">▸ #{{ post.block_height }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+
+</article>

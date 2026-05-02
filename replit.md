@@ -24,15 +24,16 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - `_config.yml` — site identity, plugins, collections, **sections taxonomy**,
   social block, defaults.
 - `_data/schemas.yml` — frontmatter contracts for posts, authors, series.
-- `_data/settings.yml` — legacy theme settings (header menu, footer widgets);
-  to be retired in Tasks #2/#3.
 - `_authors/` — author collection (slug = filename).
 - `_series/` — multi-part series collection (`/series/:name`).
 - `_posts/` — articles (`/feed/:slug`).
 - `_pages/` — static pages (about, etc).
-- `_includes/`, `_layouts/` — current layouts are inherited from the legacy
-  *VJs Mag* theme and will be fully replaced in Task #3. `_includes/head.html`
-  has already been swapped to load the new design system + font preloads.
+- `_includes/`, `_layouts/` — *Plaintext Cypherpunk Broadsheet* layouts and
+  reusable includes (Task #3). Layouts: `default`, `home`, `page`, `post`,
+  `author`, `section`, `series`. Includes: `head`, `masthead`, `footer`,
+  `article-card` (lead/standard/dispatch variants), `byline` (with reading
+  time), `series-banner`, `related`, `footnotes` (marginalia hook),
+  `analytics` (off by default).
 - `_sass/` — *Plaintext Cypherpunk Broadsheet* design system partials.
 - `assets/css/main.scss` — single SCSS entry point that wires the cascade.
 - `assets/fonts/` — self-hosted woff2 (Newsreader, Source Serif 4,
@@ -99,7 +100,7 @@ so dark/print modes inherit them and Liquid never has to know about colour.
 ## Roadmap (Tasks)
 1. **Foundation: config, collections & seed content** — *complete.*
 2. **Design system: Plaintext Cypherpunk Broadsheet SCSS** — *complete.*
-3. Layouts & includes.
+3. **Layouts & includes** — *complete.*
 4. Home, sections, archives & feeds.
 5. Client-side search.
 6. Reading experience polish.

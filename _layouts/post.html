@@ -1,85 +1,117 @@
 ---
 layout: default
 ---
+{%- assign section = site.sections | where: "slug", page.section | first -%}
 
-<div class="container">
-  <div class="row">
-    <div class="col col-10 col-w-12">
-      <div class="post__head">
-  
-        <div class="post__meta">
-          {% if page.tags.size >= 1 %}
-          <div class="post__tags">
-          {% for tag in page.tags %}
-            <a href="{{ site.baseurl }}/tags/?tag={{ tag | downcase | url_encode }}" class="post__tag">{{ tag }}</a>
-          {% endfor %}
-          </div>
-          {% endif %}
-          <span class="article__date">•<time datetime="{{ page.date | date_to_xmlschema }}">{% assign date_format = site.minima.date_format | default: "%d %-b, %Y" %}{{ page.date | date: date_format }}</time></span>
-        </div>
-  
-        {% if page.title %}
-        <h1 class="post__title">{{ page.title | escape }}</h1>
-        {% endif %}
-  
-        {% if page.description %}
-        <div class="post__description">{{ page.description }}</div>
-        {% endif %}
+<article class="article" itemscope itemtype="https://schema.org/Article">
+
+  <div class="reading">
+
+    <div class="reading__body">
+
+      <header class="article__head">
+        {%- if section -%}
+          <a class="article__kicker"
+             href="{{ '/sections/' | append: section.slug | append: '/' | relative_url }}">
+            {{ section.title }}
+          </a>
+        {%- endif -%}
+
+        <h1 class="article__title" itemprop="headline">{{ page.title | escape }}</h1>
+
+        {%- if page.subtitle -%}
+          <p class="article__deck" itemprop="alternativeHeadline">{{ page.subtitle }}</p>
+        {%- endif -%}
+
+        {% include byline.html post=page %}
+      </header>
+
+      {%- if page.featured_image -%}
+        <figure class="article__hero">
+          <img src="{{ page.featured_image | relative_url }}"
+               alt="{{ page.featured_alt | default: page.title | escape }}"
+               loading="eager"
+               decoding="async"
+               itemprop="image">
+          {%- if page.featured_caption -%}
+            <figcaption>{{ page.featured_caption }}</figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endif -%}
+
+      {% include series-banner.html %}
+
+      <div class="article__body" itemprop="articleBody">
+        {{ content }}
       </div>
 
+      {%- comment -%}
+        PGP signature block — markup hook for `pgp_signed: true` posts.
+        Signatures live at /signatures/<slug>.sig (outside `_posts/` so
+        Jekyll never ingests them). We surface the sig as a downloadable
+        link + verification recipe; the Editorial Trust Signals task can
+        replace the link with an inlined `<pre>` once a build-time include
+        helper is in place (Jekyll Liquid does not allow variables inside
+        `include_relative`).
+      {%- endcomment -%}
+      {%- if page.pgp_signed -%}
+        {%- assign sig_path = "/signatures/" | append: page.slug | append: ".sig" -%}
+        {%- assign sig = site.static_files | where: "path", sig_path | first -%}
+        {%- if sig -%}
+          <aside class="pgp-signature pgp-signature--link" aria-labelledby="pgp-sig-heading">
+            <h2 class="pgp-signature__heading" id="pgp-sig-heading">PGP signed</h2>
+            <p>
+              This article is signed by its author.
+              <a href="{{ sig_path | relative_url }}" download rel="external">
+                Download the detached signature ({{ page.slug }}.sig)
+              </a>
+              and verify with <code>gpg --verify {{ page.slug }}.sig</code>.
+            </p>
+          </aside>
+        {%- endif -%}
+      {%- endif -%}
+
+      <footer class="article__foot">
+        <span class="article__license">
+          {%- if page.license -%}{{ page.license }}{%- else -%}{{ site.license.content }}{%- endif -%}
+        </span>
+        {%- if page.canonical_url -%}
+          <span>Originally published at
+            <a href="{{ page.canonical_url }}" rel="canonical external">{{ page.canonical_url }}</a>
+          </span>
+        {%- endif -%}
+        {%- if site.github.repository_url -%}
+          <a href="{{ site.github.repository_url }}/edit/main/_posts/{{ page.path | remove_first: '_posts/' }}"
+             rel="external">Suggest an edit</a>
+        {%- endif -%}
+      </footer>
+
+      {%- if page.corrections and page.corrections.size > 0 -%}
+        <section class="article__corrections" aria-labelledby="corrections-heading">
+          <h2 class="article__corrections-heading" id="corrections-heading">Corrections</h2>
+          <ol>
+            {%- for c in page.corrections -%}
+              <li>
+                <time datetime="{{ c.date }}">{{ c.date }}</time>
+                — {{ c.note }}
+              </li>
+            {%- endfor -%}
+          </ol>
+        </section>
+      {%- endif -%}
+
     </div>
+
+    {%- comment -%}
+      Footnote rail scaffold — Reading Experience task hydrates this with
+      the kramdown-emitted `.footnotes` items.
+    {%- endcomment -%}
+    {% include footnotes.html %}
+
   </div>
-</div>
 
-<!-- begin post -->
-<div class="container">
-
-  <div class="row">
-    <div class="sidebar-left col col-3 col-w-4 col-d-12">
-      <aside class="sidebar">
-        {% include sidebar-widgets/widget-post-author.html %}
-        {% include sidebar-widgets/widget-featured-posts.html %}
-        {% include sidebar-widgets/widget-tags.html %}
-      </aside>
-    </div>
-
-    <div class="col col-9 col-w-8 col-d-12">
-      <article class="post">
-    
-        {% if page.video_embed %}
-        <div class="post-video">
-          <div class="post-video__wrap">
-            <iframe src="{{ page.video_embed }}" loading="lazy" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-          </div>
-        </div>
-
-        {% else %}
-
-        {%if page.image %}
-        <div class="post-image">
-          <img class="lazy" data-src="{{site.baseurl}}{{page.image}}" alt="{{page.title}}">
-        </div>
-        {%endif %}
-
-        {% endif %}
-
-        <div class="post__content">
-          {{ content }}
-        </div>
-
-        {% include share-buttons.html %}
-
-      </article>
-    </div>
-
+  <div class="container container--measure-wide">
+    {% include related.html limit=3 %}
   </div>
-</div>
-<!-- end post -->
 
-{% include post-navigation.html %}
-
-{% include related-posts.html %}
-
-{% if site.data.settings.disqus_identifier %}
-  {% include disqus-comments.html %}
-{% endif %}
+</article>

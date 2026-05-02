@@ -1,0 +1,57 @@
+{%- comment -%}
+  byline.html — author + reading time + (optional) date.
+
+  Parameters:
+    post      — the post object (defaults to current `page`).
+    show_date — bool, default true. Adds dateline + block-height.
+{%- endcomment -%}
+
+{%- assign post = include.post | default: page -%}
+{%- assign show_date = include.show_date -%}
+{%- if show_date == nil -%}{%- assign show_date = true -%}{%- endif -%}
+
+{%- assign author = site.authors | where: "slug", post.author | first -%}
+
+{%- comment -%}
+  Reading time. Per the editorial schema:
+    minutes = words / 220, with `reading_time_override` (integer minutes)
+    available as an explicit override.
+{%- endcomment -%}
+{%- if post.reading_time_override -%}
+  {%- assign rt = post.reading_time_override -%}
+{%- else -%}
+  {%- assign words = post.content | strip_html | number_of_words -%}
+  {%- assign rt = words | divided_by: 220 -%}
+  {%- if rt < 1 -%}{%- assign rt = 1 -%}{%- endif -%}
+{%- endif -%}
+
+<p class="byline article__meta" aria-label="Article byline">
+  <span class="byline__group">
+    <span class="byline__label">By</span>
+    {%- if author -%}
+      <a class="byline__author article__byline-author"
+         href="{{ author.url | relative_url }}"
+         rel="author">{{ author.name }}</a>
+    {%- else -%}
+      <span class="byline__author article__byline-author">{{ post.author | default: site.author.name }}</span>
+    {%- endif -%}
+  </span>
+
+  {%- if show_date -%}
+    <span class="byline__group">
+      <time datetime="{{ post.date | date_to_xmlschema }}">
+        {{ post.date | date: "%-d %B %Y" }}
+      </time>
+    </span>
+
+    {%- if post.block_height -%}
+      <span class="byline__group article__block-height" title="Bitcoin block height at publish">
+        Block #{{ post.block_height }}
+      </span>
+    {%- endif -%}
+  {%- endif -%}
+
+  <span class="byline__group" title="Reading time at 220 words/min">
+    {{ rt }} min read
+  </span>
+</p>

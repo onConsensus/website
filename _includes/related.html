@@ -1,0 +1,46 @@
+{%- comment -%}
+  related.html — naive shared-tag matching.
+  Picks up to `limit` posts that share at least one tag with the current
+  page, then orders the matches by recency (most recent first). Liquid has
+  no stable multi-key sort, so we deliberately keep this as a single-pass
+  filter + recency sort rather than ranking by shared-tag count.
+
+  Parameters:
+    limit — default 3.
+    title — default "Related".
+{%- endcomment -%}
+
+{%- assign limit = include.limit | default: 3 -%}
+{%- assign title = include.title | default: "Related" -%}
+
+{%- if page.tags and page.tags.size > 0 -%}
+  {%- assign candidates = "" | split: "" -%}
+
+  {%- for post in site.posts -%}
+    {%- if post.url == page.url -%}{%- continue -%}{%- endif -%}
+    {%- assign shared = 0 -%}
+    {%- for tag in post.tags -%}
+      {%- if page.tags contains tag -%}
+        {%- assign shared = shared | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if shared > 0 -%}
+      {%- assign candidates = candidates | push: post -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign ranked = candidates | sort: "date" | reverse -%}
+
+  {%- if ranked.size > 0 -%}
+    <section class="related" aria-labelledby="related-title">
+      <header class="related__head">
+        <h2 class="related__title" id="related-title">{{ title }}</h2>
+      </header>
+      <div class="card-grid card-grid--{{ limit }}">
+        {%- for post in ranked limit: limit -%}
+          {% include article-card.html post=post variant="standard" %}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}

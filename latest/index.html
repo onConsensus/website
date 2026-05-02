@@ -1,29 +1,22 @@
 ---
 layout: default
 title: The Feed
-description: Features productivity, tips, inspiration and strategies for massive profits. Find out how to set up a successful blog or how to make yours even better!
+permalink: /feed/
+description: Every article from On Consensus, in publication order.
 ---
 
-<!-- begin hero -->
-<section class="hero hero--left">
-  <div class="container">
-    {% if page.title %}
-    <h1 class="hero__title">{{ page.title }}</h1>
-    {% endif %}
-  </div>
-</section>
-<!-- end hero -->
+<section class="feed-archive container container--wide">
+  <header class="feed-archive__head">
+    <p class="feed-archive__kicker">Archive</p>
+    <h1 class="feed-archive__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="feed-archive__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+  </header>
 
-<section class="section">
-  <div class="container">
-    <div class="row grid">
-      {% if site.posts.size > 0 %}
-        {% for post in paginator.posts offset:0 %}
-          {% include article.html class="col col-4 col-d-6 col-t-12 animate grid__post" %}
-        {% endfor %}
-      {% endif %}
-    </div>
+  <div class="card-grid card-grid--3">
+    {%- for post in site.posts -%}
+      {% include article-card.html post=post variant="standard" %}
+    {%- endfor -%}
   </div>
-
-  {% include pagination.html %}
 </section>

@@ -1,53 +1,70 @@
 ---
 layout: default
 ---
+{%- assign author_slug = page.slug -%}
+{%- assign author_posts = site.posts | where: "author", author_slug | sort: "date" | reverse -%}
 
-<!-- begin author -->
-<section class="section author">
+<section class="author-archive container container--wide">
 
-  <div class="container">
-    {% assign post_count = site.posts | where: 'author', page.username %}
+  <header class="author-head">
+    {%- if page.avatar -%}
+      <img class="author-head__avatar"
+           src="{{ page.avatar | relative_url }}"
+           alt="Portrait of {{ page.name }}"
+           loading="eager"
+           decoding="async">
+    {%- endif -%}
 
-    <div class="author__content">
-      <div class="author__image"><img class="lazy" data-src="{{ page.image }}" alt="{{ page.name }}"></div>
-      <h1 class="author__name">{{ page.name }}</h1>
+    <div>
+      <p class="author-head__kicker">Editor</p>
+      <h1 class="author-head__name">{{ page.name }}</h1>
+      {%- if page.bio -%}
+        <p class="author-head__bio">{{ page.bio | strip_newlines }}</p>
+      {%- endif -%}
+    </div>
+  </header>
 
-      <div class="author__info">
-      {% if page.location %}
-        <span class="author__social__item"><i class="ion ion-md-pin"></i> {{ page.location }}</span>
-      {% endif %}
-      {% if page.website %}
-        <a class="author__social__item" href="{{ page.website }}" aria-label="Website link"><i class="ion ion-ios-link"></i> Website</a>
-      {% endif %}
-      {% if page.facebook %}
-        <a class="author__social__item" href="{{ page.facebook }}" aria-label="Facebook link"><i class="ion ion-logo-facebook"></i> Facebook</a>
-      {% endif %}
-      {% if page.twitter %}
-        <a class="author__social__item" href="{{ page.twitter }}" aria-label="Twitter link"><i class="ion ion-logo-twitter"></i> Twitter</a>
-      {% endif %}
-      {% if page.instagram %}
-        <a class="author__social__item" href="{{ page.instagram }}" aria-label="Instagram link"><i class="ion ion-logo-instagram"></i> Instagram</a>
-      {% endif %}
+  {%- if page.pgp_fingerprint or page.links -%}
+    <div class="author-card author-card--inline">
+      <div class="author-card__body">
+        {%- if page.pgp_fingerprint -%}
+          <p class="author-card__pgp" title="PGP fingerprint">
+            PGP · {{ page.pgp_fingerprint }}
+          </p>
+        {%- endif -%}
+
+        {%- if page.links -%}
+          <p class="author-card__links">
+            {%- if page.links.mastodon -%}<a href="{{ page.links.mastodon }}" rel="me">Mastodon</a>{%- endif -%}
+            {%- if page.links.bluesky  -%}<a href="{{ page.links.bluesky  }}" rel="me">Bluesky</a>{%- endif -%}
+            {%- if page.links.nostr    -%}<a href="nostr:{{ page.links.nostr }}" rel="me">Nostr</a>{%- endif -%}
+            {%- if page.links.github   -%}<a href="{{ page.links.github   }}" rel="me">GitHub</a>{%- endif -%}
+            {%- if page.links.website  -%}<a href="{{ page.links.website  }}" rel="me">Website</a>{%- endif -%}
+          </p>
+        {%- endif -%}
       </div>
+    </div>
+  {%- endif -%}
 
+  {%- if content and content != "" -%}
+    <div class="author-archive__intro article__body">
       {{ content }}
-
     </div>
+  {%- endif -%}
 
-  </div>
-
-  {% if post_count.size >= 1 %}
-  <div class="container">
-    <h2 class="author__posts__count">{{ post_count.size }}{% if post_count.size < 2 %}Post{% else %} Posts{% endif %}</h2>
-    <div class="row animate">
-      {% for post in post_count %}
-      <div class="col col-4 col-d-6 col-t-12">
-        {% include article.html %}
+  {%- if author_posts.size > 0 -%}
+    <section class="author-archive__posts">
+      <h2 class="author-archive__posts-heading">
+        {{ author_posts.size }} article{% if author_posts.size != 1 %}s{% endif %} by {{ page.name }}
+      </h2>
+      <div class="card-grid card-grid--3">
+        {%- for post in author_posts -%}
+          {% include article-card.html post=post variant="standard" %}
+        {%- endfor -%}
       </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
+    </section>
+  {%- else -%}
+    <p class="author-archive__empty"><em>No articles yet.</em></p>
+  {%- endif -%}
 
 </section>
-<!-- end author -->

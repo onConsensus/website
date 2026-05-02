@@ -1,28 +1,56 @@
 ---
 layout: default
 ---
-<article class="series">
-  <header class="series__head">
-    {% if page.title %}<h1 class="series__title">{{ page.title }}</h1>{% endif %}
-    {% if page.description %}<p class="series__description">{{ page.description }}</p>{% endif %}
+{%- assign series_posts = site.posts | where: "series", page.slug | sort: "date" -%}
+{%- assign editor = site.authors | where: "slug", page.editor | first -%}
+
+<section class="series-archive container container--wide">
+
+  <header class="series-archive__head">
+    <p class="series-archive__kicker">Series</p>
+    <h1 class="series-archive__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="series-archive__deck article__deck">{{ page.description | strip_newlines }}</p>
+    {%- endif -%}
+
+    <div class="series-archive__meta byline">
+      {%- if editor -%}
+        <span class="byline__group">
+          <span class="byline__label">Edited by</span>
+          <a class="byline__author" href="{{ editor.url | relative_url }}">{{ editor.name }}</a>
+        </span>
+      {%- endif -%}
+      {%- if page.started -%}
+        <span class="byline__group">
+          Started <time datetime="{{ page.started }}">{{ page.started | date: "%B %Y" }}</time>
+        </span>
+      {%- endif -%}
+      {%- if page.status -%}
+        <span class="byline__group">Status: {{ page.status }}</span>
+      {%- endif -%}
+      <span class="byline__group">{{ series_posts.size }} entr{% if series_posts.size == 1 %}y{% else %}ies{% endif %}</span>
+    </div>
   </header>
 
-  <div class="series__content">
-    {{ content }}
-  </div>
+  {%- if content and content != "" -%}
+    <div class="series-archive__intro article__body container--measure">
+      {{ content }}
+    </div>
+  {%- endif -%}
 
-  {% assign series_posts = site.posts | where: "series", page.slug | sort: "date" %}
-  {% if series_posts.size > 0 %}
-  <section class="series__entries">
-    <h2>Entries in this series</h2>
-    <ol>
-      {% for post in series_posts %}
-      <li>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %b %Y" }}</time>
-      </li>
-      {% endfor %}
+  {%- if series_posts.size > 0 -%}
+    <ol class="series-archive__entries">
+      {%- for post in series_posts -%}
+        <li class="series-archive__entry">
+          <span class="series-archive__num" aria-hidden="true">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+          <div class="series-archive__entry-body">
+            {% include article-card.html post=post variant="standard" %}
+          </div>
+        </li>
+      {%- endfor -%}
     </ol>
-  </section>
-  {% endif %}
-</article>
+  {%- else -%}
+    <p class="series-archive__empty"><em>No entries published yet.</em></p>
+  {%- endif -%}
+
+</section>

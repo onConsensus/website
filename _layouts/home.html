@@ -1,0 +1,105 @@
+---
+layout: default
+---
+{%- comment -%}
+  home.html — three-region front page:
+    1. Lead   — the single `featured: true` article (falls back to most recent).
+    2. Latest — 10 most recent articles (excluding the lead).
+    3. By section — 5 columns, one per primary section, latest in each.
+
+  The Home/Archive task (#4) wires editorial choice + responsive tweaks on
+  top of this layout.
+{%- endcomment -%}
+
+{%- assign featured_post = site.posts | where: "featured", true | first -%}
+{%- if featured_post == nil -%}
+  {%- assign featured_post = site.posts | first -%}
+{%- endif -%}
+
+{%- assign latest_posts = "" | split: "" -%}
+{%- for post in site.posts -%}
+  {%- if post.url == featured_post.url -%}{%- continue -%}{%- endif -%}
+  {%- assign latest_posts = latest_posts | push: post -%}
+  {%- if latest_posts.size >= 10 -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+
+<div class="home">
+
+  {%- comment -%} ── 1. LEAD ── {%- endcomment -%}
+  {%- if featured_post -%}
+    <section class="home__lead container container--wide" aria-labelledby="home-lead-title">
+      <h2 class="visually-hidden" id="home-lead-title">Lead</h2>
+      {% include article-card.html post=featured_post variant="lead" %}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} Optional editorial intro from index.html `{{ content }}`. {%- endcomment -%}
+  {%- if content and content != "" -%}
+    <section class="home__intro container container--measure">
+      {{ content }}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ── 2. LATEST ── {%- endcomment -%}
+  {%- if latest_posts.size > 0 -%}
+    <section class="home__latest container container--wide" aria-labelledby="home-latest-title">
+      <header class="home__section-head">
+        <h2 class="home__section-title" id="home-latest-title">Latest</h2>
+        <a class="home__section-more" href="{{ '/feed/' | relative_url }}">All articles →</a>
+      </header>
+      <div class="card-grid card-grid--3">
+        {%- for post in latest_posts -%}
+          {% include article-card.html post=post variant="standard" %}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ── 3. BY SECTION ── {%- endcomment -%}
+  {%- assign primary_sections = site.sections | where_exp: "s", "s.slug != 'dispatches'" -%}
+  {%- if primary_sections.size > 0 -%}
+    <section class="home__sections container container--wide" aria-labelledby="home-sections-title">
+      <header class="home__section-head">
+        <h2 class="home__section-title" id="home-sections-title">By section</h2>
+      </header>
+      <div class="card-grid card-grid--5">
+        {%- for section in primary_sections limit: 5 -%}
+          {%- assign section_url = '/sections/' | append: section.slug | append: '/' -%}
+          {%- assign section_post = site.posts | where: "section", section.slug | first -%}
+          <div class="home__section-col">
+            <header class="home__section-col-head" style="--section-accent: {{ section.accent }};">
+              <a class="home__section-col-title" href="{{ section_url | relative_url }}">
+                {{ section.title }}
+              </a>
+              {%- if section.blurb -%}
+                <p class="home__section-col-blurb">{{ section.blurb }}</p>
+              {%- endif -%}
+            </header>
+            {%- if section_post -%}
+              {% include article-card.html post=section_post variant="standard" %}
+            {%- else -%}
+              <p class="home__section-col-empty"><em>Forthcoming.</em></p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} Dispatches column — link-blog gets its own short stack. {%- endcomment -%}
+  {%- assign dispatches = site.posts | where: "section", "dispatches" -%}
+  {%- if dispatches.size > 0 -%}
+    <section class="home__dispatches container container--wide" aria-labelledby="home-dispatches-title">
+      <header class="home__section-head">
+        <h2 class="home__section-title" id="home-dispatches-title">Dispatches</h2>
+        <a class="home__section-more" href="{{ '/sections/dispatches/' | relative_url }}">On the wire →</a>
+      </header>
+      <ul class="home__dispatch-list">
+        {%- for post in dispatches limit: 5 -%}
+          <li>{% include article-card.html post=post variant="dispatch" %}</li>
+        {%- endfor -%}
+      </ul>
+    </section>
+  {%- endif -%}
+
+</div>
