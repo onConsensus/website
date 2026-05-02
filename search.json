@@ -1,13 +1,30 @@
 ---
+# search.json — flat JSON index consumed by /js/search.js (Lunr in the browser).
+# One record per post. Generated at build time so search works on a static host
+# (GitHub Pages) with no server. Keep this in sync with the Lunr field set in
+# /js/search.js.
 layout: null
+permalink: /search.json
 ---
 [
-  {% for post in site.posts %}
-    {
-      "title"  : "{{ post.title | escape }}",
-      "url"    : "{{ site.baseurl }}{{ post.url }}",
-      "date"   : "{{ post.date | date_to_long_string }}",
-      "image"  : "{{ post.image }}"
-    } {% unless forloop.last %},{% endunless %}
-  {% endfor %}
+{%- for post in site.posts -%}
+  {%- assign author = site.authors | where: "slug", post.author | first -%}
+  {%- assign author_name = author.name | default: post.author | default: "" -%}
+  {%- assign section_obj = site.sections | where: "slug", post.section | first -%}
+  {%- assign section_title = section_obj.title | default: post.section | default: "" -%}
+  {%- capture excerpt_raw -%}
+    {%- if post.excerpt -%}{{ post.excerpt }}{%- else -%}{{ post.content | strip_html | normalize_whitespace | truncatewords: 40 }}{%- endif -%}
+  {%- endcapture -%}
+  {
+    "title":   {{ post.title    | strip_html | normalize_whitespace | jsonify }},
+    "url":     {{ post.url      | relative_url | jsonify }},
+    "section": {{ section_title | jsonify }},
+    "section_slug": {{ post.section | default: "" | jsonify }},
+    "author":  {{ author_name   | jsonify }},
+    "date":    {{ post.date     | date: "%Y-%m-%d" | jsonify }},
+    "date_long": {{ post.date   | date: "%-d %B %Y" | jsonify }},
+    "excerpt": {{ excerpt_raw   | strip_html | normalize_whitespace | jsonify }},
+    "tags":    {{ post.tags     | default: empty | jsonify }}
+  }{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
 ]

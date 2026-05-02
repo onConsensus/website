@@ -50,10 +50,28 @@
       </ul>
 
       <div class="masthead__tools">
-        <a class="masthead__tool" href="{{ '/search/' | relative_url }}" aria-label="Search the archive">
-          <span aria-hidden="true">⌕</span>
-          <span>Search</span>
-        </a>
+        {%- comment -%}
+          Inline search affordance. Submitting it lands on /search/?q=…, which
+          js/search.js consumes and pre-runs. The `data-search-input` hook is
+          used by the site-wide `/` keyboard shortcut to focus this input from
+          anywhere on the site.
+        {%- endcomment -%}
+        <form class="masthead__search" role="search"
+              action="{{ '/search/' | relative_url }}" method="get"
+              aria-label="Search the archive">
+          <label class="visually-hidden" for="masthead-search-input">Search the archive</label>
+          <span class="masthead__search-icon" aria-hidden="true">⌕</span>
+          <input class="masthead__search-input"
+                 id="masthead-search-input"
+                 name="q"
+                 type="search"
+                 inputmode="search"
+                 autocomplete="off"
+                 autocorrect="off"
+                 spellcheck="false"
+                 placeholder="Search · press /"
+                 {% unless page.url == '/search/' %}data-search-input{% endunless %}>
+        </form>
         <a class="masthead__tool" href="{{ '/feed.xml' | relative_url }}" aria-label="RSS feed">
           <span aria-hidden="true">»</span>
           <span>RSS</span>

@@ -113,7 +113,30 @@ so dark/print modes inherit them and Liquid never has to know about colour.
 2. **Design system: Plaintext Cypherpunk Broadsheet SCSS** — *complete.*
 3. **Layouts & includes** — *complete.*
 4. **Home, sections, archives & feeds** — *complete.*
-5. Client-side search.
+5. **Client-side search** — *complete.*
 6. Reading experience polish.
 7. Accessibility, SEO & editorial pages.
 8. Decap CMS, GitHub workflows & pre-launch QA.
+
+## Client-side search
+*Built in Task #5.* Static, framework-free, no third-party network calls.
+
+- **Index:** `search.json` (Liquid → flat JSON at `/search.json`). One record
+  per post with `{title, url, section, section_slug, author, date, date_long,
+  excerpt, tags}`. Regenerated on every Jekyll build.
+- **Engine:** [Lunr.js](https://lunrjs.com) 2.3.9, vendored at
+  `/js/vendor/lunr.min.js` (loaded only on `/search/`).
+- **Client:** `/js/search.js` — vanilla JS, no dependencies. Loaded site-wide
+  via `_includes/head.html` (deferred). Two responsibilities:
+  1. Site-wide `/` keyboard shortcut. Focuses the element matching
+     `[data-search-input]` (the masthead input on every page except
+     `/search/`, where it focuses the page input). Skipped while another
+     INPUT/TEXTAREA/contenteditable is focused, while a modifier is held,
+     and during IME composition.
+  2. On `/search/`: fetch `/search.json` once, build the Lunr index in the
+     browser, render results live (debounced ~120ms), and pre-run any
+     `?q=…` query supplied via the URL.
+- **UI:** `_pages/search.html` (`/search/`) + inline `<form>` in
+  `_includes/masthead.html`. Both forms `GET` to `/search/?q=…` so they
+  degrade to a normal page navigation without JS. Styles in
+  `_sass/_search.scss`.

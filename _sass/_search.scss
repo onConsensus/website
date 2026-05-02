@@ -1,0 +1,227 @@
+// =============================================================================
+// _search.scss
+// Plaintext Cypherpunk Broadsheet — search affordances.
+//   · .masthead__search       inline search form on the masthead toolbar
+//   · .search                  the /search/ page itself (form + results list)
+// All visual atoms read from CSS custom properties in _tokens.scss.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Masthead inline search — sits next to the RSS link, broadsheet-flavoured.
+// -----------------------------------------------------------------------------
+
+.masthead__search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3xs);
+  padding: 0 var(--space-2xs);
+  border: var(--rule-hairline);
+  background: var(--paper);
+  transition: border-color var(--motion-fast) var(--ease-standard);
+
+  &:focus-within {
+    border-color: var(--accent);
+  }
+}
+
+.masthead__search-icon {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--muted);
+  line-height: 1;
+}
+
+.masthead__search-input {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: var(--space-3xs) var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  color: var(--ink);
+  width: 14ch;
+  min-width: 0;
+  transition: width var(--motion-base) var(--ease-standard);
+
+  &::placeholder {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-mono);
+  }
+
+  &:focus {
+    outline: none;
+    width: 22ch;
+  }
+
+  // Strip the "X" reveal in WebKit — the broadsheet aesthetic doesn't ship one.
+  &::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+}
+
+// -----------------------------------------------------------------------------
+// /search/ page — input, status line, results.
+// -----------------------------------------------------------------------------
+
+.search__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  align-items: stretch;
+  margin: var(--space-l) 0 var(--space-s);
+  padding: 0;
+}
+
+.search__input {
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--space-2xs) var(--space-s);
+  border: var(--rule-hairline);
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  letter-spacing: var(--tracking-mono);
+  color: var(--ink);
+
+  &::placeholder {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-mono);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+
+  &::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+}
+
+.search__submit {
+  flex: 0 0 auto;
+  padding: var(--space-2xs) var(--space-m);
+  border: var(--rule-hairline);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard),
+              color      var(--motion-fast) var(--ease-standard);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+  }
+}
+
+.search__status {
+  margin: 0 0 var(--space-m);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.search__noscript {
+  margin-top: var(--space-l);
+  padding: var(--space-s) var(--space-m);
+  border-left: var(--rule-accent);
+  background: var(--paper-2);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.search__results {
+  margin-top: var(--space-s);
+}
+
+.search__results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search__hit {
+  border-top: var(--rule-hairline);
+
+  &:last-child {
+    border-bottom: var(--rule-hairline);
+  }
+}
+
+.search__hit-link {
+  display: block;
+  padding: var(--space-s) 0;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--paper-2);
+    text-decoration: none;
+
+    .search__hit-title {
+      color: var(--accent);
+    }
+  }
+}
+
+.search__hit-meta {
+  margin: 0 0 var(--space-3xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.search__hit-section {
+  color: var(--accent);
+}
+
+.search__hit-title {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-2);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+  transition: color var(--motion-fast) var(--ease-standard);
+}
+
+.search__hit-excerpt {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--lh-body);
+  color: var(--ink-2);
+}
+
+.search__hit-tags {
+  list-style: none;
+  margin: var(--space-2xs) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+
+  li {
+    display: inline;
+  }
+}

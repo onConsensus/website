@@ -37,6 +37,7 @@
 @import "pagination";      // numbered + post-to-post nav
 @import "glossary";        // <dfn> popovers + glossary index
 @import "code";            // pre/code + Rouge syntax highlighting
+@import "search";          // masthead inline search + /search/ page
 
 // 5 — Modes & utilities (must remain last for cascade reasons)
 @import "dark";            // prefers-color-scheme + [data-theme="dark"]

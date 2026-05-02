@@ -1,0 +1,77 @@
+---
+layout: default
+title: Search
+permalink: /search/
+description: "Search the On Consensus archive. Lunr runs in your browser; nothing leaves the page."
+sitemap: false
+excerpt_separator: ""
+---
+{%- comment -%}
+  Search page — UI for the client-side Lunr index emitted at /search.json.
+  Progressive enhancement: without JS the form still posts to /search/?q=…
+  and the help copy below explains the static feed alternative.
+
+  Lunr + the search client are loaded only on this page (deferred), so the
+  rest of the site is never paying for ~30KB of JS it does not use. The
+  masthead `/`-shortcut handler in _includes/masthead.html runs site-wide
+  but is small enough to inline.
+{%- endcomment -%}
+<article class="page-article search container container--measure"
+         aria-labelledby="search-heading">
+
+  <header class="page-article__head">
+    <p class="page-article__kicker">The archive</p>
+    <h1 id="search-heading" class="page-article__title article__title">{{ page.title }}</h1>
+    <p class="page-article__deck article__deck">{{ page.description }}</p>
+  </header>
+
+  <form class="search__form" role="search"
+        action="{{ '/search/' | relative_url }}" method="get"
+        aria-labelledby="search-heading">
+    <label class="visually-hidden" for="search-input">Search the archive</label>
+    <input class="search__input"
+           id="search-input"
+           name="q"
+           type="search"
+           inputmode="search"
+           autocomplete="off"
+           autocorrect="off"
+           spellcheck="false"
+           placeholder="Title, byline, tag, phrase…"
+           data-search-input
+           autofocus>
+    <button class="search__submit button" type="submit">Search</button>
+  </form>
+
+  <p class="search__status"
+     id="search-status"
+     data-search-status
+     role="status"
+     aria-live="polite">
+    Type to search {{ site.posts | size }} article{% if site.posts.size != 1 %}s{% endif %}.
+  </p>
+
+  <section class="search__results" aria-label="Search results">
+    <ol class="search__results-list" id="search-results" data-search-results></ol>
+  </section>
+
+  <noscript>
+    <p class="search__noscript">
+      Search needs JavaScript to run in your browser — Lunr.js indexes the
+      archive locally, so nothing leaves the page, but it does need a script
+      runtime. Without JS you can still browse
+      <a href="{{ '/feed/' | relative_url }}">the firehose</a>,
+      <a href="{{ '/authors/' | relative_url }}">the masthead</a>, and the
+      individual section feeds (e.g.
+      <a href="{{ '/sections/governance/' | relative_url }}">Governance</a>).
+    </p>
+  </noscript>
+
+</article>
+
+{%- comment -%}
+  Both scripts (lunr.min.js + search.js) are loaded once from
+  _includes/head.html — Lunr is conditionally included there only on this
+  page, and emitted before search.js so the deferred load order is
+  deterministic. Nothing extra to load here.
+{%- endcomment -%}

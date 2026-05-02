@@ -50,4 +50,19 @@
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 
   <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
+
+  {%- comment -%}
+    Site-wide search shortcut. /js/search.js binds the `/` keyboard shortcut
+    so it focuses the masthead search input from anywhere on the site. On the
+    /search/ page the same script also drives the live Lunr-backed UI.
+
+    Load order is deterministic: Lunr is emitted before /js/search.js in
+    source order on /search/, and `defer` scripts execute in source order.
+    The rest of the site doesn't ship Lunr at all (~30KB).
+  {%- endcomment -%}
+  {%- if page.url == '/search/' -%}
+    <script defer src="{{ '/js/vendor/lunr.min.js' | relative_url }}"></script>
+  {%- endif -%}
+  <script defer src="{{ '/js/search.js' | relative_url }}"
+          data-search-index="{{ '/search.json' | relative_url }}"></script>
 </head>
