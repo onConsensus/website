@@ -72,10 +72,15 @@ A worked example, with one of each kind:
 - ENS:     `vitalik.eth`
 - Bitcoin block: <span data-onchain-block>887412</span>
 
-Block heights in regular body copy are deliberately *not* rewritten by
-default — bare digit strings produce too many false positives. Authors
-who want to link a body block height wrap the number in a
-`<span data-onchain-block>` and the rewriter picks it up.
+Block heights in body copy are auto-linked when they appear in a
+"block N" or "block #N" phrasing **and** the number falls inside the
+live Bitcoin range — between block 700 000 (a 2021 floor, configurable
+via `onchain_block_min`) and the tip height refreshed by CI from
+mempool.space, plus a one-block lookahead. That keeps years, fees, and
+percentages from being mistaken for blocks. Authors who want to surface
+a height that doesn't fit the "block N" pattern can wrap it in a
+`<span data-onchain-block>` (the byline already does this), and any
+ancestor marked `data-onchain="off"` opts a section out entirely.
 
 ----
 

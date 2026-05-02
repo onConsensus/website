@@ -12,9 +12,18 @@
  *   · Idempotent. The walker skips elements already wrapped in `.onchain`
  *     and any node inside `<a>`, `<code>`, `<pre>`, `<script>`, `<style>`,
  *     or any element marked `data-onchain="off"`.
- *   · Block heights in body copy are off by default to avoid false
- *     positives on bare numbers. Explicit `data-onchain-block` elements
- *     are always rewritten — that's how the byline opts in.
+ *   · Block heights in body copy are auto-linked by default (the
+ *     `onchain_block_heights_in_body` flag in `_config.yml`). To
+ *     reduce false positives the rewriter only treats a digit cluster
+ *     as a block height when (a) it appears in a "block #N" / "block N"
+ *     phrasing and (b) N falls inside the live Bitcoin range
+ *     `[btc_block_min, btc_tip + lookahead]` published in the
+ *     JSON config island. Explicit `data-onchain-block` elements are
+ *     always rewritten regardless — that's how the byline opts in.
+ *   · A single text node may contain multiple kinds (e.g. an address
+ *     immediately followed by an ENS name). The rewriter scans all
+ *     four patterns simultaneously, sorts the matches by offset,
+ *     drops overlaps, and rebuilds the node in one pass.
  *   · No dependencies. ~3 KB minified.
  */
 (function () {
@@ -26,6 +35,15 @@
   try { cfg = JSON.parse(cfgEl.textContent); }
   catch (e) { return; }
   if (!cfg || !cfg.explorers) return;
+
+  // Bitcoin block-range gate. When `btc_tip` is 0 (the data file has
+  // never been refreshed) we leave the upper bound open so authors
+  // can still surface heights — the lower bound alone is enough to
+  // rule out years and percentages mistaken for blocks.
+  var BTC_MIN = (cfg.btc_block_min && cfg.btc_block_min > 0) ? cfg.btc_block_min : 700000;
+  var BTC_MAX = (cfg.btc_tip && cfg.btc_tip > 0)
+    ? cfg.btc_tip + (cfg.btc_tip_lookahead || 1)
+    : 0; // 0 == "no upper bound"
 
   var ROOTS = document.querySelectorAll('.article__body, .byline, .embargo-seal, .timestamp-footer');
   if (!ROOTS.length) return;
@@ -108,29 +126,73 @@
     return span;
   }
 
-  // Tag a text node with replacements for one regex/kind pair.
-  function rewriteText(node, regex, kindFn) {
-    var text = node.nodeValue;
+  // Collect every match in `text` for one (regex, kindFn) pair and
+  // append `{start, end, info}` records to `acc`. `kindFn` returns
+  // either an `{kind, value, display}` object (rewrite) or null (skip
+  // this match — used for body-block-height range gating).
+  function collect(acc, text, regex, kindFn) {
     regex.lastIndex = 0;
-    if (!regex.test(text)) return false;
-    regex.lastIndex = 0;
-    var frag = document.createDocumentFragment();
-    var lastIdx = 0; var m;
+    var m;
     while ((m = regex.exec(text)) !== null) {
-      var start = m.index;
-      var end = start + m[0].length;
-      if (start > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, start)));
       var info = kindFn(m);
-      if (info) {
-        frag.appendChild(makeCluster(info.kind, info.value, info.display));
-      } else {
-        frag.appendChild(document.createTextNode(m[0]));
-      }
-      lastIdx = end;
+      if (!info) continue;
+      acc.push({ start: m.index, end: m.index + m[0].length, info: info });
     }
-    if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+  }
+
+  // Rewrite a text node against ALL four patterns at once. We collect
+  // every candidate match, sort by offset, and skip any match whose
+  // range overlaps an earlier (higher-priority) one — that's how the
+  // 64-hex tx hash wins over the 40-hex address regex even though both
+  // would match the leading 40 chars of a tx hash. This loop replaces
+  // the previous "first kind that matches wins for the whole node"
+  // behaviour, which silently dropped mixed-kind tokens (e.g. an
+  // address followed by an ENS name in the same sentence).
+  function rewriteText(node) {
+    var text = node.nodeValue;
+    if (!text || text.length < 5) return;
+    var matches = [];
+    collect(matches, text, PAT_TX, function (m) {
+      return { kind: 'eth_tx', value: m[0], display: truncate(m[0], 10, 8) };
+    });
+    collect(matches, text, PAT_ADDR, function (m) {
+      return { kind: 'eth_address', value: m[0], display: truncate(m[0], 6, 4) };
+    });
+    collect(matches, text, PAT_ENS, function (m) {
+      return { kind: 'ens', value: m[0].toLowerCase(), display: m[0].toLowerCase() };
+    });
+    if (cfg.block_heights_in_body) {
+      collect(matches, text, PAT_BLOCK, function (m) {
+        var n = parseInt(m[1], 10);
+        if (!isFinite(n)) return null;
+        if (n < BTC_MIN) return null;
+        if (BTC_MAX && n > BTC_MAX) return null;
+        return { kind: 'btc_block', value: String(n), display: '#' + n };
+      });
+    }
+    if (!matches.length) return;
+    matches.sort(function (a, b) { return a.start - b.start; });
+
+    // Greedy non-overlap: keep first, then drop any later match that
+    // begins before the previous one ends.
+    var kept = []; var cursor = -1;
+    for (var i = 0; i < matches.length; i++) {
+      if (matches[i].start >= cursor) {
+        kept.push(matches[i]);
+        cursor = matches[i].end;
+      }
+    }
+
+    var frag = document.createDocumentFragment();
+    var pos = 0;
+    for (var j = 0; j < kept.length; j++) {
+      var k = kept[j];
+      if (k.start > pos) frag.appendChild(document.createTextNode(text.slice(pos, k.start)));
+      frag.appendChild(makeCluster(k.info.kind, k.info.value, k.info.display));
+      pos = k.end;
+    }
+    if (pos < text.length) frag.appendChild(document.createTextNode(text.slice(pos)));
     node.parentNode.replaceChild(frag, node);
-    return true;
   }
 
   function walk(root) {
@@ -149,23 +211,7 @@
     var nodes = [], n;
     while ((n = walker.nextNode())) nodes.push(n);
 
-    nodes.forEach(function (node) {
-      // 64-hex tx hashes first (must precede 40-hex address pattern).
-      if (rewriteText(node, PAT_TX, function (m) {
-        return { kind: 'eth_tx', value: m[0], display: truncate(m[0], 10, 8) };
-      })) return;
-      if (rewriteText(node, PAT_ADDR, function (m) {
-        return { kind: 'eth_address', value: m[0], display: truncate(m[0], 6, 4) };
-      })) return;
-      if (rewriteText(node, PAT_ENS, function (m) {
-        return { kind: 'ens', value: m[0].toLowerCase(), display: m[0].toLowerCase() };
-      })) return;
-      if (cfg.block_heights_in_body) {
-        rewriteText(node, PAT_BLOCK, function (m) {
-          return { kind: 'btc_block', value: m[1], display: '#' + m[1] };
-        });
-      }
-    });
+    nodes.forEach(rewriteText);
 
     // Always rewrite explicit opt-in block-height markers regardless of the
     // body-wide setting. These are how the byline + sealed-commit metadata

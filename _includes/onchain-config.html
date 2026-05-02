@@ -17,6 +17,18 @@
       ]{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
   },
-  "block_heights_in_body": {{ site.onchain_block_heights_in_body | default: false | jsonify }}
+  "block_heights_in_body": {{ site.onchain_block_heights_in_body | default: false | jsonify }},
+  {%- comment -%}
+    Range gate for body-copy block-height auto-linking. The rewriter
+    only treats a digit cluster as a Bitcoin block height when it
+    falls inside [btc_block_min, btc_tip + lookahead]. `btc_tip` is
+    refreshed by CI from mempool.space and stored in
+    `_data/bitcoin.yml`; `btc_block_min` defaults to 700_000 (mid-2021,
+    well below any plausible reference in current editorial copy) and
+    is configurable via `_config.yml :: onchain_block_min`.
+  {%- endcomment -%}
+  "btc_block_min": {{ site.onchain_block_min | default: 700000 | jsonify }},
+  "btc_tip": {{ site.data.bitcoin.tip_height | default: 0 | jsonify }},
+  "btc_tip_lookahead": {{ site.onchain_block_lookahead | default: 1 | jsonify }}
 }
 </script>
