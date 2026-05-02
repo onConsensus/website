@@ -20,7 +20,7 @@ post:
     reading_time_override: "Integer minutes. Overrides word-count math."
     canonical_url: "External URL if cross-posted; emits rel=canonical."
     license: "Defaults to CC-BY-SA-4.0."
-    pgp_signed: "Boolean. If true, render the sibling `<slug>.sig` as an ASCII signature block."
+    pgp_signed: "Boolean. If true, layouts may render the matching `/signatures/<slug>.sig` as an ASCII signature block. Sigs live OUTSIDE `_posts/` so Jekyll never treats them as posts."
     featured: "Boolean. The single article with `featured: true` becomes the home-page lead piece."
     block_height: "Integer. Optional Bitcoin block height at publish, surfaced next to the date."
     corrections: "Array of `{date, note}` entries surfaced on `/corrections`."

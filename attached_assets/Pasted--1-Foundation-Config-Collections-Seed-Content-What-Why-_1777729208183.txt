@@ -1,0 +1,29 @@
+#1 - Foundation: Config, Collections & Seed Content
+What & Why
+Lock in the Jekyll project foundation so every later task has a stable base: GitHub-Pages-safe Gemfile, hardened _config.yml, the full content model (posts, authors, series), and seed content to render against.
+
+Done looks like
+bundle install succeeds against the GitHub Pages gem (no unsupported plugins).
+_config.yml carries the production site identity: title "On Consensus", tagline, SEO description, url: https://onconsensus.com, social handles (no X/Twitter), and the five sections + dispatches list.
+Posts, authors, and series collections exist with documented frontmatter schemas.
+Six seed posts (one per section + one dispatch), three seed authors, and one seed series are present so layouts can be built against real content.
+CNAME contains exactly onconsensus.com; .gitignore excludes _site/, caches, .bundle/, vendor/, .DS_Store.
+bundle exec jekyll build produces zero warnings.
+Out of scope
+Visual design / SCSS (separate task).
+Layouts and includes (separate task).
+Decap CMS wiring (separate task).
+Steps
+Gemfile + lockfile — Pin github-pages gem instead of bare jekyll, reinstall, commit Gemfile.lock. Add allowed plugins only: jekyll-feed, jekyll-seo-tag, jekyll-redirect-from, jekyll-sitemap, jekyll-paginate.
+Config hardening — Fill _config.yml with site identity, SEO defaults, social block (mastodon/bluesky/nostr/github/farcaster/rss), categories list with accent treatment, exclude: list, and timezone/lang.
+Collections — Confirm _authors/ schema; add series collection (output: true, permalink: /series/:name); declare frontmatter defaults for posts, authors, series.
+Frontmatter schemas — Document the post, author, and series frontmatter contracts in _data/schemas.yml (or in README) for contributor reference.
+Seed content — Author 6 seed posts (governance, research, development, cryptography, culture, dispatch), 3 seed authors, 1 seed series tying two posts together. Use realistic placeholder copy in the Plaintext Cypherpunk voice.
+Hygiene — Verify CNAME, .gitignore, and that jekyll build is warning-free.
+Relevant files
+_config.yml
+Gemfile
+CNAME
+_authors/
+_posts/
+_data/settings.yml
