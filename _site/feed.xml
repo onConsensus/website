@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>onConsensus</title>
+        <description>Deciphering the decentralized future</description>
+        <link>http://0.0.0.0:5000/</link>
+        <atom:link href="http://0.0.0.0:5000/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Sat, 02 May 2026 13:03:58 +0000</pubDate>
+        <lastBuildDate>Sat, 02 May 2026 13:03:58 +0000</lastBuildDate>
+        <generator>Jekyll v4.4.1</generator>
+        
+            <item>
+                <title>LPM 2022 Rome, A Celebration of Audio Visual Performing Arts</title>
+                <description>&lt;h1 id=&quot;the-23rd-edition-of-the-live-performers-meeting-lpm&quot;&gt;The 23rd Edition of the Live Performers Meeting (LPM)&lt;/h1&gt;
+
+&lt;p&gt;The 23rd edition of the Live Performers Meeting (LPM) made a triumphant return to Rome from June 9th to 12th, 2022, at the Nuovo Cinema Aquila. As a significant gathering of artists from the AVnode network, LPM provided a unique opportunity for the public to immerse themselves in the world of Audio Visual Performing Arts. The four-day event featured an extensive program, spanning from Thursday to Sunday, with activities taking place from 15:00 until late at night.&lt;/p&gt;
+
+&lt;h2 id=&quot;event-significance-and-attendance&quot;&gt;Event Significance and Attendance&lt;/h2&gt;
+
+&lt;p&gt;Despite the ongoing conflict involving Ukraine, Russia, and Belarus, LPM approached its pre-pandemic 2019 numbers. The event was particularly significant due to the presence of three artists from Odessa, Kharkiv, and Kherson, as well as an artist from St. Petersburg.&lt;/p&gt;
+
+&lt;p&gt;A total of 249 artists from 32 countries, including Argentina, Australia, Austria, Belarus, Belgium, Brazil, Canada, Colombia, Czech Republic, Egypt, Estonia, Finland, France, Germany, Hungary, Ireland, Italy, Malaysia, Mexico, Netherlands, Poland, Portugal, Singapore, Slovakia, South Africa, Spain, Sweden, Turkey, Ukraine, United Kingdom, United States, and Vietnam, participated in the event.&lt;/p&gt;
+
+&lt;h2 id=&quot;program-highlights&quot;&gt;Program Highlights&lt;/h2&gt;
+
+&lt;p&gt;The LPM 2022 program included 74 Audio Visual Performances, 15 Video Mappings, 20 VJ/DJ Sets, and 4 Audio Visual Installations, offering a unique and unforgettable spectacle. Roundtables, workshops, and presentations of new products and hardware were also part of the program.&lt;/p&gt;
+
+&lt;h3 id=&quot;video-mapping-theme-peace&quot;&gt;Video Mapping Theme: “PEACE”&lt;/h3&gt;
+
+&lt;p&gt;For the first time, the theme of Video Mapping was “PEACE,” with 15 artists from various countries transforming the façade of Nuovo Cinema Aquila using this powerful concept. Video Mapping is a projection technique that animates architectural objects, creating a captivating and surprising effect that confuses and seduces our perceptions.&lt;/p&gt;
+
+&lt;h3 id=&quot;made-in-italy-selections&quot;&gt;“Made in Italy” Selections&lt;/h3&gt;
+
+&lt;p&gt;Another novelty was the “Made in Italy” selections for the upcoming Live Cinema Festival, which will be held in September at the Palazzo delle Esposizioni. Ten artists presented live AV Performances in Room 2 on June 11th.&lt;/p&gt;
+
+&lt;h2 id=&quot;lpms-role-and-legacy&quot;&gt;LPM’s Role and Legacy&lt;/h2&gt;
+
+&lt;p&gt;LPM serves as a meeting place and a significant opportunity for dialogue and exchange, fostering research and experimentation in various forms of artistic expression in the field of Audio Visual Performing Arts. The event functions as a think tank that promotes the collective project, calling on audiovisual performing artists to collaborate and be proactive in shaping the future of AVarts.&lt;/p&gt;
+
+&lt;p&gt;Since 2004, LPM has hosted more than 6,247 artists, 3,307 performances, workshops, and showcases, with a total of 73 participating countries and over 1.5 million visitors attending editions in Xalapa, Minsk, Mexico City, Cape Town, Eindhoven, Amsterdam, Puglia, and Rome. With 18 years of experience, LPM has successfully outlined a conceptual map of the major trends influencing Audio Visual Performing Arts over time.&lt;/p&gt;
+
+&lt;p&gt;LPM is part of AVnode, an international network promoting Audio Visual Performing Arts culture through events, festivals, and educational initiatives worldwide. &lt;a href=&quot;https://avnode.net&quot;&gt;Learn more about AVnode&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://avnode.net&quot;&gt;AVnode Network&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.nuovocinemaquila.it/&quot;&gt;Nuovo Cinema Aquila&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://livecinemafestival.com&quot;&gt;Live Cinema Festival&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.turismoroma.it/en&quot;&gt;Rome Tourism&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://liveperformersmeeting.net&quot;&gt;LPM Official Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://liveperformersmeeting.net/editions&quot;&gt;LPM Past Editions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://videomapping.org&quot;&gt;Video Mapping&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://avnode.net/performances&quot;&gt;AV Performances&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <pubDate>Wed, 15 Jun 2022 12:01:35 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/lpm-2022-rome</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/lpm-2022-rome</guid>
+                
+                <category>news</category>
+                
+                
+            </item>
+        
+    </channel>
+</rss>
