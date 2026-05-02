@@ -1,63 +1,509 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>onConsensus</title>
-        <description>Deciphering the decentralized future</description>
+        <title>On Consensus</title>
+        <description>On governance, cryptography, and the architectures of trust.</description>
         <link>http://0.0.0.0:5000/</link>
         <atom:link href="http://0.0.0.0:5000/feed.xml" rel="self" type="application/rss+xml"/>
-        <pubDate>Sat, 02 May 2026 13:24:17 +0000</pubDate>
-        <lastBuildDate>Sat, 02 May 2026 13:24:17 +0000</lastBuildDate>
+        <pubDate>Sat, 02 May 2026 13:31:47 +0000</pubDate>
+        <lastBuildDate>Sat, 02 May 2026 13:31:47 +0000</lastBuildDate>
         <generator>Jekyll v4.4.1</generator>
         
             <item>
-                <title>LPM 2022 Rome, A Celebration of Audio Visual Performing Arts</title>
-                <description>&lt;h1 id=&quot;the-23rd-edition-of-the-live-performers-meeting-lpm&quot;&gt;The 23rd Edition of the Live Performers Meeting (LPM)&lt;/h1&gt;
+                <title>On the Wire: 29 April 2026</title>
+                <description>&lt;p&gt;A short link-blog round-up. Each item is filed under a section we may return
+to with a longer piece.&lt;/p&gt;
 
-&lt;p&gt;The 23rd edition of the Live Performers Meeting (LPM) made a triumphant return to Rome from June 9th to 12th, 2022, at the Nuovo Cinema Aquila. As a significant gathering of artists from the AVnode network, LPM provided a unique opportunity for the public to immerse themselves in the world of Audio Visual Performing Arts. The four-day event featured an extensive program, spanning from Thursday to Sunday, with activities taking place from 15:00 until late at night.&lt;/p&gt;
+&lt;h2 id=&quot;sequencer-failover-at-l2_redacted&quot;&gt;Sequencer failover at $L2_REDACTED&lt;/h2&gt;
 
-&lt;h2 id=&quot;event-significance-and-attendance&quot;&gt;Event Significance and Attendance&lt;/h2&gt;
+&lt;p&gt;A widely-used Layer-2 quietly executed a sequencer failover on Tuesday
+afternoon. The official status page reported a “scheduled maintenance
+window.” Operator chatter suggests the failover was triggered by a memory
+leak that had been accumulating for weeks. We are looking for sources.
+&lt;em&gt;Filed under: development.&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Despite the ongoing conflict involving Ukraine, Russia, and Belarus, LPM approached its pre-pandemic 2019 numbers. The event was particularly significant due to the presence of three artists from Odessa, Kharkiv, and Kherson, as well as an artist from St. Petersburg.&lt;/p&gt;
+&lt;h2 id=&quot;a-governance-vote-nobody-noticed&quot;&gt;A governance vote nobody noticed&lt;/h2&gt;
 
-&lt;p&gt;A total of 249 artists from 32 countries, including Argentina, Australia, Austria, Belarus, Belgium, Brazil, Canada, Colombia, Czech Republic, Egypt, Estonia, Finland, France, Germany, Hungary, Ireland, Italy, Malaysia, Mexico, Netherlands, Poland, Portugal, Singapore, Slovakia, South Africa, Spain, Sweden, Turkey, Ukraine, United Kingdom, United States, and Vietnam, participated in the event.&lt;/p&gt;
+&lt;p&gt;A token-holder vote at a mid-sized DeFi protocol passed unanimously last
+week with a 4.1% turnout. The vote authorized a parameter change that
+shifted protocol fees from a public treasury to a foundation-controlled
+operating fund. The forum thread received eleven comments, of which seven
+were from accounts created in the past month. &lt;em&gt;Filed under: governance.&lt;/em&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;program-highlights&quot;&gt;Program Highlights&lt;/h2&gt;
+&lt;h2 id=&quot;arkworks-bls12-381-v07&quot;&gt;arkworks-bls12-381 v0.7&lt;/h2&gt;
 
-&lt;p&gt;The LPM 2022 program included 74 Audio Visual Performances, 15 Video Mappings, 20 VJ/DJ Sets, and 4 Audio Visual Installations, offering a unique and unforgettable spectacle. Roundtables, workshops, and presentations of new products and hardware were also part of the program.&lt;/p&gt;
+&lt;p&gt;A new release of the &lt;em&gt;arkworks-bls12-381&lt;/em&gt; implementation lands with
+measurable speedups on the pairing path and a quiet, important change to
+the serialization format. Library authors downstream should read the
+release notes before bumping. &lt;em&gt;Filed under: cryptography.&lt;/em&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;video-mapping-theme-peace&quot;&gt;Video Mapping Theme: “PEACE”&lt;/h3&gt;
+&lt;h2 id=&quot;a-court-filing-worth-reading&quot;&gt;A court filing worth reading&lt;/h2&gt;
 
-&lt;p&gt;For the first time, the theme of Video Mapping was “PEACE,” with 15 artists from various countries transforming the façade of Nuovo Cinema Aquila using this powerful concept. Video Mapping is a projection technique that animates architectural objects, creating a captivating and surprising effect that confuses and seduces our perceptions.&lt;/p&gt;
+&lt;p&gt;A federal court filing in the Southern District of New York names six
+individual signers of a multisig as defendants in a class action over a
+2024 protocol failure. The filing’s theory of liability is novel and, if
+it survives early motions, will reshape how multisig signers think about
+their role. &lt;em&gt;Filed under: governance.&lt;/em&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;made-in-italy-selections&quot;&gt;“Made in Italy” Selections&lt;/h3&gt;
+&lt;h2 id=&quot;one-piece-of-good-news&quot;&gt;One piece of good news&lt;/h2&gt;
 
-&lt;p&gt;Another novelty was the “Made in Italy” selections for the upcoming Live Cinema Festival, which will be held in September at the Palazzo delle Esposizioni. Ten artists presented live AV Performances in Room 2 on June 11th.&lt;/p&gt;
+&lt;p&gt;Two reference clients of a major proof-of-stake network released
+deterministic-build pipelines this week. Reproducing a client binary from
+source is now possible for both, with a published Nix derivation in one
+case and a Bazel toolchain in the other. &lt;em&gt;Filed under: development.&lt;/em&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;lpms-role-and-legacy&quot;&gt;LPM’s Role and Legacy&lt;/h2&gt;
-
-&lt;p&gt;LPM serves as a meeting place and a significant opportunity for dialogue and exchange, fostering research and experimentation in various forms of artistic expression in the field of Audio Visual Performing Arts. The event functions as a think tank that promotes the collective project, calling on audiovisual performing artists to collaborate and be proactive in shaping the future of AVarts.&lt;/p&gt;
-
-&lt;p&gt;Since 2004, LPM has hosted more than 6,247 artists, 3,307 performances, workshops, and showcases, with a total of 73 participating countries and over 1.5 million visitors attending editions in Xalapa, Minsk, Mexico City, Cape Town, Eindhoven, Amsterdam, Puglia, and Rome. With 18 years of experience, LPM has successfully outlined a conceptual map of the major trends influencing Audio Visual Performing Arts over time.&lt;/p&gt;
-
-&lt;p&gt;LPM is part of AVnode, an international network promoting Audio Visual Performing Arts culture through events, festivals, and educational initiatives worldwide. &lt;a href=&quot;https://avnode.net&quot;&gt;Learn more about AVnode&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;links&quot;&gt;Links&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://avnode.net&quot;&gt;AVnode Network&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.nuovocinemaquila.it/&quot;&gt;Nuovo Cinema Aquila&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://livecinemafestival.com&quot;&gt;Live Cinema Festival&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.turismoroma.it/en&quot;&gt;Rome Tourism&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://liveperformersmeeting.net&quot;&gt;LPM Official Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://liveperformersmeeting.net/editions&quot;&gt;LPM Past Editions&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://videomapping.org&quot;&gt;Video Mapping&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://avnode.net/performances&quot;&gt;AV Performances&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;em&gt;Errata, corrections, or tips: editors@onconsensus.com. PGP fingerprint
+in the colophon.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
-                <pubDate>Wed, 15 Jun 2022 12:01:35 +0000</pubDate>
-                <link>http://0.0.0.0:5000/feed/lpm-2022-rome</link>
-                <guid isPermaLink="true">http://0.0.0.0:5000/feed/lpm-2022-rome</guid>
+                <pubDate>Wed, 29 Apr 2026 17:30:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/on-the-wire-april-twenty-ninth</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/on-the-wire-april-twenty-ninth</guid>
                 
-                <category>news</category>
+                <category>link-blog</category>
+                
+                <category>on-the-wire</category>
+                
+                
+            </item>
+        
+            <item>
+                <title>The Quiet Violence of Emergency Multisigs</title>
+                <description>&lt;p&gt;Most decentralized protocols arrive with a constitution. Often it is gestured
+at — a forum post, a snapshot vote, a yellow paper — and rarely is it
+reckoned with as a constitution in the political sense. Buried inside almost
+every one of these documents, however, is a clause whose plain reading is
+this: &lt;em&gt;in case of emergency, the rules do not apply.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-the-multisig-actually-does&quot;&gt;What the multisig actually does&lt;/h2&gt;
+
+&lt;p&gt;The emergency multisig is not, on its face, a governance organ. It is
+presented as a fire extinguisher. The framing matters: a fire extinguisher is
+defensive, occasional, technical. A constitution is offensive, permanent,
+political. By rendering the multisig in the first vocabulary while granting
+it the powers of the second, protocols achieve a useful confusion.&lt;/p&gt;
+
+&lt;p&gt;In practice the multisig can — and in nearly every documented case has —
+done the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Override on-chain votes&lt;/strong&gt; when the result is judged unsafe.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Pause core contracts&lt;/strong&gt; without the assent of the broader token-holder
+body.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Migrate funds&lt;/strong&gt; from drained or compromised positions, sometimes after
+socializing the loss to other depositors.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Replace itself&lt;/strong&gt; with a smaller, faster signer set when speed is judged
+necessary.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Each of these is, in the language of constitutional theory, a sovereign act.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-short-typology&quot;&gt;A short typology&lt;/h2&gt;
+
+&lt;p&gt;The cleanest way to classify these arrangements is by the relationship
+between the multisig and the token-holder body. Three patterns recur.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;The Cincinnatus model.&lt;/strong&gt; The multisig is meant to dissolve once the
+protocol is “mature.” It rarely does.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;The Senate model.&lt;/strong&gt; The multisig governs the rate at which the
+token-holder body’s decisions take effect — a delay-and-veto layer dressed
+as a security council.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;The Praetorian model.&lt;/strong&gt; The multisig is plainly the seat of power.
+Token votes are advisory. Governance forums are reading rooms.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The hardest question to ask of a decentralized protocol is the oldest
+question in political theory: &lt;em&gt;who decides the exception?&lt;/em&gt; It is almost
+never the token holders.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;why-this-is-not-a-complaint&quot;&gt;Why this is not a complaint&lt;/h2&gt;
+
+&lt;p&gt;There are excellent reasons to keep emergency powers in a small, fast hand.
+Smart-contract bugs are discovered at three in the morning. Bridge exploits
+move millions before the next block. The argument here is not that the
+multisig should be abolished — it is that calling it a fire extinguisher
+makes it harder to govern.&lt;/p&gt;
+
+&lt;p&gt;The next entries in this dispatch will look at three case studies — Lido,
+Optimism, and a now-defunct lending protocol whose name we will redact for
+legal reasons — to see what the multisig was &lt;em&gt;actually&lt;/em&gt; asked to do, and
+what it did instead.&lt;/p&gt;
+
+</description>
+                <pubDate>Wed, 22 Apr 2026 09:00:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/quiet-violence-of-emergency-multisigs</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/quiet-violence-of-emergency-multisigs</guid>
+                
+                <category>multisig</category>
+                
+                <category>governance</category>
+                
+                <category>emergency-powers</category>
+                
+                <category>dao</category>
+                
+                
+            </item>
+        
+            <item>
+                <title>Prover Markets Against Themselves</title>
+                <description>&lt;p&gt;If you spend any time around zero-knowledge rollup discourse you will have
+heard a particular argument: that &lt;em&gt;prover markets&lt;/em&gt;, once they mature, will
+decentralize themselves. The argument is appealing. It is also, on the
+evidence available, false in a specific and instructive way.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-argument-as-usually-stated&quot;&gt;The argument as usually stated&lt;/h2&gt;
+
+&lt;p&gt;The standard case proceeds in three steps.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;As demand for proofs grows, marginal cost compresses.&lt;/li&gt;
+  &lt;li&gt;As marginal cost compresses, capital with cheaper energy and silicon
+enters the market.&lt;/li&gt;
+  &lt;li&gt;As capital enters, the prover set fragments and the rollup decentralizes.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Each step is plausible. Each step is also a model assumption — and the
+assumptions that make the model work are exactly the assumptions that fail in
+the field.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-the-field-actually-shows&quot;&gt;What the field actually shows&lt;/h2&gt;
+
+&lt;p&gt;The four largest rollup ecosystems with publicly inspectable prover sets, as
+of the first quarter of 2026, share a striking property: each has fewer than
+five active prover entities, and the top entity in each case generates
+between sixty and seventy-five percent of submitted proofs.&lt;/p&gt;
+
+&lt;p&gt;This is not a transient state. It is what we will tentatively call the
+&lt;strong&gt;prover oligopoly equilibrium&lt;/strong&gt; — the durable outcome of three structural
+forces that the standard model abstracts away.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A market in which the top supplier generates two-thirds of the supply is a
+market by the courtesy of the dictionary. It is, in the relevant sense, a
+coordination layer wearing a market’s clothing.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;force-one-silicon-as-moat&quot;&gt;Force one: silicon as moat&lt;/h3&gt;
+
+&lt;p&gt;SNARK proving is GPU- and FPGA-bound. The capital cost of a competitive
+prover farm is in the low tens of millions and rising. The standard model
+assumes a continuous supply curve; the actual supply curve has a step at the
+hardware threshold and is nearly empty below it.&lt;/p&gt;
+
+&lt;h3 id=&quot;force-two-latency-as-moat&quot;&gt;Force two: latency as moat&lt;/h3&gt;
+
+&lt;p&gt;Rollup contracts almost universally reward the &lt;em&gt;first&lt;/em&gt; valid proof.
+Geographic and network proximity to the sequencer is therefore a hard
+constraint, and the entities best placed to satisfy it are the ones that
+already operate the sequencer.&lt;/p&gt;
+
+&lt;h3 id=&quot;force-three-integration-as-moat&quot;&gt;Force three: integration as moat&lt;/h3&gt;
+
+&lt;p&gt;The prover stack — circuits, witness generation, recursion — is co-evolved
+with the rollup’s specific implementation. Switching costs for a prover
+joining a new rollup are non-trivial. New entrants face a build that the
+incumbents amortized over years.&lt;/p&gt;
+
+&lt;h2 id=&quot;where-the-argument-needs-to-go&quot;&gt;Where the argument needs to go&lt;/h2&gt;
+
+&lt;p&gt;None of this is fatal to the rollup project. It is, however, fatal to the
+&lt;em&gt;specific story&lt;/em&gt; that prover markets will decentralize themselves without
+intervention. The next step in this series is to ask what intervention
+looks like — and which interventions are even possible inside the
+constraints rollups have already accepted.&lt;/p&gt;
+
+</description>
+                <pubDate>Wed, 15 Apr 2026 09:00:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/prover-markets-against-themselves</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/prover-markets-against-themselves</guid>
+                
+                <category>zk</category>
+                
+                <category>provers</category>
+                
+                <category>rollups</category>
+                
+                <category>market-design</category>
+                
+                
+            </item>
+        
+            <item>
+                <title>Post-mortem: The Shadow Fork of March Third</title>
+                <description>&lt;p&gt;On the evening of March 3, 2026, between 21:14 and 21:21 UTC, the network
+briefly held two competing canonical heads. The split was resolved within
+seven minutes, before most users noticed and before any exchange paused
+withdrawals. The thread post-mortems were, predictably, breathless. The
+actual sequence of events is more interesting and considerably more
+mundane.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-timeline&quot;&gt;The timeline&lt;/h2&gt;
+
+&lt;p&gt;What follows is reconstructed from operator logs voluntarily shared by three
+of the four implicated node operators, and from a draft client-team incident
+report we were shown on background.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;20:58&lt;/strong&gt; — A consensus client release candidate is shipped to a small
+pre-production cohort. The release contains an off-by-one in the
+attestation-aggregation path that only fires under a specific quorum
+arrangement.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;21:14&lt;/strong&gt; — Three of the cohort’s nodes begin attesting to a slightly
+different head than the rest of the network. The attestation gossip
+layer propagates the divergence.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;21:16&lt;/strong&gt; — A second cohort, running an unrelated but coincident
+fork-choice optimization, begins amplifying the minority head.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;21:18&lt;/strong&gt; — Two further nodes pick up the minority head as their preferred
+fork. The split is now three blocks long on the minority side.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;21:21&lt;/strong&gt; — A coordinated client-team Discord call yields a temporary
+fork-choice override. The minority head is orphaned. Total reorg depth on
+the affected nodes: two blocks. No finalized state was rewritten.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;why-this-matters-more-than-the-lack-of-damage-suggests&quot;&gt;Why this matters more than the lack of damage suggests&lt;/h2&gt;
+
+&lt;p&gt;The network self-healed. Finality held. The damage was zero. These are
+genuinely good outcomes. They are also exactly the conditions under which
+&lt;em&gt;the next&lt;/em&gt; incident gets less attention than it should.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Resilience is the most dangerous property a system can have, because it is
+the property most easily mistaken for correctness.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Three things in this incident were not resilient and deserve to be treated
+as findings rather than footnotes.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;The release-candidate cohort was self-selected.&lt;/strong&gt; The bug fired in a
+quorum arrangement no one had test-vector coverage for, because the
+cohort over-represented operators with similar topology.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;The fork-choice override was discretionary.&lt;/strong&gt; It was the right call.
+It was also a call made by a Discord channel of fewer than twenty
+people, none of whom hold a formal role in protocol governance.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;The post-mortem we are writing here is the most detailed account
+currently public.&lt;/strong&gt; The official report is still in legal review at
+the time of writing.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;what-we-are-watching-for-next&quot;&gt;What we are watching for next&lt;/h2&gt;
+
+&lt;p&gt;The client team has committed to a structural change in how
+release-candidate cohorts are sampled. We will follow up when the change
+ships. We are also watching, with concern, the normalization of the Discord
+override channel — a body whose authority is exactly proportional to the
+discretion it exercises and inversely proportional to its accountability.&lt;/p&gt;
+
+</description>
+                <pubDate>Wed, 08 Apr 2026 09:00:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/postmortem-shadow-fork-of-march-third</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/postmortem-shadow-fork-of-march-third</guid>
+                
+                <category>postmortem</category>
+                
+                <category>consensus</category>
+                
+                <category>fork</category>
+                
+                <category>node-ops</category>
+                
+                
+            </item>
+        
+            <item>
+                <title>Folding Schemes Without Romance</title>
+                <description>&lt;p&gt;Folding schemes are the most discussed and least understood family of
+cryptographic constructions of the last three years. The discussion is loud
+because the asymptotic story is genuinely beautiful. The understanding is
+thin because the engineering story is, as always, where the cost lives.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-asymptotic-story-briefly&quot;&gt;The asymptotic story, briefly&lt;/h2&gt;
+
+&lt;p&gt;A folding scheme takes two instances of a relation and produces a single
+instance whose satisfiability implies the satisfiability of both. The cost
+of folding is, in the strongest constructions, sub-linear in the size of
+the folded instances. The implication, repeated everywhere: you can build
+incrementally verifiable computation without paying for a full SNARK at
+every step. You only need a SNARK at the very end, and only over the final
+folded instance.&lt;/p&gt;
+
+&lt;p&gt;This is true. It is also where most of the discussion ends.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-engineering-bill&quot;&gt;The engineering bill&lt;/h2&gt;
+
+&lt;p&gt;The engineering bill comes in three line items.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Curve choice.&lt;/strong&gt; Nova-family schemes want a &lt;em&gt;cycle&lt;/em&gt; of curves so that
+scalar arithmetic on one curve can be checked by a circuit over the
+other. The cycles available to us are not free. The pasta cycle is
+excellent for proof generation and bad for many existing verifier
+ecosystems. The bn254/grumpkin cycle is the inverse trade-off.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Witness generation.&lt;/strong&gt; The folded instance grows in dimensionality, not
+size. Witness generation for the next fold therefore involves matrix
+operations whose cost is asymptotically negligible and whose constant
+factors are not. We have measured constant factors of three to four
+times the optimistic estimates in three out of four open implementations.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Final SNARK.&lt;/strong&gt; The asymptotic story says you only need one final SNARK.
+This is true. The size of the final SNARK is, however, a function of the
+arithmetization used during folding, and that arithmetization is
+&lt;em&gt;bigger&lt;/em&gt; than the per-step arithmetization a non-folding scheme would
+use. The savings are real. They are smaller than the talks suggest.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The right way to read every folding-scheme talk is to ask, at each
+asymptotic claim, &lt;em&gt;what is the constant factor and at what input size
+does it dominate?&lt;/em&gt; The answers are usually publishable. They are usually
+not published.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;where-folding-wins&quot;&gt;Where folding wins&lt;/h2&gt;
+
+&lt;p&gt;Folding wins clearly and unambiguously when:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The per-step computation is small relative to a baseline SNARK.&lt;/li&gt;
+  &lt;li&gt;The number of steps is large.&lt;/li&gt;
+  &lt;li&gt;The verifier ecosystem can accept the curve cycle the prover wants to
+use.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The first two conditions describe a great many real workloads. The third
+is the live political question of the next eighteen months.&lt;/p&gt;
+
+&lt;h2 id=&quot;where-folding-loses&quot;&gt;Where folding loses&lt;/h2&gt;
+
+&lt;p&gt;Folding loses, sometimes badly, when the per-step computation is itself
+the size of a small SNARK — which is a not-uncommon situation in the
+rollup setting we have been writing about. The right thing to do in that
+regime is to use a non-folding recursive SNARK over a smaller per-step
+circuit and accept the constant overhead. The folding literature does not
+say this loudly, and it should.&lt;/p&gt;
+
+</description>
+                <pubDate>Wed, 01 Apr 2026 09:00:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/folding-schemes-without-romance</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/folding-schemes-without-romance</guid>
+                
+                <category>zk</category>
+                
+                <category>folding</category>
+                
+                <category>nova</category>
+                
+                <category>supernova</category>
+                
+                <category>hypernova</category>
+                
+                
+            </item>
+        
+            <item>
+                <title>Folding Schemes Without Romance</title>
+                <description>-----BEGIN ARTICLE SIGNATURE-----
+Hash: SHA512
+
+iQIzBAEBCgAdFiEEXC0YpH47nQJvSiG4iJ48n3sqkdYFAmYqAAAACgkQiJ48n3sq
+kdY7uA/+OdjzG6YQk2pZ4u6RnP1YZ2T6sHb9XvkHrK3oIqW1m4o5gI1f0z2Xb7yK
+3hM5bP4w0qJ6AeP4QnyD8qKzN7HfVm3l8C9aR2eY1xT5oG6bV3pH4U7dY9wK0sLa
+pX2vT8C1Z6m4Q5pBfLnY3JhKwR0nAeZ4uV1z3D8aY6Q9sM1lH8tS3oP2bV0xR4uC
+N6pQ7fA9hY3uL5kM2D8sW1Z6oC9rG2fY4P0hT3bN1eK5sR4tH8mY3pP0wL6xQ2vC
+aK1jR8nM2bH3sP9oC4dY1uG6tH3eK0sP4mY9rN1vL7xR2bH3sQ9oA4dY1uG6tH3e
+NXOnEDvbXS9I8aJl7w==
+=K3yF
+-----END ARTICLE SIGNATURE-----
+</description>
+                <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/folding-schemes-without-romance</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/folding-schemes-without-romance</guid>
+                
+                
+            </item>
+        
+            <item>
+                <title>Against the Protocol as Literature</title>
+                <description>&lt;p&gt;A small genre has emerged over the last two years of essays that propose to
+read foundational protocol documents — the Bitcoin whitepaper, the Ethereum
+yellow paper, sundry rollup whitepapers — as &lt;em&gt;literature&lt;/em&gt;. The framing is
+intended to flatter. It is not flattering, and it is not, on closer reading,
+even meant to be.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-the-argument-actually-says&quot;&gt;What the argument actually says&lt;/h2&gt;
+
+&lt;p&gt;The argument runs roughly as follows. These documents are widely read. They
+are quoted with reverence. They have a recognizable house style — clipped,
+declarative, mathematical, occasionally Latinate. Therefore, the essays
+conclude, we ought to read them as &lt;em&gt;texts&lt;/em&gt;: with attention to genre, to
+voice, to rhetorical posture.&lt;/p&gt;
+
+&lt;p&gt;It is the conclusion that does the political work. To read a whitepaper as
+literature is to release it from the obligation to be true.&lt;/p&gt;
+
+&lt;h2 id=&quot;two-kinds-of-literary-reading&quot;&gt;Two kinds of literary reading&lt;/h2&gt;
+
+&lt;p&gt;It is worth distinguishing between two ways one might read a whitepaper as
+literature, because the genre conflates them.&lt;/p&gt;
+
+&lt;p&gt;The first is &lt;strong&gt;forensic&lt;/strong&gt;. One reads a technical document as a literary
+object the way an editor reads a manuscript: looking for what is said and
+what is conspicuously not, where the metaphors are doing analytical work
+and where they are doing concealment. This is a useful posture. We will use
+it again in this magazine.&lt;/p&gt;
+
+&lt;p&gt;The second is &lt;strong&gt;devotional&lt;/strong&gt;. One reads a technical document as a literary
+object the way one reads a sacred text: with the assumption that the
+pleasure of the reading is itself the point, and that the document’s
+relationship to its claims is a question for somebody else. This is the
+posture the recent essays adopt, even where they would deny it.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The forensic reading sharpens the document. The devotional reading
+dissolves it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;why-this-matters&quot;&gt;Why this matters&lt;/h2&gt;
+
+&lt;p&gt;The protocols described in these documents are not literature. They are
+machines that hold money. The texts that describe them are not poems. They
+are specifications, with all the ordinary obligations that specifications
+carry: they should be testable, falsifiable, and accountable to the
+running code.&lt;/p&gt;
+
+&lt;p&gt;Treating them otherwise is not generous. It is a way of insulating their
+authors from the responsibilities that any other engineering document
+would carry. A bridge is not made safer by a beautiful drawing. A protocol
+is not made trustworthy by a beautifully written whitepaper.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-modest-proposal-for-reviewers&quot;&gt;A modest proposal for reviewers&lt;/h2&gt;
+
+&lt;p&gt;For the reviewer of a forthcoming whitepaper, two questions to keep on the
+desk:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Where does the prose substitute for the proof?&lt;/li&gt;
+  &lt;li&gt;Where does the manifesto substitute for the engineering plan?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The honest documents survive the questions. The dishonest ones do not. The
+literary essays we have been reading do not ask either.&lt;/p&gt;
+</description>
+                <pubDate>Wed, 25 Mar 2026 09:00:00 +0000</pubDate>
+                <link>http://0.0.0.0:5000/feed/against-the-protocol-as-literature</link>
+                <guid isPermaLink="true">http://0.0.0.0:5000/feed/against-the-protocol-as-literature</guid>
+                
+                <category>criticism</category>
+                
+                <category>whitepapers</category>
+                
+                <category>ethos</category>
+                
+                <category>manifestos</category>
                 
                 
             </item>

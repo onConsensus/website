@@ -1,19 +1,54 @@
 #-------------------------------
 # General Site Settings
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+title: "On Consensus"
+tagline: "On governance, cryptography, and the architectures of trust."
+description: "On Consensus is an editorial publication on decentralized & distributed technologies — governance, research, development, cryptography, and culture. No hype, no gradients, just the wire."
+url: "https://onconsensus.com"
+baseurl: ""
+email: "editors@onconsensus.com"
+lang: en
+timezone: UTC
+
+author:
+  name: "On Consensus Editors"
+  email: "editors@onconsensus.com"
 
 
 #-------------------------------
 # Build Settings
 markdown: kramdown
-permalink: /:title
+permalink: /feed/:slug
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# GitHub-Pages-allowed plugins only.
+# https://pages.github.com/versions/
 plugins:
-  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-redirect-from
   - jekyll-sitemap
+  - jekyll-paginate
 
 paginate: 12
 paginate_path: "/feed/page/:num"
+
+# Files & paths excluded from the build output
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - node_modules
+  - vendor
+  - .replit
+  - replit.nix
+  - replit.md
+  - .agents
+  - .local
+  - .cache
+  - attached_assets
+  - .DS_Store
 
 
 #-------------------------------
@@ -28,8 +63,13 @@ collections:
   authors:
     output: true
     permalink: /:name
+  series:
+    output: true
+    permalink: /series/:name
 
-# Pages Path
+
+#-------------------------------
+# Defaults
 defaults:
   - scope:
       path: ""
@@ -45,13 +85,70 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      license: "CC-BY-SA-4.0"
+      pgp_signed: false
   - scope:
       path: ""
       type: "authors"
     values:
       layout: "author"
+  - scope:
+      path: ""
+      type: "series"
+    values:
+      layout: "series"
 
 
-sass:
-  sass_dir: _sass
-  style: compressed
+#-------------------------------
+# Sections (the editorial taxonomy)
+# A post's `section:` frontmatter must be one of these slugs.
+# `accent` is consumed only as a 2px underline under section names —
+# the global accent (#B8412E) remains the only colour with prominence.
+sections:
+  - slug: governance
+    title: "Governance"
+    blurb: "DAOs, slashing, voting, and the politics of protocols."
+    accent: "#B8412E"
+  - slug: research
+    title: "Research"
+    blurb: "Original analysis and notes from the academic edge."
+    accent: "#7A5C3F"
+  - slug: development
+    title: "Development"
+    blurb: "Implementation reports, post-mortems, and notes from node operators."
+    accent: "#3F5C7A"
+  - slug: cryptography
+    title: "Cryptography"
+    blurb: "Primitives, proofs, and the math underneath the chains."
+    accent: "#3F7A5C"
+  - slug: culture
+    title: "Culture"
+    blurb: "The people, the prose, and the politics of decentralization."
+    accent: "#7A3F5C"
+  - slug: dispatches
+    title: "Dispatches"
+    blurb: "Short-form link-blog. On the wire."
+    accent: "#5C5C5C"
+
+
+#-------------------------------
+# Social (decentralized stack only — no X/Twitter)
+# Editorial decision: the audience reads the open social web.
+social:
+  mastodon: "https://mastodon.social/@onconsensus"
+  bluesky: "https://bsky.app/profile/onconsensus.com"
+  nostr: "npub1onconsensus000000000000000000000000000000000000000000000000"
+  github: "https://github.com/onConsensus"
+  farcaster: "https://warpcast.com/onconsensus"
+  rss: "/feed.xml"
+
+
+#-------------------------------
+# Editorial defaults
+license:
+  content: "CC-BY-SA-4.0"
+  code: "MIT"
+
+# Paginate excludes (jekyll-paginate)
+paginate_exclude:
+  - sections

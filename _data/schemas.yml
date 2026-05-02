@@ -1,0 +1,53 @@
+# Frontmatter schemas for On Consensus content.
+# This file is documentation for editors and CMS configuration —
+# it is not consumed at build time. Keep in sync with `_config.yml`
+# and any Decap CMS configuration under `/admin/`.
+
+post:
+  required:
+    title: "Headline of the article."
+    author: "Slug of an entry in `_authors/` (filename without `.md`)."
+    date: "ISO 8601 publish timestamp (e.g. 2026-05-02 09:00:00 +0000)."
+    section: "One of: governance, research, development, cryptography, culture, dispatches."
+  optional:
+    subtitle: "Standfirst / deck. One sentence, sets up the article."
+    series: "Slug of an entry in `_series/`."
+    tags: "Array of free-form tag strings."
+    excerpt: "Plain-text summary used in cards, feeds, and meta description (~155 chars)."
+    featured_image: "Path under `/images/` for the lead photo."
+    featured_caption: "Caption + credit for the featured image."
+    image: "Override for OG / Twitter card image. Falls back to featured_image."
+    reading_time_override: "Integer minutes. Overrides word-count math."
+    canonical_url: "External URL if cross-posted; emits rel=canonical."
+    license: "Defaults to CC-BY-SA-4.0."
+    pgp_signed: "Boolean. If true, render the sibling `<slug>.sig` as an ASCII signature block."
+    featured: "Boolean. The single article with `featured: true` becomes the home-page lead piece."
+    block_height: "Integer. Optional Bitcoin block height at publish, surfaced next to the date."
+    corrections: "Array of `{date, note}` entries surfaced on `/corrections`."
+
+author:
+  required:
+    name: "Display name."
+    slug: "URL slug. Must equal the filename without `.md`."
+  optional:
+    bio: "Short biography (1-3 sentences)."
+    avatar: "Path under `/images/`."
+    pgp_fingerprint: "Long-form fingerprint, surfaced on the author page."
+    joined_date: "ISO date the author joined the publication."
+    links:
+      mastodon: "Full URL."
+      bluesky: "Full URL."
+      nostr: "npub… string."
+      github: "Full URL."
+      website: "Full URL."
+
+series:
+  required:
+    title: "Series title."
+    slug: "URL slug. Must equal the filename without `.md`."
+    description: "1-2 sentence description shown atop the series page."
+    editor: "Slug of an editor in `_authors/`."
+    status: "open or closed."
+  optional:
+    cover: "Path under `/images/` for the series cover."
+    started: "ISO date the series began."

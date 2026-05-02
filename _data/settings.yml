@@ -1,7 +1,7 @@
 #-------------------------------
 # Site Settings
-title: onConsensus
-description: Deciphering the decentralized future
+title: "On Consensus"
+description: "On governance, cryptography, and the architectures of trust."
 logo: "/images/logo.svg" # You can add own logo. For example "/images/logo.svg".
 logo_dark: "/images/logo-dark.svg"
 color_scheme: auto # You can choose three modes auto, light, and dark. By default, the auto mode is set, which means the user can choose the light or dark mode themself.
@@ -73,13 +73,13 @@ footer_description: Deciphering the decentralized future.
 
 
 # Social Links
+# Decentralized social only — no X/Twitter, by editorial decision.
+# The audience reads the open social web.
 social:
-- {icon: "twitter", link: "https://twitter.com/onconsensus"}
-- {icon: "facebook", link: "https://facebook.com/onconsensus"}
-- {icon: "instagram", link: "https://instagram.com/onconsensus"}
-- {icon: "linkedin", link: "https://linkedin.com/company/onconsensus"}
-- {icon: "youtube", link: "https://www.youtube.com/@onconsensus"}
-- {icon: "rss", link: "https://www.vjsmag.com/feed"}
+- {icon: "logo-mastodon", link: "https://mastodon.social/@onconsensus"}
+- {icon: "cloud-outline", link: "https://bsky.app/profile/onconsensus.com"}
+- {icon: "logo-github", link: "https://github.com/onConsensus"}
+- {icon: "rss", link: "/feed.xml"}
 
 # Example of adding a new link to the footer - {icon: "instagram", link: "https://instagram.com"}
 # Other icons can be found at https://ionicons.com/v4/
