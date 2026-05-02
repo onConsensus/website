@@ -69,6 +69,10 @@ sitemap: false
       {%- assign _audio_dur = nil -%}
       {%- if _override and _override != "" -%}
         {%- assign _audio_url = _override | absolute_url -%}
+        {%- assign _override_meta = site.data.audio_override[post.slug] -%}
+        {%- if _override_meta -%}
+          {%- assign _audio_size = _override_meta.bytes | default: 0 -%}
+        {%- endif -%}
       {%- elsif _entry and _entry.url -%}
         {%- assign _audio_url = _entry.url | absolute_url -%}
         {%- assign _audio_size = _entry.bytes | default: 0 -%}

@@ -26,7 +26,13 @@ sitemap: false
 <head>
   <meta charset="utf-8">
   <title>On Consensus — {{ _ym_label }} broadsheet</title>
-  <meta name="generator" content="On Consensus broadsheet ({{ site.time | date_to_xmlschema }})">
+  {%- comment -%}
+    Generator metadata uses the build SHA from jekyll-github-metadata
+    rather than wall-clock time, so two contributors who run
+    `bundle exec jekyll build && node scripts/render_print.js`
+    against the same git revision get byte-identical PDFs.
+  {%- endcomment -%}
+  <meta name="generator" content="On Consensus broadsheet · build {{ site.github.build_revision | default: 'local' | slice: 0, 7 }}">
   <link rel="stylesheet" href="{{ '/assets/css/broadsheet.css' | relative_url }}">
 </head>
 <body class="broadsheet" data-month="{{ _ym }}">
@@ -35,7 +41,7 @@ sitemap: false
     <p class="broadsheet__kicker">Vol. {{ _year }} · {{ _ym_label }} edition · onconsensus.com</p>
     <h1 class="broadsheet__wordmark">On Consensus</h1>
     <p class="broadsheet__tagline">{{ site.tagline | default: site.description }}</p>
-    <p class="broadsheet__strap">A plaintext cypherpunk broadsheet · {{ _posts.size }} article{% if _posts.size != 1 %}s{% endif %} · compiled {{ site.time | date: "%-d %B %Y" }}</p>
+    <p class="broadsheet__strap">A plaintext cypherpunk broadsheet · {{ _posts.size }} article{% if _posts.size != 1 %}s{% endif %} · {{ _ym_label }} edition</p>
   </header>
 
   <section class="broadsheet__toc" aria-labelledby="broadsheet-toc-heading">
@@ -77,7 +83,7 @@ sitemap: false
   {%- endfor -%}
 
   <footer class="broadsheet__colophon">
-    <p>© {{ _year }} On Consensus contributors. Released under {{ site.license.content }}. Set in IBM Plex Serif and Plex Mono. Compiled {{ site.time | date: "%-d %B %Y" }} from <a href="{{ site.url }}">{{ site.url }}</a>.</p>
+    <p>© {{ _year }} On Consensus contributors. Released under {{ site.license.content }}. Set in IBM Plex Serif and Plex Mono. {{ _ym_label }} edition · build {{ site.github.build_revision | default: 'local' | slice: 0, 7 }} · <a href="{{ site.url }}">{{ site.url }}</a>.</p>
   </footer>
 
 </body>
