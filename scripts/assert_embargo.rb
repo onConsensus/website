@@ -88,7 +88,9 @@ embargoes.each do |slug, rec|
     failures << "[#{slug}] missing article--embargoed class"        unless html.include?('article--embargoed')
     failures << "[#{slug}] missing embargo-seal aside"              unless html.include?('class="embargo-seal"')
     failures << "[#{slug}] body div leaked despite active embargo"  if     html.include?('class="article__body"')
-    failures << "[#{slug}] methodology appendix leaked"             if     html.include?('class="methodology-appendix"')
+    # Rendered class is `methodology` (BEM block); inner elements are
+    # `methodology__heading`, `methodology__files`, etc.
+    failures << "[#{slug}] methodology appendix leaked"             if     html.include?('class="methodology"')
     failures << "[#{slug}] PGP signature block leaked"              if     html.include?('class="pgp-signature-block"')
     feeds.each do |name, body|
       failures << "[#{slug}] embargoed slug appears in #{name}" if body.include?(slug)

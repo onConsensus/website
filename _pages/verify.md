@@ -96,7 +96,7 @@ in the future, the build hides the body and renders only the
 - the byte length of the source
 - a plain-prose intent statement supplied by the author
 
-After the deadline, the next build (the site rebuilds on a daily cron)
+After the deadline, the next build (the site rebuilds on an hourly cron)
 reveals the body. A small "Embargo lifted" ribbon then sits above the
 article showing the original sealed sha-256 so a reader can check that
 the published text still hashes to the same value.
