@@ -110,14 +110,39 @@ layout: default
         {%- endcomment -%}
         {% include repro-badge.html post=page %}
         {%- if has_embargo and embargoed == false and embargo_seal -%}
+          {%- comment -%}
+            Post-lift provenance ribbon. We surface three artefacts so
+            readers don't have to take the publisher's word that this
+            article matches what was sealed:
+              · the sealed sha-256 itself (truncated, full value on hover);
+              · a direct link to the immutable git blob of the post
+                source at the commit that introduced it (when the build
+                ran inside a git checkout — falls back to the verify
+                page recipe otherwise);
+              · the OpenTimestamps proof, which anchors the same bytes
+                to a Bitcoin block.
+          {%- endcomment -%}
           <p class="embargo-lifted" role="note">
             <span class="embargo-lifted__label">Embargo lifted</span>
             {%- if page.embargo_until -%}
               · <time datetime="{{ page.embargo_until }}">{{ page.embargo_until | date: "%-d %B %Y" }}</time>
             {%- endif -%}
             · sealed sha-256
-            <code title="{{ embargo_seal.source_sha256 }}">{{ embargo_seal.source_sha256 | slice: 0, 16 }}…</code>
-            · <a href="{{ '/verify/' | relative_url }}#embargoes">verify</a>
+            <code class="embargo-lifted__sha" title="{{ embargo_seal.source_sha256 }}">{{ embargo_seal.source_sha256 | slice: 0, 16 }}…</code>
+            {%- if embargo_seal.sealed_commit and site.github.repository_url -%}
+              ·
+              <a class="embargo-lifted__commit"
+                 href="{{ site.github.repository_url }}/blob/{{ embargo_seal.sealed_commit }}/{{ embargo_seal.sealed_path }}"
+                 rel="external">sealed source</a>
+              <span class="embargo-lifted__commit-sha">
+                (<code title="{{ embargo_seal.sealed_commit }}">{{ embargo_seal.sealed_commit | slice: 0, 7 }}</code>)
+              </span>
+            {%- endif -%}
+            {%- assign ts = site.data.timestamps[page.slug] -%}
+            {%- if ts and ts.ots_present -%}
+              · <a href="{{ ts.ots_path | relative_url }}" rel="external" download>.ots proof</a>
+            {%- endif -%}
+            · <a href="{{ '/verify/' | relative_url }}#embargoes">how to verify</a>
           </p>
         {%- endif -%}
         {%- if page.corrections and page.corrections.size > 0 -%}
