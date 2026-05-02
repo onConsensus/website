@@ -1,0 +1,59 @@
+Theme E — Editorial trust signals
+Cheap to ship, expensive to lack. Each one is the kind of thing a sharp reader notices and a careless publication doesn't bother with.
+
+Task #22 — Public corrections & retractions ledger
+A /corrections page generated from corrections: frontmatter on every post, sorted by date, with permanent links. Retractions render as a top-of-article "Retracted" overlay with the reason, never silent deletions. Sets a clear bar that's visible to readers.
+
+Task #23 — Author disclosure registry
+Each author has a structured disclosures.yml (holdings, grants, advisory roles, employer). Surfaced as "Disclosures" near the byline on every article they wrote, and as a standalone /authors/<slug>/disclosures page. Updates are versioned.
+
+Task #24 — Article changelog with visible diffs
+Every edit after publish records a diff to the article's history. A "View edit history" link near the byline opens a chronological list of changes. Built from git history of _posts/, no extra storage required.
+
+Task #25 — Editorial constitution & standards page
+A versioned /standards page covering: who can publish, conflicts and recusals, sourcing requirements, when corrections vs. retractions apply, anonymity policy, AI-generated-content policy. Linked from every article footer. Sets the bar publicly.
+
+Theme F — Crypto-native content primitives
+Things only a publication in this space can credibly do. Cheap technically, high signal editorially.
+
+Task #26 — OpenTimestamps anchoring
+Each post hash is timestamped via OpenTimestamps at publish (free, Bitcoin-anchored, no third-party trust). The .ots proof file lives at /timestamps/<slug>.ots and is linked from the article footer. Anyone can verify the article existed at the claimed time, no transparency log infrastructure required.
+
+Task #27 — Inline on-chain reference auto-linking
+Markdown plugin that recognizes tx hashes, addresses, ENS names, block heights, and renders them as multi-explorer links (e.g. etherscan.io | blockscout | otterscan) plus an inline copy button. Removes the temptation to lock readers into one explorer's worldview.
+
+Task #28 — Embargoed / time-locked publishing
+A post can declare embargo_until: 2026-06-01T14:00Z (or embargo_block: 21000000). The build either holds the article or publishes a sealed commit (hash + author + intent) that opens at the specified time. Useful for coordinated disclosures.
+
+Task #29 — Reproducibility appendices
+Research pieces can attach a methodology/ directory: dataset hashes, queries, notebooks, analysis scripts. Auto-rendered as a "Reproduce this" appendix at the end of the article with download links and SHA-256s. A "Reproducibility: data + code" badge appears near the byline.
+
+Theme G — Discoverability without surveillance
+The opposite of recommendation algorithms. Sharp, manual, transparent.
+
+Task #30 — Granular RSS / Atom / JSON feeds
+Per-section, per-author, per-series, per-tag, and per-glossary-term feeds. Each one is a first-class URL and is linked from the relevant index page. Readers pick exactly what they want; no central recommender.
+
+Task #31 — Citation export per article
+"Cite this" button on every article emits BibTeX, RIS, Hayagriva, and a plain-text citation, all with stable URL + OpenTimestamps proof reference. Each post also gets a permanent identifier (DOI-style local prefix, e.g. oc:2026/0008).
+
+Task #32 — Editor-curated reading lists
+A _lists/ collection: ordered, annotated paths through the archive ("Read this if you want to understand rollup-centric Ethereum from first principles", 7 articles, 2 hours). Each list is a first-class page with its own RSS feed and PDF/EPUB export.
+
+Theme H — Editorial workflow & DX
+Lower visibility but reduces compound editorial friction. Worth it once you're publishing weekly.
+
+Task #33 — Prose style linter (Vale)
+A .vale.ini rule pack that flags hype phrasing ("revolutionary", "game-changing"), bans the word "blockchain technology", enforces house style on capitalization (Bitcoin / bitcoin, Ethereum, mainnet / Mainnet), and runs in CI on every PR. Keeps voice consistent across guest contributors.
+
+Task #34 — Frontmatter validator + PR previews
+A pre-commit hook and CI step that validates every post's frontmatter against _data/schemas.yml. PRs get a Cloudflare Pages preview deployment and a screenshot diff of any layout-relevant pages. Removes the "merge and pray" feedback loop.
+
+Theme I — Reach without a platform
+Plain-text, multi-modal extensions of the same content. No new editorial work required.
+
+Task #35 — Audio edition (TTS-narrated, per-article)
+Build-time TTS (Coqui or ElevenLabs) generates an MP3 for every post. Published as a podcast feed per section. For long-form pieces, the option to upload a human-narrated track that overrides the TTS version.
+
+Task #36 — Monthly print edition (PDF broadsheet)
+A CI job compiles each month's articles into a properly typeset broadsheet PDF — 4 columns, real broadsheet format, downloadable from /print/2026-04. Reinforces the masthead identity and gives long-form pieces a permanent printable home.
