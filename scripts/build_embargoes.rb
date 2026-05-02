@@ -63,6 +63,21 @@ rescue Psych::SyntaxError
   {}
 end
 
+# Load any existing seals so first-generated values are preserved across
+# runs. The seal is a *precommitment* — once we publish a sha-256, the
+# value is meant to be immutable for the lifetime of the embargo. If
+# an author edits the post mid-embargo (typo fix, broken-link patch),
+# subsequent runs MUST keep the original sealed sha so verifiers can
+# detect the drift. We track the live sha separately as `current_sha256`
+# and surface a `tampered: true` flag when the two diverge — that's
+# what makes the seal trustworthy rather than just a build artefact.
+existing = {}
+if File.exist?(DATA)
+  loaded = YAML.safe_load(File.read(DATA),
+                          permitted_classes: [Time, Date, Symbol]) || {}
+  existing = loaded.is_a?(Hash) ? loaded : {}
+end
+
 records = {}
 
 Dir[File.join(POSTS, '*.md')].sort.each do |path|
@@ -76,20 +91,39 @@ Dir[File.join(POSTS, '*.md')].sort.each do |path|
   embargo_until = fm['embargo_until']
   embargo_until = embargo_until.iso8601 if embargo_until.respond_to?(:iso8601)
 
-  rel_path      = path.sub("#{ROOT}/", '')
-  sealed_commit = first_commit_for(rel_path)
+  rel_path = path.sub("#{ROOT}/", '')
+  prior    = existing[slug] || {}
+
+  # First-seen wins for every immutable field. The current frontmatter
+  # supplies `embargo_until` / `embargo_block` only as a fallback when
+  # this is the first run; once sealed, the deadline is part of the
+  # precommitment and is not mutable from frontmatter.
+  sealed_sha    = prior['source_sha256'] || sha
+  sealed_at     = prior['sealed_at']     || Time.now.utc.iso8601
+  sealed_commit = prior['sealed_commit'] || first_commit_for(rel_path)
+  sealed_path   = prior['sealed_path']   || rel_path
+  sealed_until  = prior['embargo_until'] || embargo_until
+  sealed_block  = prior['embargo_block'] || fm['embargo_block']
+  sealed_intent = prior['intent_statement'] || fm['intent_statement']
+  sealed_bytes  = prior['source_bytes']     || body.bytesize
 
   records[slug] = {
-    'source_sha256'    => sha,
-    'embargo_until'    => embargo_until,
-    'embargo_block'    => fm['embargo_block'],
-    'intent_statement' => fm['intent_statement'],
-    'sealed_at'        => Time.now.utc.iso8601,
-    'source_bytes'     => body.bytesize,
+    'source_sha256'    => sealed_sha,
+    'embargo_until'    => sealed_until,
+    'embargo_block'    => sealed_block,
+    'intent_statement' => sealed_intent,
+    'sealed_at'        => sealed_at,
+    'source_bytes'     => sealed_bytes,
     # Provenance anchor for the post-lift ribbon. The path is repo-relative
     # so the layout can interpolate `site.github.repository_url` against it.
     'sealed_commit'    => sealed_commit,
-    'sealed_path'      => rel_path
+    'sealed_path'      => sealed_path,
+    # Drift signal: live sha and a tamper flag set when the current
+    # source no longer hashes to the sealed value. The post layout
+    # surfaces this in the lifted ribbon so readers can see the seal
+    # was broken even though the article is now public.
+    'current_sha256'   => sha,
+    'tampered'         => sealed_sha != sha
   }.compact
 end
 

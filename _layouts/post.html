@@ -129,6 +129,12 @@ layout: default
             {%- endif -%}
             · sealed sha-256
             <code class="embargo-lifted__sha" title="{{ embargo_seal.source_sha256 }}">{{ embargo_seal.source_sha256 | slice: 0, 16 }}…</code>
+            {%- if embargo_seal.tampered -%}
+              <span class="embargo-lifted__tampered" role="note"
+                    title="The current source hashes to {{ embargo_seal.current_sha256 }}, which differs from the sealed value. The published text was edited after the seal was issued.">
+                · ⚠ seal broken
+              </span>
+            {%- endif -%}
             {%- if embargo_seal.sealed_commit and site.github.repository_url -%}
               ·
               <a class="embargo-lifted__commit"

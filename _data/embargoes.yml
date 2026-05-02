@@ -14,3 +14,5 @@ coordination-disclosure-window:
   source_bytes: 1582
   sealed_commit: 472cf4cbb4ea5a5d4daf15e79c518e0aaa7be730
   sealed_path: _posts/2026-04-30-coordination-disclosure-window.md
+  current_sha256: 456c39124d9c779b07a8d55d29fac82c2fbc6f7d63f8bc5c85b9f47ec0676f80
+  tampered: false
