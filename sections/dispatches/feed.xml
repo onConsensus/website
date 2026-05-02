@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /sections/dispatches/feed.xml
+sitemap: false
+section_slug: dispatches
+---
+{% include section-feed.xml section_slug=page.section_slug %}

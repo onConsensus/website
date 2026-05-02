@@ -27,7 +27,18 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - `_authors/` — author collection (slug = filename).
 - `_series/` — multi-part series collection (`/series/:name`).
 - `_posts/` — articles (`/feed/:slug`).
-- `_pages/` — static pages (about, etc).
+- `_pages/` — static pages (about, etc) and section landings (`_pages/sections/<slug>.html`, one per editorial section, output to `/sections/<slug>/`).
+- `feed/index.html` — the firehose. `jekyll-paginate` (v1) sources from this
+  file using `paginate_path: "/feed/page:num"`; page 1 is `/feed/` and pages
+  2+ live at `/feed/page2/`, `/feed/page3/`, … (12 posts per page, set in
+  `_config.yml :: paginate`).
+- `sections/<slug>/feed.xml` — per-section RSS 2.0 feed. Six thin wrappers
+  share the body in `_includes/section-feed.xml`.
+- `atom.xml`, `feed.json`, `robots.txt` — top-level hand-rolled outputs.
+  `/feed.xml` is produced by jekyll-feed (Atom). The hand-rolled `/atom.xml`
+  carries editorial fields (per-item `<rights>`, summaries). `/feed.json` is
+  JSON Feed 1.1 with an `_on_consensus` extension exposing `section`,
+  `series`, `license`, `pgp_signed`, and `block_height`.
 - `_includes/`, `_layouts/` — *Plaintext Cypherpunk Broadsheet* layouts and
   reusable includes (Task #3). Layouts: `default`, `home`, `page`, `post`,
   `author`, `section`, `series`. Includes: `head`, `masthead`, `footer`,
@@ -101,7 +112,7 @@ so dark/print modes inherit them and Liquid never has to know about colour.
 1. **Foundation: config, collections & seed content** — *complete.*
 2. **Design system: Plaintext Cypherpunk Broadsheet SCSS** — *complete.*
 3. **Layouts & includes** — *complete.*
-4. Home, sections, archives & feeds.
+4. **Home, sections, archives & feeds** — *complete.*
 5. Client-side search.
 6. Reading experience polish.
 7. Accessibility, SEO & editorial pages.

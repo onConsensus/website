@@ -36,8 +36,8 @@
     <div class="colophon__col colophon__col--feeds">
       <h2 class="colophon__heading">Subscribe</h2>
       <ul class="colophon__list">
-        <li><a href="{{ '/feed.xml'  | relative_url }}" rel="alternate" type="application/rss+xml">RSS</a></li>
-        <li><a href="{{ '/feed.atom' | relative_url }}" rel="alternate" type="application/atom+xml">Atom</a></li>
+        <li><a href="{{ '/feed.xml'  | relative_url }}" rel="alternate" type="application/atom+xml">Atom</a></li>
+        <li><a href="{{ '/atom.xml'  | relative_url }}" rel="alternate" type="application/atom+xml">Atom (editorial)</a></li>
         <li><a href="{{ '/feed.json' | relative_url }}" rel="alternate" type="application/feed+json">JSON Feed</a></li>
         {%- if site.social.mastodon -%}
         <li><a href="{{ site.social.mastodon }}" rel="me">Mastodon</a></li>

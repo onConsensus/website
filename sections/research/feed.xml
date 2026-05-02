@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /sections/research/feed.xml
+sitemap: false
+section_slug: research
+---
+{% include section-feed.xml section_slug=page.section_slug %}

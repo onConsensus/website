@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /sections/governance/feed.xml
+sitemap: false
+section_slug: governance
+---
+{% include section-feed.xml section_slug=page.section_slug %}

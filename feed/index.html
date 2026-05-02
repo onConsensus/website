@@ -1,0 +1,82 @@
+---
+layout: default
+title: The Feed
+description: Every article from On Consensus, in publication order. Twelve to a page.
+permalink: /feed/
+sitemap: true
+---
+
+{%- assign posts = paginator.posts | default: site.posts -%}
+{%- assign total_pages = paginator.total_pages | default: 1 -%}
+{%- assign current_page = paginator.page | default: 1 -%}
+
+<section class="feed-archive container container--wide">
+
+  <header class="feed-archive__head">
+    <p class="feed-archive__kicker">The wire</p>
+    <h1 class="feed-archive__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="feed-archive__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+    {%- if total_pages > 1 -%}
+      <p class="feed-archive__page" aria-live="polite">
+        Page {{ current_page }} of {{ total_pages }}
+        · {{ paginator.total_posts }} article{% if paginator.total_posts != 1 %}s{% endif %}
+      </p>
+    {%- else -%}
+      <p class="feed-archive__page">{{ posts.size }} article{% if posts.size != 1 %}s{% endif %}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if posts and posts.size > 0 -%}
+    <div class="feed-archive__list card-grid card-grid--3">
+      {%- for post in posts -%}
+        {% include article-card.html post=post variant="standard" %}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="feed-archive__empty"><em>No articles published yet.</em></p>
+  {%- endif -%}
+
+  {%- if total_pages > 1 -%}
+    <nav class="pagination" aria-label="Feed pagination">
+      <ul class="pagination__list">
+        {%- if paginator.previous_page -%}
+          <li class="pagination__item pagination__item--prev">
+            <a rel="prev" href="{{ paginator.previous_page_path | relative_url }}">← Newer</a>
+          </li>
+        {%- else -%}
+          <li class="pagination__item pagination__item--prev pagination__item--disabled" aria-hidden="true">
+            <span>← Newer</span>
+          </li>
+        {%- endif -%}
+
+        {%- for n in (1..total_pages) -%}
+          {%- if n == 1 -%}
+            {%- assign n_path = '/feed/' -%}
+          {%- else -%}
+            {%- assign n_path = '/feed/page' | append: n | append: '/' -%}
+          {%- endif -%}
+          <li class="pagination__item{% if n == current_page %} pagination__item--current{% endif %}">
+            {%- if n == current_page -%}
+              <span aria-current="page">{{ n }}</span>
+            {%- else -%}
+              <a href="{{ n_path | relative_url }}">{{ n }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+
+        {%- if paginator.next_page -%}
+          <li class="pagination__item pagination__item--next">
+            <a rel="next" href="{{ paginator.next_page_path | relative_url }}">Older →</a>
+          </li>
+        {%- else -%}
+          <li class="pagination__item pagination__item--next pagination__item--disabled" aria-hidden="true">
+            <span>Older →</span>
+          </li>
+        {%- endif -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+</section>

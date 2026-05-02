@@ -1,0 +1,12 @@
+---
+layout: null
+permalink: /robots.txt
+sitemap: false
+---
+User-agent: *
+Allow: /
+
+# Editorial decision: do not block AI / archival crawlers. The publication is
+# CC-BY-SA-4.0 and the wire is meant to be read.
+
+Sitemap: {{ '/sitemap.xml' | absolute_url }}

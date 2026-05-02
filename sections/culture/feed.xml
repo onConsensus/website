@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /sections/culture/feed.xml
+sitemap: false
+section_slug: culture
+---
+{% include section-feed.xml section_slug=page.section_slug %}

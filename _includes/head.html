@@ -12,16 +12,27 @@
   {%- endcomment -%}
   {% seo %}
 
-  {%- comment -%} Feed autodiscovery — RSS, Atom, JSON Feed. {%- endcomment -%}
-  <link rel="alternate" type="application/rss+xml"
-        title="{{ site.title | escape }} — RSS"
-        href="{{ '/feed.xml' | relative_url }}">
+  {%- comment -%}
+    Feed autodiscovery. /feed.xml is produced by jekyll-feed (Atom 1.0,
+    historically advertised as the "RSS" link). /atom.xml is the hand-rolled
+    Atom feed with editorial fields (license per item, summary). /feed.json is
+    JSON Feed 1.1.
+  {%- endcomment -%}
   <link rel="alternate" type="application/atom+xml"
         title="{{ site.title | escape }} — Atom"
-        href="{{ '/feed.atom' | relative_url }}">
+        href="{{ '/feed.xml' | relative_url }}">
+  <link rel="alternate" type="application/atom+xml"
+        title="{{ site.title | escape }} — Atom (editorial)"
+        href="{{ '/atom.xml' | relative_url }}">
   <link rel="alternate" type="application/feed+json"
         title="{{ site.title | escape }} — JSON Feed"
         href="{{ '/feed.json' | relative_url }}">
+  {%- if page.section -%}
+    {%- assign section_feed = '/sections/' | append: page.section | append: '/feed.xml' -%}
+    <link rel="alternate" type="application/rss+xml"
+          title="{{ site.title | escape }} — {{ page.section | capitalize | escape }} (RSS)"
+          href="{{ section_feed | relative_url }}">
+  {%- endif -%}
 
   {%- comment -%}
     Self-hosted fonts (woff2). Preload the body face + display 700 + mono 400

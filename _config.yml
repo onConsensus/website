@@ -32,7 +32,11 @@ plugins:
   - jekyll-paginate
 
 paginate: 12
-paginate_path: "/feed/page/:num"
+# jekyll-paginate (v1, GitHub-Pages-allowed) requires the source page to live
+# in the same parent directory as `paginate_path`. With source at
+# `feed/index.html`, page 1 is `/feed/` and pages 2+ live at `/feed/page2/`,
+# `/feed/page3/`, … This is the conventional v1 pattern.
+paginate_path: "/feed/page:num"
 
 # Files & paths excluded from the build output
 exclude:
@@ -149,6 +153,9 @@ license:
   content: "CC-BY-SA-4.0"
   code: "MIT"
 
-# Paginate excludes (jekyll-paginate)
-paginate_exclude:
-  - sections
+#-------------------------------
+# jekyll-feed (Atom output)
+# Editorial decision: jekyll-feed produces an Atom feed at /feed.xml. The
+# hand-rolled /atom.xml and /feed.json sit alongside it for completeness.
+feed:
+  posts_limit: 30

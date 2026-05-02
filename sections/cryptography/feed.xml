@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /sections/cryptography/feed.xml
+sitemap: false
+section_slug: cryptography
+---
+{% include section-feed.xml section_slug=page.section_slug %}
