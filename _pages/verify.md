@@ -45,6 +45,15 @@ hash was committed to and the timestamp of that block. That is the
 strongest claim we can make about *when* a piece of writing existed
 in its current form.
 
+> **What exactly is being timestamped?** The proof binds the bytes of
+> the post's source markdown file in `_posts/`, not the rendered HTML
+> the browser displays. This is intentional: the markdown is the
+> canonical artefact (a single, deterministic file), whereas rendered
+> HTML changes whenever the theme, layout, or surrounding site
+> furniture is updated. Verifying against the source means a proof
+> issued today still verifies in five years, even after the site has
+> been redesigned.
+
 > **Why OpenTimestamps and not an L2 calldata anchor?** Because the
 > proof must be readable in fifty years. OpenTimestamps reduces every
 > attestation to a single Bitcoin block header, which is the most
