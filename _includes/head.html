@@ -49,6 +49,9 @@
   <link rel="alternate" type="application/feed+json"
         title="{{ site.title | escape }} — JSON Feed"
         href="{{ '/feed.json' | relative_url }}">
+  <link rel="alternate" type="application/rss+xml"
+        title="{{ site.title | escape }} — Corrections (RSS)"
+        href="{{ '/corrections/feed.xml' | relative_url }}">
   {%- if page.section -%}
     {%- assign section_feed = '/sections/' | append: page.section | append: '/feed.xml' -%}
     <link rel="alternate" type="application/rss+xml"

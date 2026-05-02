@@ -1,0 +1,471 @@
+// =============================================================================
+// _trust.scss
+// Editorial trust-signal surfaces (Task #9):
+//   · in-article retraction overlay
+//   · in-article correction notice (top of article)
+//   · author disclosures (inline collapsed + standalone page)
+//   · post-publish edit history
+// All blocks live near the byline of `_layouts/post.html` and on the
+// dedicated `/<slug>/disclosures/` and `/standards/` pages.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Retraction overlay — full-width banner above the article head.
+// -----------------------------------------------------------------------------
+
+.article__retraction {
+  margin: 0 0 var(--space-l);
+  padding: var(--space-l) 0;
+  background: var(--paper-2);
+  border-top: 4px double var(--ink);
+  border-bottom: 4px double var(--ink);
+  // Width breakout — `.reading` constrains its children; this aside lives
+  // outside the reading frame so it is unmistakable on every viewport.
+}
+
+.article__retraction-inner {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--space-m);
+}
+
+.article__retraction-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 var(--space-2xs);
+
+  &::before {
+    content: "■ ";
+    color: var(--ink);
+  }
+}
+
+.article__retraction-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-3);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-s);
+  text-wrap: balance;
+}
+
+.article__retraction-date {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--space-s);
+}
+
+.article__retraction-reason {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  line-height: var(--lh-body);
+  margin: 0 0 var(--space-s);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.article__retraction-policy {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  margin: 0;
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 0.15em;
+
+    &:hover, &:focus-visible {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+  }
+}
+
+// Retracted articles get a subtle desaturation on the body text so the
+// banner's authority carries through. Original text remains fully legible.
+.article--retracted {
+  .article__body {
+    color: var(--ink-2);
+  }
+
+  .article__title {
+    text-decoration: line-through;
+    text-decoration-color: var(--muted);
+    text-decoration-thickness: 2px;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// In-article correction notice — appears under the byline.
+// -----------------------------------------------------------------------------
+
+.article__correction-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs) var(--space-s);
+  margin: var(--space-m) 0 0;
+  padding: var(--space-s) var(--space-m);
+  background: var(--highlight, var(--paper-2));
+  border-left: var(--rule-accent);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--lh-body);
+  color: var(--ink);
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.15em;
+
+    &:hover, &:focus-visible { color: var(--accent); }
+  }
+}
+
+.article__correction-notice-label {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+
+  &::before {
+    content: "§ ";
+    color: var(--muted);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Disclosures — inline (collapsed under byline) and detail (standalone page).
+// -----------------------------------------------------------------------------
+
+.disclosures {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  line-height: var(--lh-body);
+  color: var(--ink);
+}
+
+.disclosures--inline {
+  margin: var(--space-s) 0 0;
+  padding: 0;
+  border-top: var(--rule-hairline);
+  border-bottom: var(--rule-hairline);
+
+  &[open] {
+    padding-bottom: var(--space-s);
+  }
+}
+
+.disclosures__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-s);
+  padding: var(--space-2xs) 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  list-style: none;
+
+  &::-webkit-details-marker { display: none; }
+
+  &::before {
+    content: "▸";
+    color: var(--accent);
+    transition: transform 0.15s ease-out;
+  }
+
+  &:hover, &:focus-visible {
+    color: var(--ink);
+    background: var(--paper-2);
+  }
+
+  details[open] > & {
+    color: var(--ink);
+
+    &::before {
+      content: "▾";
+    }
+  }
+}
+
+.disclosures__summary-date {
+  margin-left: auto;
+  font-size: var(--step--2);
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.disclosures__body {
+  padding: var(--space-s) 0 0;
+}
+
+.disclosures__list {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: var(--space-2xs) var(--space-m);
+  margin: 0;
+  padding: 0;
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: 500;
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: var(--space-3xs);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 39.999em) {
+    grid-template-columns: 1fr;
+    gap: 0;
+
+    dt {
+      margin-top: var(--space-s);
+    }
+
+    dd {
+      margin-bottom: var(--space-2xs);
+    }
+  }
+}
+
+.disclosures__inline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li + li {
+    border-top: var(--rule-hairline);
+    margin-top: var(--space-3xs);
+    padding-top: var(--space-3xs);
+  }
+}
+
+.disclosures__provenance {
+  margin: var(--space-s) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+
+    &:hover, &:focus-visible {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+  }
+}
+
+// Standalone /<slug>/disclosures/ page.
+.disclosures-page {
+  padding: var(--space-xl) 0;
+}
+
+.disclosures-page__head {
+  margin-bottom: var(--space-l);
+  padding-bottom: var(--space-m);
+  border-bottom: var(--rule-thick);
+}
+
+.disclosures-page__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-s);
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover, &:focus-visible { color: var(--ink); }
+  }
+}
+
+.disclosures-page__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-4);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-s);
+  text-wrap: balance;
+}
+
+.disclosures-page__meta {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  color: var(--muted);
+  margin: 0;
+  text-transform: uppercase;
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+
+    &:hover, &:focus-visible {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+  }
+}
+
+.disclosures-page__foot {
+  margin-top: var(--space-l);
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+.disclosures-page__empty {
+  margin: var(--space-l) 0;
+  padding: var(--space-l) var(--space-m);
+  background: var(--paper-2);
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-thick);
+}
+
+// -----------------------------------------------------------------------------
+// Edit history — collapsible list of post-publish git commits.
+// -----------------------------------------------------------------------------
+
+.edit-history {
+  margin: var(--space-s) 0 0;
+}
+
+.edit-history__summary {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  padding: var(--space-3xs) 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  list-style: none;
+
+  &::-webkit-details-marker { display: none; }
+
+  &::before {
+    content: "▸";
+    color: var(--accent);
+  }
+
+  &:hover, &:focus-visible {
+    color: var(--ink);
+  }
+
+  details[open] > &::before { content: "▾"; }
+}
+
+.edit-history__count {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.edit-history__list {
+  list-style: none;
+  margin: var(--space-s) 0 0;
+  padding: 0;
+  border-left: var(--rule-accent);
+}
+
+.edit-history__entry {
+  display: grid;
+  grid-template-columns: 7rem 1fr auto;
+  gap: var(--space-s);
+  align-items: baseline;
+  padding: var(--space-2xs) var(--space-s);
+
+  + .edit-history__entry {
+    border-top: var(--rule-hairline);
+  }
+
+  @media (max-width: 39.999em) {
+    grid-template-columns: 1fr auto;
+
+    .edit-history__date {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.edit-history__date {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.edit-history__subject {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.edit-history__sha {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+
+  &:hover, &:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  code {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    padding: 0;
+  }
+}
+
+.edit-history__note {
+  margin: var(--space-s) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--step--2);
+  font-style: italic;
+  color: var(--ink-2);
+  max-width: var(--measure);
+}

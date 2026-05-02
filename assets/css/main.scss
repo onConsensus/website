@@ -39,6 +39,7 @@
 @import "code";            // pre/code + Rouge syntax highlighting
 @import "search";          // masthead inline search + /search/ page
 @import "editorial";       // /ethos + /corrections editorial-policy pages
+@import "trust";           // retractions, corrections-notice, disclosures, edit history
 
 // 5 — Modes & utilities (must remain last for cascade reasons)
 @import "dark";            // prefers-color-scheme + [data-theme="dark"]

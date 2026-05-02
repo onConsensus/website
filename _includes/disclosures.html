@@ -1,0 +1,107 @@
+{%- comment -%}
+  disclosures.html — render a structured author disclosure block.
+
+  Parameters
+    author — a `_authors/*.md` document.
+    detail — bool. When true, expand every section with full prose
+             (used by `_layouts/disclosures.html`). When false (default),
+             the block ships in a `<details>` element collapsed by default
+             so it does not dominate the byline.
+
+  Schema (mirrors `_data/schemas.yml :: author.disclosures`)
+    employer       — string
+    holdings       — array of strings
+    grants         — array of strings
+    advisory       — array of strings
+    paid_writing   — array of strings
+    recusals       — array of strings
+    last_reviewed  — ISO date
+{%- endcomment -%}
+
+{%- assign author = include.author -%}
+{%- assign d      = author.disclosures -%}
+{%- assign detail = include.detail | default: false -%}
+
+{%- if d -%}
+  {%- capture body -%}
+    <dl class="disclosures__list">
+      {%- if d.employer -%}
+        <dt>Employer</dt>
+        <dd>{{ d.employer }}</dd>
+      {%- endif -%}
+
+      {%- if d.holdings and d.holdings.size > 0 -%}
+        <dt>Holdings</dt>
+        <dd>
+          <ul class="disclosures__inline-list">
+            {%- for item in d.holdings -%}<li>{{ item }}</li>{%- endfor -%}
+          </ul>
+        </dd>
+      {%- endif -%}
+
+      {%- if d.grants and d.grants.size > 0 -%}
+        <dt>Grants</dt>
+        <dd>
+          <ul class="disclosures__inline-list">
+            {%- for item in d.grants -%}<li>{{ item }}</li>{%- endfor -%}
+          </ul>
+        </dd>
+      {%- endif -%}
+
+      {%- if d.advisory and d.advisory.size > 0 -%}
+        <dt>Advisory roles</dt>
+        <dd>
+          <ul class="disclosures__inline-list">
+            {%- for item in d.advisory -%}<li>{{ item }}</li>{%- endfor -%}
+          </ul>
+        </dd>
+      {%- endif -%}
+
+      {%- if d.paid_writing and d.paid_writing.size > 0 -%}
+        <dt>Paid writing (last 12 months)</dt>
+        <dd>
+          <ul class="disclosures__inline-list">
+            {%- for item in d.paid_writing -%}<li>{{ item }}</li>{%- endfor -%}
+          </ul>
+        </dd>
+      {%- endif -%}
+
+      {%- if d.recusals and d.recusals.size > 0 -%}
+        <dt>Recusals</dt>
+        <dd>
+          <ul class="disclosures__inline-list">
+            {%- for item in d.recusals -%}<li>{{ item }}</li>{%- endfor -%}
+          </ul>
+        </dd>
+      {%- endif -%}
+    </dl>
+
+    <p class="disclosures__provenance">
+      {%- if d.last_reviewed -%}
+        Last reviewed <time datetime="{{ d.last_reviewed }}">{{ d.last_reviewed | date: "%-d %B %Y" }}</time>.
+      {%- endif -%}
+      <a href="{{ author.url | append: '/disclosures/' | relative_url }}">Permalink</a> ·
+      <a href="{{ '/standards/' | relative_url }}#conflicts">policy</a>
+    </p>
+  {%- endcapture -%}
+
+  {%- if detail -%}
+    <div class="disclosures disclosures--detail" data-author="{{ author.slug }}">
+      {{ body }}
+    </div>
+  {%- else -%}
+    <details class="disclosures disclosures--inline" data-author="{{ author.slug }}">
+      <summary class="disclosures__summary">
+        Disclosures &mdash; {{ author.name }}
+        {%- if d.last_reviewed -%}
+          <span class="disclosures__summary-date">
+            updated {{ d.last_reviewed | date: "%-d %b %Y" }}
+          </span>
+        {%- endif -%}
+      </summary>
+      <div class="disclosures__body">
+        {{ body }}
+      </div>
+    </details>
+  {%- endif -%}
+{%- endif -%}

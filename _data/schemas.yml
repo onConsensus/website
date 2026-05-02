@@ -23,7 +23,8 @@ post:
     pgp_signed: "Boolean. If true, layouts may render the matching `/signatures/<slug>.sig` as an ASCII signature block. Sigs live OUTSIDE `_posts/` so Jekyll never treats them as posts."
     featured: "Boolean. The single article with `featured: true` becomes the home-page lead piece."
     block_height: "Integer. Optional Bitcoin block height at publish, surfaced next to the date."
-    corrections: "Array of `{date, note}` entries surfaced on `/corrections`."
+    corrections: "Array of `{date, note}` entries surfaced on `/corrections` and as an inline notice at the top of the article."
+    retracted: "Optional `{date, reason}` map. When present, the post renders a full-width retraction overlay; the original text is preserved beneath. Retractions are an editorial decision and require sign-off per `/standards/#corrections`."
 
 author:
   required:
@@ -40,6 +41,14 @@ author:
       nostr: "npub… string."
       github: "Full URL."
       website: "Full URL."
+    disclosures:
+      employer: "Current employer or freelance status."
+      holdings: "Array of strings. Material crypto / equity / debt positions; see `/standards/#conflicts` for the materiality threshold."
+      grants: "Array of strings. Active and recent (12 months) research / writing grants."
+      advisory: "Array of strings. Active advisory roles, paid or unpaid."
+      paid_writing: "Array of strings. Outside paid writing in the last 12 months."
+      recusals: "Array of strings. Standing recusals — entities the author will not cover."
+      last_reviewed: "ISO date of the most recent disclosures review (≤ 6 months old per policy)."
 
 series:
   required:

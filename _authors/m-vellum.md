@@ -13,5 +13,21 @@ links:
   bluesky: https://bsky.app/profile/mvellum.bsky.social
   nostr: npub1mvellum0000000000000000000000000000000000000000000000000000
   github: https://github.com/mvellum
+disclosures:
+  employer: "On Consensus (contributing editor, freelance)"
+  holdings:
+    - "BTC (modest, less than 1% of personal portfolio)"
+    - "ETH (modest, less than 1% of personal portfolio)"
+    - "No governance tokens, no LSTs, no LRTs."
+  grants:
+    - "Privacy &amp; Scaling Explorations research grant (2023, completed)"
+  advisory:
+    - "Technical advisory board, an open-source zero-knowledge library (uncompensated; recused from coverage of the project)."
+  paid_writing:
+    - "Unpaid paper review for the IACR ePrint Archive (ongoing)."
+  recusals:
+    - "Any paper or implementation by collaborators on the prior PSE grant."
+    - "The advisory project named above."
+  last_reviewed: 2026-04-20
 ---
 Cryptographer at large. Will not be drawn on the question of whether SNARKs are post-quantum.

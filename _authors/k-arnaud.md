@@ -14,5 +14,20 @@ links:
   nostr: npub1karnaud00000000000000000000000000000000000000000000000000000
   github: https://github.com/karnaud
   website: https://karnaud.example
+disclosures:
+  employer: "On Consensus (founding editor, full-time)"
+  holdings:
+    - "ETH (position greater than 1% of personal portfolio)"
+    - "OP, ARB (small positions, less than $5,000 USD-equivalent each)"
+    - "BTC (small position)"
+  grants:
+    - "Ethereum Foundation research grant (2024–2025, completed; covered protocol governance research, not editorial work)"
+  advisory: []
+  paid_writing:
+    - "The Defiant — single guest column, March 2023 (predates joining On Consensus)"
+  recusals:
+    - "Coverage of the Ethereum Foundation: handled by another editor."
+    - "Any DAO in which the editor's holdings exceed 1% of personal portfolio."
+  last_reviewed: 2026-04-15
 ---
 Founding editor. Reads too many governance forum threads so you don't have to.

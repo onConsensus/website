@@ -12,5 +12,17 @@ links:
   bluesky: https://bsky.app/profile/rokafor.bsky.social
   nostr: npub1rokafor0000000000000000000000000000000000000000000000000000
   github: https://github.com/rokafor
+disclosures:
+  employer: "On Consensus (development desk, full-time)"
+  holdings:
+    - "ETH (small position, less than 1% of personal portfolio)"
+    - "ATOM (small position)"
+    - "No LSTs, no LRTs, no governance-token positions."
+  grants: []
+  advisory: []
+  paid_writing: []
+  recusals:
+    - "Prior employer (a node-operator startup): handled by another editor for at least 24 months following separation."
+  last_reviewed: 2026-04-22
 ---
 Reports from where the code actually runs.

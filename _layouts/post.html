@@ -3,7 +3,7 @@ layout: default
 ---
 {%- assign section = site.data.sections | where: "slug", page.section | first -%}
 
-<article class="article" itemscope itemtype="https://schema.org/Article">
+<article class="article{% if page.retracted %} article--retracted{% endif %}" itemscope itemtype="https://schema.org/Article">
 
   {%- comment -%}
     Reading-progress bar. Modern browsers drive `.reading-progress__bar`
@@ -14,6 +14,38 @@ layout: default
   <div class="reading-progress" aria-hidden="true">
     <div class="reading-progress__bar"></div>
   </div>
+
+  {%- comment -%}
+    Retraction overlay — full-width, top-of-article. Surfaces when
+    frontmatter carries `retracted: { date, reason }`. The original
+    text is preserved beneath; we never silently delete a retracted
+    piece. Policy: /standards/#corrections.
+  {%- endcomment -%}
+  {%- if page.retracted -%}
+    <aside class="article__retraction" role="note" aria-labelledby="retraction-heading">
+      <div class="article__retraction-inner">
+        <p class="article__retraction-kicker">Retracted</p>
+        <h2 class="article__retraction-heading" id="retraction-heading">
+          This article has been retracted.
+        </h2>
+        {%- if page.retracted.date -%}
+          <p class="article__retraction-date">
+            <time datetime="{{ page.retracted.date }}">
+              Retraction issued {{ page.retracted.date | date: "%-d %B %Y" }}
+            </time>
+          </p>
+        {%- endif -%}
+        {%- if page.retracted.reason -%}
+          <p class="article__retraction-reason">{{ page.retracted.reason }}</p>
+        {%- endif -%}
+        <p class="article__retraction-policy">
+          The original text is preserved below for the record. See the
+          <a href="{{ '/standards/' | relative_url }}#corrections">retractions policy</a>
+          and the <a href="{{ '/corrections/' | relative_url }}">corrections log</a>.
+        </p>
+      </div>
+    </aside>
+  {%- endif -%}
 
   <div class="reading">
 
@@ -34,6 +66,29 @@ layout: default
         {%- endif -%}
 
         {% include byline.html post=page show_words=true %}
+
+        {%- comment -%}
+          Trust signals immediately under the byline:
+            · "Correction" notice when the article carries logged corrections
+            · author disclosures (collapsed)
+            · "View edit history" (post-publish git commits)
+          Each block is self-rendering: empty inputs produce no output.
+        {%- endcomment -%}
+        {%- if page.corrections and page.corrections.size > 0 -%}
+          <p class="article__correction-notice" role="note">
+            <span class="article__correction-notice-label">Correction</span>
+            This article has been corrected
+            {{ page.corrections.size }} time{% if page.corrections.size != 1 %}s{% endif %}
+            since publication. <a href="#corrections-heading">See the full log</a>.
+          </p>
+        {%- endif -%}
+
+        {%- assign byline_author = site.authors | where: "slug", page.author | first -%}
+        {%- if byline_author and byline_author.disclosures -%}
+          {% include disclosures.html author=byline_author %}
+        {%- endif -%}
+
+        {% include edit-history.html post=page %}
       </header>
 
       {%- comment -%}

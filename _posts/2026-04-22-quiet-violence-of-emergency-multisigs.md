@@ -11,6 +11,11 @@ featured_caption: "Diagram: an emergency multisig as the apex of a notional cons
 featured: true
 block_height: 891204
 license: CC-BY-SA-4.0
+corrections:
+  - date: 2026-04-25
+    note: "An earlier version of this piece described the Optimism Security Council as a 4-of-7 multisig. It is, at the time of writing, configured 5-of-8. The headline figure is unchanged; the body has been corrected."
+  - date: 2026-04-29
+    note: "Footnote 2 originally suggested the legal redaction was at the request of the protocol's foundation; in fact it was at the request of On Consensus's own counsel. The footnote has been rewritten."
 ---
 
 Most decentralized protocols arrive with a constitution. Often it is gestured

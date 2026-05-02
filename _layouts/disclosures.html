@@ -1,0 +1,61 @@
+---
+layout: default
+---
+{%- comment -%}
+  disclosures.html — standalone per-author disclosure page.
+
+  Stub pages under `_pages/disclosures/<slug>.html` set
+  `author_slug: <slug>`; this layout looks up the matching author entry
+  and renders their disclosures block in full alongside provenance
+  (last reviewed, fingerprint, link back to the author archive).
+
+  Disclosures schema mirrors `_data/schemas.yml :: author.disclosures`.
+{%- endcomment -%}
+
+{%- assign author = site.authors | where: "slug", page.author_slug | first -%}
+{%- assign d = author.disclosures -%}
+
+<section class="disclosures-page container container--measure">
+
+  <header class="disclosures-page__head">
+    <p class="disclosures-page__kicker">
+      <a href="{{ author.url | relative_url }}">← {{ author.name }}</a>
+    </p>
+    <h1 class="disclosures-page__title">Disclosures &mdash; {{ author.name }}</h1>
+    {%- if d.last_reviewed -%}
+      <p class="disclosures-page__meta">
+        Last reviewed <time datetime="{{ d.last_reviewed }}">{{ d.last_reviewed | date: "%-d %B %Y" }}</time>.
+        Reviews scheduled at minimum every six months and on any material
+        change. Historical revisions live in the
+        {%- if site.github.repository_url -%}
+          <a href="{{ site.github.repository_url }}/commits/main/_authors/{{ author.slug }}.md" rel="external">git history of <code>_authors/{{ author.slug }}.md</code></a>.
+        {%- else -%}
+          git history of <code>_authors/{{ author.slug }}.md</code>.
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </header>
+
+  {%- if d -%}
+    {% include disclosures.html author=author detail=true %}
+  {%- else -%}
+    <p class="disclosures-page__empty">
+      No disclosures recorded for this author yet. If that surprises you,
+      please write to
+      <a href="mailto:editors@onconsensus.com">editors@onconsensus.com</a>.
+    </p>
+  {%- endif -%}
+
+  <hr class="divider divider--accent" aria-hidden="true">
+
+  <footer class="disclosures-page__foot">
+    <p>
+      The full conflicts &amp; recusal policy is published on the
+      <a href="{{ '/standards/' | relative_url }}#conflicts">standards</a>
+      page. Every editor is required to keep this list current; readers who
+      believe a disclosure has been omitted may
+      <a href="mailto:corrections@onconsensus.com">tell the corrections desk</a>.
+    </p>
+  </footer>
+
+</section>

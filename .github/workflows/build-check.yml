@@ -24,6 +24,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history so scripts/build_changelog.rb can derive
+          # post-publish edits from `git log` of `_posts/`.
+          fetch-depth: 0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -33,6 +37,9 @@ jobs:
 
       - name: Install htmlproofer
         run: gem install html-proofer --version "~> 5.0"
+
+      - name: Generate article changelog from git
+        run: ruby scripts/build_changelog.rb
 
       - name: Build with Jekyll
         run: bundle exec jekyll build --trace

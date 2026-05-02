@@ -1,0 +1,63 @@
+---
+layout: null
+permalink: /corrections/feed.xml
+sitemap: false
+version: 1
+---
+<?xml version="1.0" encoding="utf-8"?>
+{%- comment -%}
+  Corrections RSS feed. One <item> per (post, correction) pair, newest
+  first. Each item's pubDate is the correction's `date`. Subscribers can
+  follow this stream without polling the main feed for invisible edits.
+{%- endcomment -%}
+{%- assign corrected_posts = "" | split: "" -%}
+{%- for post in site.posts -%}
+  {%- if post.corrections and post.corrections.size > 0 -%}
+    {%- assign corrected_posts = corrected_posts | push: post -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign all_items = "" | split: "" -%}
+{%- for post in corrected_posts -%}
+  {%- for c in post.corrections -%}
+    {%- assign hash = c.date | replace: '-', '' | append: '-' | append: post.slug -%}
+    {%- capture row -%}{{ c.date }}|{{ post.slug }}|{{ forloop.index }}{%- endcapture -%}
+    {%- assign all_items = all_items | push: row -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- assign all_items = all_items | sort | reverse -%}
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>{{ site.title | xml_escape }} &mdash; Corrections</title>
+    <link>{{ '/corrections/' | absolute_url }}</link>
+    <atom:link href="{{ '/corrections/feed.xml' | absolute_url }}" rel="self" type="application/rss+xml"/>
+    <description>Every correction recorded on the {{ site.title | xml_escape }} archive, newest first. We log corrections, we date them, and we never silently rewrite.</description>
+    <language>{{ site.lang | default: 'en' }}</language>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    <generator>Jekyll {{ jekyll.version }} (hand-rolled corrections feed)</generator>
+    <docs>https://www.rssboard.org/rss-specification</docs>
+    <copyright>{{ site.license.content | default: "CC-BY-SA-4.0" | xml_escape }}</copyright>
+
+    {%- for row in all_items -%}
+      {%- assign parts = row | split: '|' -%}
+      {%- assign date  = parts[0] -%}
+      {%- assign slug  = parts[1] -%}
+      {%- assign idx   = parts[2] | minus: 1 -%}
+      {%- assign post  = site.posts | where: "slug", slug | first -%}
+      {%- assign c     = post.corrections[idx] -%}
+      {%- if post and c -%}
+        <item>
+          <title>{{ post.title | xml_escape }} &mdash; correction {{ date }}</title>
+          <link>{{ post.url | absolute_url }}#corrections-heading</link>
+          <guid isPermaLink="false">{{ post.url | absolute_url }}#correction-{{ date | replace: '-', '' }}-{{ idx }}</guid>
+          <pubDate>{{ date | date_to_rfc822 }}</pubDate>
+          <dc:date>{{ date | date_to_xmlschema }}</dc:date>
+          <description>{{ c.note | strip_html | xml_escape }}</description>
+          <category domain="{{ '/corrections/' | absolute_url }}">corrections</category>
+        </item>
+      {%- endif -%}
+    {%- endfor -%}
+
+  </channel>
+</rss>
