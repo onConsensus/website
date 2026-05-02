@@ -68,15 +68,22 @@ layout: default
     {%- capture _list_feed_base -%}/lists/{{ page.slug }}/{%- endcapture -%}
     {% include feed-icons.html base=_list_feed_base label=page.title %}
 
-    {%- if page.bundle.pdf or page.bundle.epub -%}
+    {%- comment -%}
+      Bundle presence: treat blank/whitespace-only strings as absent.
+      Liquid considers `""` truthy, so we normalize through `strip`
+      and compare to the empty string before emitting anchors.
+    {%- endcomment -%}
+    {%- assign _bundle_pdf  = page.bundle.pdf  | default: "" | strip -%}
+    {%- assign _bundle_epub = page.bundle.epub | default: "" | strip -%}
+    {%- if _bundle_pdf != "" or _bundle_epub != "" -%}
       <p class="reading-list__bundle">
         Download as bundle:
-        {%- if page.bundle.pdf -%}
-          <a href="{{ page.bundle.pdf | relative_url }}">PDF</a>
+        {%- if _bundle_pdf != "" -%}
+          <a href="{{ _bundle_pdf | relative_url }}">PDF</a>
         {%- endif -%}
-        {%- if page.bundle.pdf and page.bundle.epub -%} · {%- endif -%}
-        {%- if page.bundle.epub -%}
-          <a href="{{ page.bundle.epub | relative_url }}">EPUB</a>
+        {%- if _bundle_pdf != "" and _bundle_epub != "" -%} · {%- endif -%}
+        {%- if _bundle_epub != "" -%}
+          <a href="{{ _bundle_epub | relative_url }}">EPUB</a>
         {%- endif -%}
       </p>
     {%- else -%}
