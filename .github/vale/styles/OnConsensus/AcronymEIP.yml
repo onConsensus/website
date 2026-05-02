@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'EIP' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Ethereum Improvement Proposal (EIP)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bEIP\b'
+second: '\bEIP\b\s*\([^)]+\)|\([^)]+\)\s*\bEIP\b'

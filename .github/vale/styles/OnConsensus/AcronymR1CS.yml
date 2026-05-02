@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'R1CS' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Rank-1 Constraint System (R1CS)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bR1CS\b'
+second: '\bR1CS\b\s*\([^)]+\)|\([^)]+\)\s*\bR1CS\b'

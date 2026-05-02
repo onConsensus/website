@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'RANDAO' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'RANDom Decentralised Autonomous Organisation (RANDAO)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bRANDAO\b'
+second: '\bRANDAO\b\s*\([^)]+\)|\([^)]+\)\s*\bRANDAO\b'

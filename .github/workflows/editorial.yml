@@ -74,3 +74,11 @@ jobs:
 
       - name: Validate frontmatter against _data/schemas.yml
         run: ruby scripts/validate_frontmatter.rb
+
+      - name: Self-test the validator + Vale rule integrity
+        # Runs scripts/test_validator.rb against an in-memory fixture
+        # tree (clean fixtures + 7 negative cases) and verifies every
+        # per-acronym Vale rule binds the same token in `first` and
+        # `second`. Catches silent regressions that the static repo
+        # state alone wouldn't surface.
+        run: ruby scripts/test_validator.rb

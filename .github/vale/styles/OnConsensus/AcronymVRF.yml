@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'VRF' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Verifiable Random Function (VRF)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bVRF\b'
+second: '\bVRF\b\s*\([^)]+\)|\([^)]+\)\s*\bVRF\b'

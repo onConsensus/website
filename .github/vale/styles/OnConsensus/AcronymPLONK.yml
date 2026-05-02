@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'PLONK' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Permutations over Lagrange-bases for Oecumenical Non-interactive arguments of Knowledge (PLONK)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bPLONK\b'
+second: '\bPLONK\b\s*\([^)]+\)|\([^)]+\)\s*\bPLONK\b'

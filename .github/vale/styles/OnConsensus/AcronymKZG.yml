@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'KZG' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Kate-Zaverucha-Goldberg (KZG)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bKZG\b'
+second: '\bKZG\b\s*\([^)]+\)|\([^)]+\)\s*\bKZG\b'

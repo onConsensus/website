@@ -1,0 +1,10 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+extends: conditional
+message: "Acronym 'PCS' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Polynomial Commitment Scheme (PCS)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bPCS\b'
+second: '\bPCS\b\s*\([^)]+\)|\([^)]+\)\s*\bPCS\b'

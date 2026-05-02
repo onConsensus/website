@@ -1,45 +1,25 @@
+# Per-acronym first-use-expansion check.
+#
+# Vale's `conditional` extension fires when `first` matches but
+# `second` does not occur in the same scope. We use one rule file
+# per acronym (this file plus its `Acronym*.yml` siblings) because
+# unioning multiple acronyms into a single `conditional` rule
+# creates a satisfaction loophole: expanding *any one* acronym
+# in the file would satisfy `second` for the union and silence
+# warnings for every other unexpanded acronym in the same doc.
+#
+# Each per-acronym file binds `first` and `second` to the same
+# token, so 'MEV' must be expanded *as MEV*, 'KZG' must be expanded
+# *as KZG*, and so on.
+#
+# Pattern: the rule passes if the acronym appears next to a
+# parenthesised expansion in either order:
+#     "Maximal Extractable Value (MEV)"
+#     "MEV (Maximal Extractable Value)"
 extends: conditional
-message: "Acronym '%s' is used without an expansion on first appearance in this file. Expand it on first use, e.g. 'Bonneau-Naehrig 254-bit (BN254) curve'. See /standards/#voice."
+message: "Acronym 'MEV' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Maximal Extractable Value (MEV)'."
 level: warning
 scope: text
 ignorecase: false
-
-# A `conditional` rule fires when `first` matches but `second` does
-# not occur in the same scope (here: the whole document body). We use
-# this to enforce expansion of in-house technical acronyms on first
-# appearance. The expectation is that the expansion be either:
-#
-#   · provided in parentheses immediately after the acronym, OR
-#   · provided in parentheses immediately before, e.g.
-#     "Bonneau-Naehrig (BN254)".
-#
-# So `second` is the regex that should match somewhere in the doc if
-# the acronym is properly introduced. We allow either order.
-#
-# The acronym list intentionally excludes ones we treat as fully
-# absorbed into the publication's domain vocabulary (BTC, ETH, EVM,
-# RPC, JSON, HTTP, URL, RSS, ATOM, CSS, HTML, JS).
-first:  '\b(MEV|EIP|ERC|VRF|VDF|IVC|PCS|KZG|FRI|PLONK|FFLONK|R1CS|AIR|DA|EOA|MPC|RANDAO|BFT|HotStuff|Tendermint|FTSO|TEE|SGX|HSM|TLS|DKG)\b'
-# Match either "(EXPANSION)\s+\(MEV\)" or "MEV\s*\(EXPANSION\)".
-# Vale's `conditional` checks scope-wide presence of `second`,
-# regardless of position relative to `first`.
-second: '\b(MEV|EIP|ERC|VRF|VDF|IVC|PCS|KZG|FRI|PLONK|FFLONK|R1CS|AIR|DA|EOA|MPC|RANDAO|BFT|HotStuff|Tendermint|FTSO|TEE|SGX|HSM|TLS|DKG)\b\s*\([^)]+\)|\([^)]+\)\s*\b(MEV|EIP|ERC|VRF|VDF|IVC|PCS|KZG|FRI|PLONK|FFLONK|R1CS|AIR|DA|EOA|MPC|RANDAO|BFT|HotStuff|Tendermint|FTSO|TEE|SGX|HSM|TLS|DKG)\b'
-exceptions:
-  - 'JSON-RPC'
-  - 'HTTP'
-  - 'HTTPS'
-  - 'URL'
-  - 'URI'
-  - 'RSS'
-  - 'CSS'
-  - 'HTML'
-  - 'API'
-  - 'CLI'
-  - 'SDK'
-  - 'BTC'
-  - 'ETH'
-  - 'EVM'
-  - 'PGP'
-  - 'GPG'
-  - 'PR'
-  - 'CI'
+first:  '\bMEV\b'
+second: '\bMEV\b\s*\([^)]+\)|\([^)]+\)\s*\bMEV\b'
