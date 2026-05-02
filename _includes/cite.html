@@ -132,19 +132,30 @@ Y2  - {{ access_date }}
         <button class="cite__tab" role="tab" data-cite-tab="plain"    aria-selected="false">Plain text</button>
       </div>
 
+      {%- comment -%}
+        All four panes render visible by default. `js/cite.js` hides
+        the non-active panes on init via `data-cite-pane-hide`, so a
+        no-JS reader sees every format as a labelled <pre> block and
+        can select-and-copy any of them. With JS, only the active
+        pane stays visible and the tabs switch between them.
+      {%- endcomment -%}
       <div class="cite__pane" data-cite-pane="bibtex">
+        <h3 class="cite__pane-label">BibTeX</h3>
         <pre class="cite__pre"><code>{{- bibtex | strip -}}</code></pre>
         <button class="cite__copy" data-cite-copy="bibtex" type="button">Copy BibTeX</button>
       </div>
-      <div class="cite__pane" data-cite-pane="ris" hidden>
+      <div class="cite__pane" data-cite-pane="ris">
+        <h3 class="cite__pane-label">RIS</h3>
         <pre class="cite__pre"><code>{{- ris | strip -}}</code></pre>
         <button class="cite__copy" data-cite-copy="ris" type="button">Copy RIS</button>
       </div>
-      <div class="cite__pane" data-cite-pane="hayagriva" hidden>
+      <div class="cite__pane" data-cite-pane="hayagriva">
+        <h3 class="cite__pane-label">Hayagriva</h3>
         <pre class="cite__pre"><code>{{- hayagriva | strip -}}</code></pre>
         <button class="cite__copy" data-cite-copy="hayagriva" type="button">Copy Hayagriva</button>
       </div>
-      <div class="cite__pane" data-cite-pane="plain" hidden>
+      <div class="cite__pane" data-cite-pane="plain">
+        <h3 class="cite__pane-label">Plain text</h3>
         <pre class="cite__pre"><code>{{- plain | strip -}}</code></pre>
         <button class="cite__copy" data-cite-copy="plain" type="button">Copy plain text</button>
       </div>

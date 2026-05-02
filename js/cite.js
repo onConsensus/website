@@ -49,6 +49,17 @@
   }
 
   document.querySelectorAll('.cite').forEach(function (scope) {
+    // Initial enhancement: with JS available, hide all but the
+    // currently-active pane. Without JS, every pane stays visible so
+    // the citation block is a true progressive-enhancement: a reader
+    // with scripting disabled sees BibTeX, RIS, Hayagriva, and plain
+    // text as four labelled <pre> blocks and can select any of them.
+    var activeTab = scope.querySelector('[data-cite-tab][aria-selected="true"]')
+                  || scope.querySelector('[data-cite-tab]');
+    if (activeTab) {
+      activateTab(scope, activeTab.getAttribute('data-cite-tab'));
+    }
+
     scope.addEventListener('click', function (event) {
       var tab = event.target.closest('[data-cite-tab]');
       if (tab) {
