@@ -33,6 +33,10 @@ layout: default
           git history of <code>_authors/{{ author.slug }}.md</code>.
         {%- endif -%}
       </p>
+      <p class="disclosures-page__meta">
+        Editor profile:
+        <a href="{{ author.url | relative_url }}">{{ author.name }}</a>.
+      </p>
     {%- endif -%}
   </header>
 

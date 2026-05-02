@@ -12,13 +12,15 @@
 
 {%- assign post = include.post | default: page -%}
 {%- assign edits = site.data.changelog[post.slug] -%}
+{%- assign edit_count = 0 -%}
+{%- if edits -%}{%- assign edit_count = edits.size -%}{%- endif -%}
 
-{%- if edits and edits.size > 0 -%}
-  <details class="edit-history" data-post="{{ post.slug }}">
-    <summary class="edit-history__summary">
-      View edit history
-      <span class="edit-history__count">({{ edits.size }})</span>
-    </summary>
+<details class="edit-history" data-post="{{ post.slug }}">
+  <summary class="edit-history__summary">
+    View edit history
+    <span class="edit-history__count">({{ edit_count }})</span>
+  </summary>
+  {%- if edit_count > 0 -%}
     <ol class="edit-history__list">
       {%- for e in edits -%}
         <li class="edit-history__entry">
@@ -43,5 +45,11 @@
       omitted. Diffs link to the canonical git history; nothing is
       rewritten in place.
     </p>
-  </details>
-{%- endif -%}
+  {%- else -%}
+    <p class="edit-history__empty">
+      No post-publish edits yet. Any future edits will appear here,
+      derived directly from the article's git history.
+    </p>
+  {%- endif -%}
+</details>
+

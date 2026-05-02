@@ -170,6 +170,7 @@ layout: default
             <a href="{{ page.canonical_url }}" rel="canonical external">{{ page.canonical_url }}</a>
           </span>
         {%- endif -%}
+        <a href="{{ '/standards/' | relative_url }}" rel="bookmark">Editorial standards</a>
         {%- if site.github.repository_url -%}
           <a href="{{ site.github.repository_url }}/edit/main/_posts/{{ page.path | remove_first: '_posts/' }}"
              rel="external">Suggest an edit</a>

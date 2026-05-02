@@ -2,7 +2,7 @@
 layout: page
 title: Corrections
 permalink: /corrections/
-description: "Every published correction on On Consensus, in chronological order. We log corrections, we date them, and we never silently rewrite."
+description: "Every published correction on On Consensus, newest first. We log corrections, we date them, and we never silently rewrite."
 image: '/images/h5.png'
 kicker: "Corrections log"
 sitemap: true
@@ -11,48 +11,70 @@ sitemap: true
 <div class="corrections-log">
 
   <p class="article__deck">
-    Every article on On Consensus that has been corrected, clarified, or
-    retracted is listed below. Posts without corrections are intentionally
-    omitted. The full
-    <a href="/ethos/#corrections">corrections policy</a> is on the ethos page.
+    Every correction issued on On Consensus is listed below, newest
+    first by correction date — across all articles, regardless of when
+    the underlying piece was published. Articles without corrections
+    are intentionally omitted. The full
+    <a href="/standards/#corrections">corrections &amp; retractions
+    policy</a> lives on the standards page.
+  </p>
+
+  <p class="corrections-log__feeds">
+    Subscribe:
+    <a href="{{ '/corrections/feed.xml' | relative_url }}" rel="alternate" type="application/rss+xml">RSS</a>
   </p>
 
   {%- comment -%}
-    Build the list of posts that carry a `corrections:` array of size > 0.
-    Liquid has no `compact` for nested arrays, so we accumulate matches in a
-    fresh array and keep the original publication order (newest first, as
-    `site.posts` already returns).
+    Build a flat list of `{date, note, post}` entries across every
+    post's `corrections:` array, then sort globally by `date`
+    descending. We encode the row as a `|`-delimited string Liquid
+    can sort lexicographically: ISO dates sort correctly as strings,
+    so YYYY-MM-DD ordering is identical to chronological ordering.
   {%- endcomment -%}
-  {%- assign posts_with_corrections = "" | split: "" -%}
+  {%- assign rows = "" | split: "" -%}
   {%- for post in site.posts -%}
     {%- if post.corrections and post.corrections.size > 0 -%}
-      {%- assign posts_with_corrections = posts_with_corrections | push: post -%}
+      {%- for c in post.corrections -%}
+        {%- capture row -%}{{ c.date }}|{{ post.slug }}|{{ forloop.index | minus: 1 }}{%- endcapture -%}
+        {%- assign rows = rows | push: row -%}
+      {%- endfor -%}
     {%- endif -%}
   {%- endfor -%}
+  {%- assign rows = rows | sort | reverse -%}
 
-  {%- if posts_with_corrections.size > 0 -%}
+  {%- if rows.size > 0 -%}
 
     <p class="corrections-log__count">
-      {{ posts_with_corrections.size }} article{% if posts_with_corrections.size != 1 %}s{% endif %}
-      with corrections on the record.
+      {{ rows.size }} correction{% if rows.size != 1 %}s{% endif %} on the record.
     </p>
 
     <ol class="corrections-log__list">
-      {%- for post in posts_with_corrections -%}
+      {%- for row in rows -%}
+        {%- assign parts = row | split: '|' -%}
+        {%- assign cdate = parts[0] -%}
+        {%- assign slug  = parts[1] -%}
+        {%- assign idx   = parts[2] | plus: 0 -%}
+        {%- assign post  = site.posts | where: "slug", slug | first -%}
+        {%- assign c     = post.corrections[idx] -%}
         {%- assign section = site.data.sections | where: "slug", post.section | first -%}
         {%- assign author  = site.authors      | where: "slug", post.author  | first -%}
 
         <li class="corrections-log__entry">
-          <article class="corrections-log__article" aria-labelledby="corrections-{{ post.slug }}">
+          <article class="corrections-log__article" aria-labelledby="correction-{{ post.slug }}-{{ idx }}">
 
             <header class="corrections-log__head">
-              {%- if section -%}
-                <a class="corrections-log__kicker" href="{{ '/sections/' | append: section.slug | append: '/' | relative_url }}">
-                  {{ section.title }}
-                </a>
-              {%- endif -%}
+              <p class="corrections-log__date-banner">
+                <time class="corrections-log__date" datetime="{{ cdate }}">
+                  {{ cdate | date: "%-d %B %Y" }}
+                </time>
+                {%- if section -%}
+                  <a class="corrections-log__kicker" href="{{ '/sections/' | append: section.slug | append: '/' | relative_url }}">
+                    {{ section.title }}
+                  </a>
+                {%- endif -%}
+              </p>
 
-              <h2 class="corrections-log__title" id="corrections-{{ post.slug }}">
+              <h2 class="corrections-log__title" id="correction-{{ post.slug }}-{{ idx }}">
                 <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
               </h2>
 
@@ -60,22 +82,14 @@ sitemap: true
                 {%- if author -%}
                   By <a href="{{ author.url | relative_url }}">{{ author.name }}</a> ·
                 {%- endif -%}
+                Published
                 <time datetime="{{ post.date | date_to_xmlschema }}">
                   {{ post.date | date: "%-d %B %Y" }}
                 </time>
               </p>
             </header>
 
-            <ol class="corrections-log__items">
-              {%- for c in post.corrections -%}
-                <li class="corrections-log__item">
-                  <time class="corrections-log__date" datetime="{{ c.date }}">
-                    {{ c.date | date: "%-d %b %Y" }}
-                  </time>
-                  <span class="corrections-log__note">{{ c.note }}</span>
-                </li>
-              {%- endfor -%}
-            </ol>
+            <p class="corrections-log__note">{{ c.note }}</p>
 
           </article>
         </li>

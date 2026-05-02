@@ -80,7 +80,7 @@
       {%- if d.last_reviewed -%}
         Last reviewed <time datetime="{{ d.last_reviewed }}">{{ d.last_reviewed | date: "%-d %B %Y" }}</time>.
       {%- endif -%}
-      <a href="{{ author.url | append: '/disclosures/' | relative_url }}">Permalink</a> ·
+      <a href="{{ '/authors/' | append: author.slug | append: '/disclosures/' | relative_url }}">Permalink</a> ·
       <a href="{{ '/standards/' | relative_url }}#conflicts">policy</a>
     </p>
   {%- endcapture -%}
