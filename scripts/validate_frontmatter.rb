@@ -2,34 +2,72 @@
 # validate_frontmatter.rb — assert every collection file's frontmatter
 # satisfies the contract documented in `_data/schemas.yml`.
 #
-# What this catches
-#   · A required field is missing (e.g. a post without `section`).
-#   · A required field is present but the value is wrong shape
-#     (e.g. `tags` is a string instead of an array; `date` doesn't
-#     parse as ISO 8601).
-#   · `section` references a slug that isn't in `_data/sections.yml`.
-#   · `author` references a slug that doesn't have a file in `_authors/`.
-#   · `series` references a slug that doesn't have a file in `_series/`.
-#   · A list `entries[].slug` references a post that doesn't exist.
-#   · A required field has an empty / blank string value.
+# `_data/schemas.yml` is the single source of truth for *which fields
+# are required* on each kind of content (posts, authors, series,
+# lists). This script loads that file, then for every file in the
+# corresponding collection, asserts:
 #
-# What this *doesn't* catch
-#   · Prose quality (Vale's job).
-#   · Whether the body is well-formed Markdown (htmlproofer's job).
+#   1. Every key listed under `<kind>.required` is present and
+#      non-empty.
+#   2. Optional keys, when present, satisfy the type rules below.
+#   3. Cross-references (author → `_authors/`, section →
+#      `_data/sections.yml`, series → `_series/`, list entry slug →
+#      `_posts/`) resolve.
+#
+# When the schema and this script disagree on a *required* field, the
+# schema wins — adding a field name under `required:` in schemas.yml
+# automatically makes it a CI-blocking requirement here. Type checks
+# are scoped to the field set the script knows about; unknown
+# optional fields are accepted as documentation-only metadata.
 #
 # Exit codes
 #   0  every file validates.
 #   1  one or more files fail; details written to stderr.
 #
-# This script is intentionally dependency-free — it runs in
-# pre-commit hooks on the editor's machine and in CI on the GitHub
-# Actions runner without `bundle install`.
+# Dependency-free — runs in pre-commit on the editor's machine and in
+# CI without `bundle install`.
 
 require 'yaml'
 require 'date'
 require 'time'
 
 ROOT = File.expand_path('..', __dir__)
+
+# ---------------------------------------------------------------------------
+# Schema source of truth
+# ---------------------------------------------------------------------------
+
+SCHEMA_PATH = File.join(ROOT, '_data', 'schemas.yml')
+SCHEMA = YAML.safe_load_file(SCHEMA_PATH, permitted_classes: [Date, Time])
+
+# Required keys for each kind, sourced directly from schemas.yml.
+# These are authoritative; the script flags any missing required key
+# regardless of whether type-checking machinery exists for it below.
+def required_keys(kind)
+  (SCHEMA.dig(kind, 'required') || {}).keys
+end
+
+def optional_keys(kind)
+  (SCHEMA.dig(kind, 'optional') || {}).keys
+end
+
+# ---------------------------------------------------------------------------
+# Reference data
+# ---------------------------------------------------------------------------
+
+SECTION_SLUGS = begin
+  yaml = YAML.safe_load_file(File.join(ROOT, '_data', 'sections.yml'))
+  yaml.is_a?(Array) ? yaml.map { |s| s['slug'] } : []
+end
+
+AUTHOR_SLUGS = Dir[File.join(ROOT, '_authors', '*.md')]
+                 .map { |p| File.basename(p, '.md') }
+
+SERIES_SLUGS = Dir[File.join(ROOT, '_series', '*.md')]
+                 .map { |p| File.basename(p, '.md') }
+
+POST_SLUGS = Dir[File.join(ROOT, '_posts', '*.md')]
+               .map { |p| File.basename(p, '.md').sub(/^\d{4}-\d{2}-\d{2}-/, '') }
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -46,52 +84,8 @@ rescue Psych::SyntaxError => e
   [nil, "YAML syntax error: #{e.message}"]
 end
 
-def slug_from_filename(path, strip_date: false)
-  base = File.basename(path, '.md')
-  strip_date ? base.sub(/^\d{4}-\d{2}-\d{2}-/, '') : base
-end
-
 def relpath(path)
   path.sub("#{ROOT}/", '')
-end
-
-# ---------------------------------------------------------------------------
-# Reference data
-# ---------------------------------------------------------------------------
-
-SECTION_SLUGS = begin
-  yaml = YAML.safe_load(File.read(File.join(ROOT, '_data', 'sections.yml')))
-  yaml.is_a?(Array) ? yaml.map { |s| s['slug'] } : []
-end
-
-AUTHOR_SLUGS = Dir[File.join(ROOT, '_authors', '*.md')]
-                 .map { |p| File.basename(p, '.md') }
-
-SERIES_SLUGS = Dir[File.join(ROOT, '_series', '*.md')]
-                 .map { |p| File.basename(p, '.md') }
-
-POST_SLUGS = Dir[File.join(ROOT, '_posts', '*.md')]
-               .map { |p| slug_from_filename(p, strip_date: true) }
-
-errors = []
-
-# ---------------------------------------------------------------------------
-# Validators
-# ---------------------------------------------------------------------------
-
-def require_string(fm, key, errors, file)
-  v = fm[key]
-  return errors << "[#{file}] required field `#{key}` is missing" if v.nil?
-  return errors << "[#{file}] required field `#{key}` must be a non-empty string" \
-    unless v.is_a?(String) && !v.strip.empty?
-end
-
-def require_array_of_strings(fm, key, errors, file)
-  v = fm[key]
-  return if v.nil? # optional handling done by caller
-  unless v.is_a?(Array) && v.all? { |x| x.is_a?(String) && !x.strip.empty? }
-    errors << "[#{file}] field `#{key}` must be an array of non-empty strings"
-  end
 end
 
 def parses_as_iso8601?(v)
@@ -102,6 +96,26 @@ def parses_as_iso8601?(v)
 rescue ArgumentError
   false
 end
+
+# Apply schema-driven required-field check.
+# Each `required:` key in schemas.yml must exist in the frontmatter
+# and be a non-empty value. Empty arrays / hashes / strings count as
+# missing because the schema description for every required field
+# implies actual content.
+def assert_required(kind, fm, errors, file)
+  required_keys(kind).each do |key|
+    v = fm[key]
+    if v.nil?
+      errors << "[#{file}] required field `#{key}` is missing (per _data/schemas.yml :: #{kind}.required)"
+    elsif v.is_a?(String) && v.strip.empty?
+      errors << "[#{file}] required field `#{key}` is an empty string (per _data/schemas.yml)"
+    elsif (v.is_a?(Array) || v.is_a?(Hash)) && v.empty?
+      errors << "[#{file}] required field `#{key}` is empty (per _data/schemas.yml)"
+    end
+  end
+end
+
+errors = []
 
 # ---------------------------------------------------------------------------
 # Posts
@@ -115,13 +129,10 @@ Dir[File.join(ROOT, '_posts', '*.md')].sort.each do |path|
     next
   end
 
-  require_string(fm, 'title', errors, rel)
-  require_string(fm, 'author', errors, rel)
-  require_string(fm, 'section', errors, rel)
+  assert_required('post', fm, errors, rel)
 
-  if fm['date'].nil?
-    errors << "[#{rel}] required field `date` is missing"
-  elsif !parses_as_iso8601?(fm['date'])
+  # Type / cross-reference checks (scoped to fields the script knows).
+  if fm['date'] && !parses_as_iso8601?(fm['date'])
     errors << "[#{rel}] field `date` does not parse as a date/time: #{fm['date'].inspect}"
   end
 
@@ -137,7 +148,11 @@ Dir[File.join(ROOT, '_posts', '*.md')].sort.each do |path|
     errors << "[#{rel}] field `series` references unknown slug `#{fm['series']}` (no file at _series/#{fm['series']}.md)"
   end
 
-  require_array_of_strings(fm, 'tags', errors, rel) if fm.key?('tags')
+  if fm.key?('tags')
+    unless fm['tags'].is_a?(Array) && fm['tags'].all? { |x| x.is_a?(String) && !x.strip.empty? }
+      errors << "[#{rel}] field `tags` must be an array of non-empty strings"
+    end
+  end
 
   if fm.key?('reading_time_override')
     unless fm['reading_time_override'].is_a?(Integer) && fm['reading_time_override'] >= 1
@@ -180,8 +195,7 @@ Dir[File.join(ROOT, '_authors', '*.md')].sort.each do |path|
     next
   end
 
-  require_string(fm, 'name', errors, rel)
-  require_string(fm, 'slug', errors, rel)
+  assert_required('author', fm, errors, rel)
 
   if fm['slug'].is_a?(String) && fm['slug'] != File.basename(path, '.md')
     errors << "[#{rel}] field `slug` (`#{fm['slug']}`) must equal the filename (`#{File.basename(path, '.md')}`)"
@@ -221,7 +235,7 @@ Dir[File.join(ROOT, '_series', '*.md')].sort.each do |path|
     next
   end
 
-  %w[title slug description editor status].each { |k| require_string(fm, k, errors, rel) }
+  assert_required('series', fm, errors, rel)
 
   if fm['slug'].is_a?(String) && fm['slug'] != File.basename(path, '.md')
     errors << "[#{rel}] field `slug` must equal the filename (`#{File.basename(path, '.md')}`)"
@@ -252,7 +266,7 @@ Dir[File.join(ROOT, '_lists', '*.md')].sort.each do |path|
     next
   end
 
-  %w[title slug description curator].each { |k| require_string(fm, k, errors, rel) }
+  assert_required('list', fm, errors, rel)
 
   if fm['slug'].is_a?(String) && fm['slug'] != File.basename(path, '.md')
     errors << "[#{rel}] field `slug` must equal the filename (`#{File.basename(path, '.md')}`)"
@@ -262,11 +276,7 @@ Dir[File.join(ROOT, '_lists', '*.md')].sort.each do |path|
     errors << "[#{rel}] field `curator` references unknown author slug `#{fm['curator']}`"
   end
 
-  if fm['entries'].nil?
-    errors << "[#{rel}] required field `entries` is missing"
-  elsif !fm['entries'].is_a?(Array) || fm['entries'].empty?
-    errors << "[#{rel}] field `entries` must be a non-empty array"
-  else
+  if fm['entries'].is_a?(Array)
     fm['entries'].each_with_index do |e, i|
       unless e.is_a?(Hash) && e['slug'].is_a?(String) && !e['slug'].strip.empty?
         errors << "[#{rel}] entries[#{i}] is missing `slug`"
@@ -276,6 +286,8 @@ Dir[File.join(ROOT, '_lists', '*.md')].sort.each do |path|
         errors << "[#{rel}] entries[#{i}].slug `#{e['slug']}` does not match any post in _posts/"
       end
     end
+  elsif fm.key?('entries')
+    errors << "[#{rel}] field `entries` must be an array"
   end
 
   if fm.key?('last_revised') && !parses_as_iso8601?(fm['last_revised'])
@@ -290,7 +302,10 @@ end
 if errors.empty?
   puts "[validate_frontmatter] ok — #{POST_SLUGS.size} posts, " \
        "#{AUTHOR_SLUGS.size} authors, #{SERIES_SLUGS.size} series, " \
-       "#{Dir[File.join(ROOT, '_lists', '*.md')].size} lists"
+       "#{Dir[File.join(ROOT, '_lists', '*.md')].size} lists " \
+       "(schema source: _data/schemas.yml; required keys: " \
+       "post=#{required_keys('post').size}, author=#{required_keys('author').size}, " \
+       "series=#{required_keys('series').size}, list=#{required_keys('list').size})"
   exit 0
 else
   warn "[validate_frontmatter] FAIL — #{errors.size} issue(s):"

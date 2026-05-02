@@ -6,10 +6,14 @@
 //   2. Captures a viewport-fixed PNG of each (1280x900, scaled
 //      device pixel ratio 1).
 //   3. If $BASELINES_EXIST=true, diffs against `baselines/<slug>.png`
-//      using pixelmatch and writes `diffs/<slug>.png` plus a percent
-//      score.
-//   4. Emits `visual-diff-report.md` summarising the run for the PR
-//      comment.
+//      using pixelmatch and writes `diffs/<slug>.png`. Pages whose
+//      diff exceeds DIFF_THRESHOLD_PCT are recorded as regressed.
+//   4. Emits `visual-diff-report.md` for the PR comment. When
+//      $IMAGE_BASE_URL is set, the report embeds inline images
+//      (current screenshot + diff overlay) for every regressed
+//      page. The image-publishing step in `preview.yml` pushes the
+//      images to a public `pr-screenshots` branch and passes that
+//      branch's raw.githubusercontent.com base.
 //
 // The page list is intentionally small — the goal is to catch
 // layout-relevant regressions on representative templates, not to
@@ -23,6 +27,7 @@ const pixelmatch = require('pixelmatch');
 
 const PREVIEW_URL     = (process.env.PREVIEW_URL     || '').replace(/\/+$/, '');
 const BASELINES_EXIST = process.env.BASELINES_EXIST  === 'true';
+const IMAGE_BASE_URL  = (process.env.IMAGE_BASE_URL  || '').replace(/\/+$/, '');
 
 if (!PREVIEW_URL) {
   console.error('[visual-diff] PREVIEW_URL is required');
@@ -107,18 +112,48 @@ async function main() {
   }
   lines.push('| Page | URL | Status | Diff |');
   lines.push('|---|---|---|---|');
-  let regressed = 0;
+  const flagged = [];
   for (const r of rows) {
-    const flagged = r.diffPct !== null && r.diffPct > DIFF_THRESHOLD_PCT;
-    if (flagged) regressed++;
+    const overThreshold = r.diffPct !== null && r.diffPct > DIFF_THRESHOLD_PCT;
+    if (overThreshold) flagged.push(r);
     const diffCell = r.diffPct === null ? '—'
-      : (flagged ? `**${r.diffPct.toFixed(2)}%** (over ${DIFF_THRESHOLD_PCT}%)` : `${r.diffPct.toFixed(2)}%`);
+      : (overThreshold ? `**${r.diffPct.toFixed(2)}%** (over ${DIFF_THRESHOLD_PCT}%)` : `${r.diffPct.toFixed(2)}%`);
     lines.push(`| \`${r.slug}\` | \`${r.url}\` | ${r.status} | ${diffCell} |`);
   }
   lines.push('');
-  lines.push(`Threshold: ${DIFF_THRESHOLD_PCT}%. Pages over the threshold: **${regressed}**.`);
+  lines.push(`Threshold: ${DIFF_THRESHOLD_PCT}%. Pages over the threshold: **${flagged.length}**.`);
   lines.push('');
-  lines.push('Diff PNGs and current screenshots are attached as the `visual-diff` workflow artifact (14-day retention).');
+
+  // Inline image embeds for every regressed page. The image-publish
+  // step in `preview.yml` pushes the screenshot+diff PNGs to a
+  // public `pr-screenshots` branch and passes IMAGE_BASE_URL pointing
+  // at raw.githubusercontent.com for that branch + this PR's
+  // subdirectory. When that publish hasn't happened (e.g. first-run,
+  // local dry-run), we fall back to the artifact-link line.
+  if (flagged.length > 0) {
+    lines.push('### Pages with layout-relevant changes');
+    lines.push('');
+    if (IMAGE_BASE_URL) {
+      for (const r of flagged) {
+        lines.push(`#### \`${r.slug}\` — ${r.diffPct.toFixed(2)}% changed`);
+        lines.push('');
+        lines.push(`URL on preview: \`${r.url}\``);
+        lines.push('');
+        lines.push(`<table><tr>`);
+        lines.push(`<td><b>Current</b><br/><img src="${IMAGE_BASE_URL}/screenshots/${r.slug}.png" width="480"/></td>`);
+        lines.push(`<td><b>Diff overlay</b><br/><img src="${IMAGE_BASE_URL}/diffs/${r.slug}.png" width="480"/></td>`);
+        lines.push(`</tr></table>`);
+        lines.push('');
+      }
+    } else {
+      lines.push('Inline preview images unavailable (image-publish step did not run).');
+      lines.push('Diff PNGs and current screenshots are attached as the `visual-diff` workflow artifact (14-day retention).');
+      lines.push('');
+    }
+  } else {
+    lines.push('Diff PNGs and current screenshots are attached as the `visual-diff` workflow artifact (14-day retention).');
+  }
+
   fs.writeFileSync('visual-diff-report.md', lines.join('\n'));
 
   // Non-zero exit only on infra failure, not on diff regression — we

@@ -11,19 +11,12 @@ name: editorial
 # for posts, authors, series, and reading lists.
 
 on:
+  # No path filter: editorial linting runs on every PR so prose
+  # changes anywhere in the repo (READMEs, /standards, /ethos, ad-hoc
+  # markdown notes) are subject to house style. The Vale config
+  # itself decides which files to lint via `[*.{md,markdown}]`.
   pull_request:
     branches: [main]
-    paths:
-      - "_posts/**"
-      - "_pages/**"
-      - "_authors/**"
-      - "_series/**"
-      - "_lists/**"
-      - "_data/**"
-      - ".github/vale/**"
-      - ".vale.ini"
-      - "scripts/validate_frontmatter.rb"
-      - ".github/workflows/editorial.yml"
   push:
     branches: [main]
   workflow_dispatch:
@@ -57,8 +50,11 @@ jobs:
           fail_on_error: true
           filter_mode: nofilter
           reporter: github-pr-review
-          files: '_posts/ _pages/ _authors/ _series/ _lists/'
-          vale_flags: "--config=.vale.ini --minAlertLevel=suggestion"
+          # Lint every markdown file in the repo. `.vale.ini` scopes
+          # which extensions are linted (`*.{md,markdown}`); fenced
+          # code blocks and YAML frontmatter are skipped natively.
+          files: '.'
+          vale_flags: "--config=.vale.ini --minAlertLevel=suggestion --glob=*.{md,markdown}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -12,9 +12,11 @@ name: pr-preview
 #      output for the visual-diff step.
 #   3. `visual-diff` — Playwright takes screenshots of a curated set
 #      of pages on the preview build, compares them against baseline
-#      screenshots stored on the `gh-pages-screenshot-baselines`
-#      branch (refreshed by a separate `main`-branch workflow), and
-#      posts the diff to the PR.
+#      screenshots stored on the `screenshot-baselines` branch, then
+#      pushes the resulting screenshot + diff PNGs to a
+#      `pr-screenshots` branch under `pr/<n>/<sha>/`. The PR comment
+#      then embeds the public raw.githubusercontent.com URLs inline
+#      so reviewers see the diff images without leaving the PR.
 #
 # Required repository secrets
 #   CLOUDFLARE_API_TOKEN     — token with Pages:Edit scope.
@@ -30,7 +32,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write       # push diff PNGs to `pr-screenshots`
   pull-requests: write
   deployments: write
 
@@ -83,10 +85,12 @@ jobs:
     name: Deploy preview to Cloudflare Pages
     needs: build
     runs-on: ubuntu-latest
+    # Fork PRs cannot access secrets — skip cleanly. The build job
+    # above still validates the change.
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     outputs:
       preview_url: ${{ steps.cf.outputs.url }}
-      deployed: ${{ steps.cf.outputs.deployed }}
+      deployed:   ${{ steps.cf.outputs.deployed }}
     steps:
       - name: Download site artifact
         uses: actions/download-artifact@v4
@@ -96,11 +100,8 @@ jobs:
 
       - name: Publish to Cloudflare Pages
         id: cf
-        # Skip cleanly when the secret isn't configured. This makes the
-        # workflow safe to merge even before Cloudflare provisioning is
-        # done; once the secrets are set, preview URLs start showing up.
         env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_TOKEN:   ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if [ -z "$CF_TOKEN" ] || [ -z "$CF_ACCOUNT" ]; then
@@ -178,10 +179,61 @@ jobs:
             echo "baselines_exist=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Run screenshot comparator
+      - name: Publish screenshots & diffs to pr-screenshots branch
+        id: publish
+        # We push images to a separate orphan branch BEFORE generating
+        # the report, so the report can embed raw URLs that already
+        # resolve. The branch is force-rewritten on each PR push but
+        # different PRs share it (subdirectories are namespaced by PR
+        # number + commit SHA), so concurrent PRs do not collide
+        # because we always rebase atop `pr-screenshots`'s tip.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_SHA:    ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Run the comparator once with no IMAGE_BASE_URL to *produce*
+          # the images, then publish, then re-run to generate the
+          # report with inline embeds. The first invocation skips the
+          # image-bearing report section; only the second one is sent
+          # to the PR comment.
+          PREVIEW_URL="${{ needs.deploy.outputs.preview_url }}" \
+          BASELINES_EXIST="${{ steps.baselines.outputs.baselines_exist }}" \
+          node scripts/visual_diff.js || echo "[visual-diff] comparator emitted infra warnings; continuing to publish"
+
+          # Push the artifacts.
+          repo="${{ github.repository }}"
+          subdir="pr/${PR_NUMBER}/${PR_SHA}"
+          tmp=$(mktemp -d)
+          git clone --branch pr-screenshots --single-branch \
+              "https://x-access-token:${GH_TOKEN}@github.com/${repo}.git" "$tmp" 2>/dev/null || {
+            git -C "$tmp" init -b pr-screenshots
+            git -C "$tmp" remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${repo}.git"
+          }
+          mkdir -p "$tmp/$subdir/screenshots" "$tmp/$subdir/diffs"
+          cp -f screenshots/*.png "$tmp/$subdir/screenshots/" 2>/dev/null || true
+          cp -f diffs/*.png       "$tmp/$subdir/diffs/"       2>/dev/null || true
+          git -C "$tmp" config user.email "actions@github.com"
+          git -C "$tmp" config user.name  "github-actions"
+          git -C "$tmp" add "$subdir"
+          git -C "$tmp" commit -m "PR #${PR_NUMBER} screenshots @ ${PR_SHA}" >/dev/null || \
+            { echo "[visual-diff] no image changes to publish"; }
+          # Push with a short retry loop to tolerate concurrent PRs.
+          for i in 1 2 3; do
+            if git -C "$tmp" push origin pr-screenshots; then
+              break
+            fi
+            git -C "$tmp" pull --rebase origin pr-screenshots
+          done
+          base="https://raw.githubusercontent.com/${repo}/pr-screenshots/${subdir}"
+          echo "[visual-diff] publish base: $base"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+
+      - name: Re-run comparator to produce report with inline embeds
         env:
           PREVIEW_URL: ${{ needs.deploy.outputs.preview_url }}
           BASELINES_EXIST: ${{ steps.baselines.outputs.baselines_exist }}
+          IMAGE_BASE_URL:  ${{ steps.publish.outputs.base }}
         run: node scripts/visual_diff.js
 
       - name: Upload diff artifacts
