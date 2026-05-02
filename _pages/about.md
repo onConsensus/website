@@ -1,12 +1,84 @@
 ---
 layout: page
-title: About onConsensus
+title: About On Consensus
 permalink: /about/
+description: "On Consensus is an editorial publication on decentralized and distributed technologies — governance, research, development, cryptography, and culture. No hype, no gradients, no surveillance."
 image: '/images/h1.png'
+kicker: "About"
 ---
 
-onConsensus was founded in 2022 by [Guillaume Lauzier](https://guillaumelauzier.com) out of a deep passion for decentralized technologies and the transformative potential they hold. As an online news platform, onConsensus is dedicated to exploring and promoting the latest developments in blockchain, cryptocurrency, DeFi, and cybersecurity. Our team is composed of tech experts, journalists, and enthusiasts who are driven by a shared interest in the intersection of technology, finance, and digital security. We aim to create a space where readers, innovators, and industry professionals can connect, exchange ideas, and stay informed about the rapidly evolving world of decentralized systems.
+On Consensus is a small, slow, opinionated publication on the
+governance, research, development, cryptography, and culture of
+distributed systems. We cover the technical and the political,
+because in this field they are the same field.
 
-We have now implemented a contribution system using GitHub for writers, researchers, and content creators passionate about blockchain, cryptocurrency, decentralized finance (DeFi), and cybersecurity. This fair and transparent contribution system encourages anyone with expertise or interest in these fields to join the team and contribute. More information is available on our [documentation page](https://onconsensus.com/documentation/).
+We were started by readers — not founders, not "thought leaders" — who
+were tired of the trade press, tired of the influencer-industrial
+complex, and tired of pretending crypto Twitter constituted a
+discourse. We wanted to read essays we could finish, post-mortems
+whose technical claims were checkable, and criticism that did not
+depend on the price of a token to land. So we wrote one ourselves.
 
-onConsensus is committed to empowering the community of blockchain developers, crypto investors, DeFi pioneers, and cybersecurity professionals. We aim to provide a trusted resource for anyone passionate about decentralized technologies through in-depth insights and a collaborative platform. We invite you to join us in our mission to drive innovation and celebrate the transformative power of this decentralized future.
+## What we cover
+
+Six desks, six standing editors. The split is editorial, not
+organizational — most of our writers contribute across at least two
+of them.
+
+- **Governance.** DAOs, slashing, voting, and the politics of
+  protocols. The constitutional layer — written and unwritten — under
+  every chain.
+- **Research.** Original analysis and notes from the academic edge.
+  Where the papers and the implementations actually meet.
+- **Development.** Implementation reports, post-mortems, and notes
+  from inside node-operator working groups. The unglamorous middle of
+  every release cycle.
+- **Cryptography.** Primitives, proofs, and the math underneath the
+  chains. Folding schemes, BLS signatures, accumulators, lattices —
+  with attention to the gap between asymptotics and engineering.
+- **Culture.** The people, the prose, and the politics of
+  decentralization. Books, code as text, and the social shape of the
+  field.
+- **Dispatches.** A short-form link-blog. On-the-wire items we
+  expect to return to at length, plus the small things that don't
+  warrant a feature.
+
+## What we don't do
+
+We don't run advertising, sponsored posts, token grants, "media
+partnerships", or affiliate links. We don't price-chart. We don't
+chase announcements; we read them, sit with them for a week or two,
+and either say something we'd still mean a year later or we don't
+publish.
+
+We don't ship third-party JavaScript by default, and we don't load
+fonts from a CDN. The whole site weighs less than a single hero
+image on most news sites; our average article is one HTML file, one
+CSS file, two woff2 font files, and the occasional SVG. There are no
+trackers and no cookies. See the [colophon](/colophon/) for the full
+build.
+
+## Who we are
+
+The masthead lives at [/authors/](/authors/). All our editors
+publish under their real names with their real PGP keys; we do not
+have anonymous editorial authority. Anyone telling you they speak
+for the publication should be checkable against that page.
+
+Our editorial principles — sourcing, conflicts of interest, the AI
+policy, corrections — are at [/ethos/](/ethos/). They are short. We
+expect to be held to them.
+
+## Pitching, corrections, tips
+
+Three doors:
+
+- *Pitch a piece.* We pay our contributors at modest, equal,
+  per-piece rates. See [/contribute/](/contribute/).
+- *File a correction.* We publish all corrections at
+  [/corrections/](/corrections/) and never silently rewrite. See the
+  [corrections policy](/ethos/#corrections).
+- *Tip the desk.* Encrypted mail to `tips@onconsensus.com`, against
+  the editorial PGP key in the [colophon](/colophon/).
+
+We read everything. We answer most things. We are slow.

@@ -21,9 +21,13 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - **No Node toolchain.** No npm, no Webpack, no Vite — by design.
 
 ## Project Structure
-- `_config.yml` — site identity, plugins, collections, **sections taxonomy**,
-  social block, defaults.
+- `_config.yml` — site identity, plugins, collections, social block, defaults.
 - `_data/schemas.yml` — frontmatter contracts for posts, authors, series.
+- `_data/sections.yml` — **editorial taxonomy.** slug, title, blurb,
+  responsible editor (slug into `_authors/`), accent. Read everywhere as
+  `site.data.sections`. Single source of truth for the section list.
+- `_data/principles.yml` — editorial principles (sourcing, conflicts, AI
+  policy, corrections). Surfaced on `/ethos/`.
 - `_authors/` — author collection (slug = filename).
 - `_series/` — multi-part series collection (`/series/:name`).
 - `_posts/` — articles (`/feed/:slug`).
@@ -61,8 +65,8 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - `CNAME` — `onconsensus.com` (apex domain on GitHub Pages).
 
 ## Editorial Sections
-Defined in `_config.yml` under `sections:` and used as the `section:` value on
-every post.
+Defined in `_data/sections.yml` and read everywhere as `site.data.sections`.
+Used as the `section:` value on every post.
 
 | Slug          | Title          |
 | ------------- | -------------- |
@@ -121,8 +125,54 @@ so dark/print modes inherit them and Liquid never has to know about colour.
 4. **Home, sections, archives & feeds** — *complete.*
 5. **Client-side search** — *complete.*
 6. **Reading experience polish** — *complete.*
-7. Accessibility, SEO & editorial pages.
+7. **Accessibility, SEO & editorial pages** — *complete.*
 8. Decap CMS, GitHub workflows & pre-launch QA.
+
+## Accessibility, SEO & editorial pages
+*Built in Task #7.*
+
+- **Editorial data.** `_data/sections.yml` (now the single source of truth for
+  the section taxonomy — moved out of `_config.yml`, with a new `editor:`
+  field) and `_data/principles.yml` (sourcing, conflicts, AI, corrections —
+  each `slug/title/summary/body` with body in markdown).
+- **Editorial pages.** `_pages/about.md`, `_pages/ethos.html` (TOC + per-
+  principle anchored sections + sections-with-editors block reading
+  `site.data.sections`), `_pages/colophon.md` (design/build/network/funding),
+  `_pages/contribute.md` (pitch/correct/tip/support), `_pages/corrections.html`
+  (iterates posts with `corrections:` array, grouped + dated, falls back to
+  an empty-state notice).
+- **JSON-LD.** `_includes/jsonld.html` wired into `_includes/head.html` after
+  `{% seo %}`. Emits `Article` for posts (`NewsArticle` for `dispatches`),
+  with `headline`, `datePublished`, `dateModified`, `author` (Person, with
+  url), `publisher` (Organization with logo `ImageObject`), `mainEntityOfPage`,
+  `inLanguage`, `license`, `isAccessibleForFree`, plus optional
+  `description`, `image`, `articleSection`, `keywords`. On non-post pages
+  emits `Organization` (name, url, logo, email, sameAs) + `WebSite` (with a
+  `SearchAction` pointing at `/search/?q=…`). Coexists with the
+  `BlogPosting` block jekyll-seo-tag emits (search engines accept multiple
+  blocks per page).
+- **OG / Twitter cards.** Handled by `jekyll-seo-tag` ({% seo title=false %}
+  so we control the `<title>`; per-page `image:` overrides the OG/Twitter
+  image — every editorial page sets `/images/h{1..5}.png`).
+- **Image hygiene.** Explicit `width`/`height` on every `<img>` to reserve
+  layout box and prevent CLS:
+  - `_includes/article-card.html`: 1280×800, `loading="lazy"`.
+  - `_layouts/post.html` hero: 1280×720, `loading="eager"` +
+    `fetchpriority="high"`.
+  - `_layouts/author.html` + `_pages/authors.html` avatars: 256×256,
+    `loading="lazy"` (eager on the author header).
+- **Semantic markup pass.** `<time datetime>` wraps every date including the
+  footer copyright year; `<article>`, `<header>`, `<nav>`, `<aside>` already
+  in place from Task #3.
+- **A11y primitives** were established in Task #3 (skip-link, visible
+  focus-visible ring, `prefers-reduced-motion` honoured globally in
+  `_reset.scss`); contrast — body ink `#1a1a1a` on paper `#f4f1ea` is
+  ~14.4:1 (AAA); muted `#6b6258` on paper is ~4.8:1 (AA, used only for
+  metadata).
+- **Styles.** `_sass/_editorial.scss` for `.ethos`, `.ethos__toc`,
+  `.ethos__principle`, `.ethos__sections-list`, `.divider`, and
+  `.corrections-log` blocks. Imported in `assets/css/main.scss` after the
+  other components.
 
 ## Client-side search
 *Built in Task #5.* Static, framework-free, no third-party network calls.

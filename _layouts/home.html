@@ -56,7 +56,7 @@ layout: default
   {%- endif -%}
 
   {%- comment -%} ── 3. BY SECTION ── {%- endcomment -%}
-  {%- assign primary_sections = site.sections | where_exp: "s", "s.slug != 'dispatches'" -%}
+  {%- assign primary_sections = site.data.sections | where_exp: "s", "s.slug != 'dispatches'" -%}
   {%- if primary_sections.size > 0 -%}
     <section class="home__sections container container--wide" aria-labelledby="home-sections-title">
       <header class="home__section-head">

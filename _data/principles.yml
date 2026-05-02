@@ -1,0 +1,110 @@
+# =============================================================================
+# _data/principles.yml — editorial principles surfaced on /ethos.
+#
+# These are the rules the desk operates by. They are not aspirational and
+# they are not press-release language; they are checked against every piece
+# we publish. Updates to this file require a corresponding note in the
+# colophon.
+#
+# Fields
+# ------
+#   slug   — anchor target on /ethos (`#sourcing`, `#conflicts`, …).
+#   title  — display heading.
+#   summary — one-line precis. Surfaced in the table-of-contents at the top
+#            of /ethos and in the JSON-LD on principle anchors.
+#   body   — the principle in full. Markdown.
+# =============================================================================
+
+- slug: sourcing
+  title: Sourcing
+  summary: "On-the-record by default. Background only when the alternative is silence."
+  body: |
+    We attribute. Quotes are on the record unless an editor has explicitly
+    granted background, and background is granted sparingly — only when the
+    alternative is that the public learns nothing about a thing the public
+    has standing to know. We do not use anonymous quotes to launder
+    speculation, and we do not give pseudonymous online accounts the same
+    standing as named sources.
+
+    For technical claims about a protocol, a client, or a deployment, we
+    aim for two independent forms of evidence: the source we are quoting,
+    and a reproducible artefact (a transaction, a commit, a log fragment,
+    a release note, a court filing). When we cannot get the second, we say
+    so, in the piece, in plain language. *"We could not independently
+    confirm this"* is an acceptable sentence in an On Consensus article.
+
+    On chain-of-custody for tips: any communication marked confidential is
+    confidential. The address `tips@onconsensus.com` accepts encrypted mail
+    against the editorial PGP key in the [colophon](/colophon/).
+
+- slug: conflicts
+  title: Conflicts of interest
+  summary: "We disclose financial and reputational interests at the article level, every time."
+  body: |
+    Every contributor to On Consensus discloses, in the byline footer of
+    every piece, any holdings, advisory roles, employment, or grants that
+    a reader might reasonably consider a conflict of interest with the
+    subject of that piece. We err on the side of disclosure: when in
+    doubt, disclose.
+
+    Editors do not write about protocols whose tokens they hold, beyond
+    the small de minimis amounts associated with running a node or
+    paying for transactions on a network they are reporting on. Holdings
+    above that threshold are sold or recused; we keep an internal log
+    that the editor-in-chief signs off on quarterly.
+
+    The publication itself accepts no advertising, no sponsored posts,
+    no "media partnerships", and no token grants. Our funding sources
+    are listed on the [colophon](/colophon/).
+
+- slug: ai
+  title: AI policy
+  summary: "Humans write, edit, and sign. Models are tools, not authors."
+  body: |
+    Every published article on On Consensus is written by a named human
+    being. We do not publish model-generated prose under a human byline,
+    and we do not publish "edited by a human" model output as if it were
+    reportage. The byline is a promise.
+
+    We use language models in the editorial process the way we use
+    spell-checkers, grammar-checkers, and search engines: as tools whose
+    output a human reads, evaluates, and either accepts or rejects.
+    Specifically, contributors may use models for: brainstorming
+    counter-arguments, finding citations they then read in full,
+    summarizing source material as a starting point for their own
+    summary, and copy-editing drafts. Contributors may not use models
+    to: generate paragraphs of prose retained verbatim, fabricate
+    quotations or sources, or summarize technical content the
+    contributor has not themselves read.
+
+    Every author signs an annual statement to this effect; the statements
+    are part of the editorial record.
+
+- slug: corrections
+  title: Corrections policy
+  summary: "Errors are public, dated, and permanent. We do not silently rewrite."
+  body: |
+    When we get something wrong, we say so, on the page where we got it
+    wrong. Each correction is logged in the article's `corrections`
+    frontmatter as a `{date, note}` entry, surfaced at the foot of the
+    article, indexed in chronological order on
+    [/corrections/](/corrections/), and emitted in the article's RSS
+    item as a separate entry with a `corrected:` flag.
+
+    We distinguish four kinds of edits and treat them differently:
+
+    - **Typos and copy.** Fixed silently within twenty-four hours of
+      publication. Not logged.
+    - **Clarifications.** A reading of the original that a reasonable
+      reader could have come away with that we did not intend. Logged
+      as a clarification.
+    - **Corrections.** A factual claim in the article that turned out
+      to be false. Logged as a correction. The original wording is
+      preserved in the git history; readers can diff it themselves.
+    - **Retractions.** A claim, or sometimes a whole piece, that does
+      not survive the corrections process. Logged as a retraction; the
+      piece is annotated at the top, the original text remains
+      reachable.
+
+    Corrections requests reach us at `corrections@onconsensus.com` and
+    via the *Suggest an edit* link at the foot of every article.

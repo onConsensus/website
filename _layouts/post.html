@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-{%- assign section = site.sections | where: "slug", page.section | first -%}
+{%- assign section = site.data.sections | where: "slug", page.section | first -%}
 
 <article class="article" itemscope itemtype="https://schema.org/Article">
 
@@ -36,11 +36,22 @@ layout: default
         {% include byline.html post=page show_words=true %}
       </header>
 
+      {%- comment -%}
+        Hero figure. The hero is the only image on a post page that loads
+        eagerly — everything else (cards, avatars, in-body images) defers.
+        Explicit `width`/`height` reserve the layout box and prevent CLS
+        before the image (or its CSS aspect-ratio) settles. `featured_alt`
+        in frontmatter overrides the default; the default is the headline,
+        which is acceptable but worth tightening per-piece.
+      {%- endcomment -%}
       {%- if page.featured_image -%}
         <figure class="article__hero">
           <img src="{{ page.featured_image | relative_url }}"
                alt="{{ page.featured_alt | default: page.title | escape }}"
+               width="1280"
+               height="720"
                loading="eager"
+               fetchpriority="high"
                decoding="async"
                itemprop="image">
           {%- if page.featured_caption -%}

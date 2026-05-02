@@ -34,10 +34,10 @@
       <p class="masthead__tagline">{{ site.tagline }}</p>
     {%- endif -%}
 
-    {%- comment -%} Section nav. Sections come from _config.yml. {%- endcomment -%}
+    {%- comment -%} Section nav. Sections come from `_data/sections.yml`. {%- endcomment -%}
     <nav class="masthead__nav" aria-label="Sections">
       <ul class="masthead__nav-list">
-        {%- for section in site.sections -%}
+        {%- for section in site.data.sections -%}
           {%- assign section_url = '/sections/' | append: section.slug | append: '/' -%}
           <li class="masthead__nav-item">
             <a class="masthead__nav-link"

@@ -1,0 +1,122 @@
+{%- comment -%}
+  jsonld.html — Schema.org structured data.
+
+  Two regimes:
+    1. On a `post` page (any layout: post): emit an `Article` JSON-LD block,
+       or `NewsArticle` for the dispatches link-blog. This SUPPLEMENTS the
+       `BlogPosting` block jekyll-seo-tag emits — search engines accept
+       multiple JSON-LD blocks per page and our Article block carries fields
+       seo-tag does not (articleSection, license, keywords, dateModified
+       fall-through, the publisher's logo as a typed ImageObject).
+    2. On every other page: emit an `Organization` block describing the
+       publication, plus a `WebSite` block declaring the search action that
+       maps the masthead's `?q=` form to /search/.
+
+  Implementation notes:
+    - We're hand-rolling JSON. Optional fields use a `,"key": value` (comma
+      *prefix*) pattern so omitting them never strands a trailing comma.
+    - Strings are passed through `jsonify`, which handles escaping. Dates use
+      `date_to_xmlschema` (RFC 3339).
+    - `absolute_url` resolves against `site.url`. Both jekyll-feed and
+      jekyll-seo-tag rely on the same filter; if `site.url` is mis-set every
+      feed breaks alongside us, so we trust it.
+{%- endcomment -%}
+
+{%- if page.layout == "post" -%}
+  {%- assign author  = site.authors      | where: "slug", page.author  | first -%}
+  {%- assign section = site.data.sections | where: "slug", page.section | first -%}
+  {%- if page.section == "dispatches" -%}
+    {%- assign article_type = "NewsArticle" -%}
+  {%- else -%}
+    {%- assign article_type = "Article" -%}
+  {%- endif -%}
+  {%- assign post_image = page.image | default: page.featured_image -%}
+  {%- assign post_description = page.excerpt | default: page.subtitle | default: site.description -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": {{ article_type | jsonify }},
+  "headline": {{ page.title | jsonify }},
+  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+  "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ page.url | absolute_url | jsonify }}
+  },
+  "author": {
+    "@type": "Person",
+    "name": {{ author.name | default: page.author | default: site.author.name | jsonify }}
+    {%- if author.url -%},"url": {{ author.url | absolute_url | jsonify }}{%- endif -%}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.title | jsonify }},
+    "url": {{ '/' | absolute_url | jsonify }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ '/images/logo.svg' | absolute_url | jsonify }}
+    }
+  },
+  "inLanguage": {{ site.lang | default: 'en' | jsonify }},
+  "license": {{ page.license | default: site.license.content | jsonify }},
+  "isAccessibleForFree": true
+  {%- if post_description -%}
+  ,"description": {{ post_description | strip_html | strip_newlines | jsonify }}
+  {%- endif -%}
+  {%- if post_image -%}
+  ,"image": {{ post_image | absolute_url | jsonify }}
+  {%- endif -%}
+  {%- if section -%}
+  ,"articleSection": {{ section.title | jsonify }}
+  {%- endif -%}
+  {%- if page.tags and page.tags.size > 0 -%}
+  ,"keywords": {{ page.tags | join: ", " | jsonify }}
+  {%- endif -%}
+}
+</script>
+{%- else -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ site.title | jsonify }},
+  "url": {{ '/' | absolute_url | jsonify }},
+  "description": {{ site.description | jsonify }},
+  "logo": {{ '/images/logo.svg' | absolute_url | jsonify }},
+  "email": {{ site.email | default: 'editors@onconsensus.com' | jsonify }},
+  "sameAs": [
+    {%- assign social_links = "" | split: "" -%}
+    {%- if site.social.mastodon  -%}{%- assign social_links = social_links | push: site.social.mastodon  -%}{%- endif -%}
+    {%- if site.social.bluesky   -%}{%- assign social_links = social_links | push: site.social.bluesky   -%}{%- endif -%}
+    {%- if site.social.github    -%}{%- assign social_links = social_links | push: site.social.github    -%}{%- endif -%}
+    {%- if site.social.farcaster -%}{%- assign social_links = social_links | push: site.social.farcaster -%}{%- endif -%}
+    {%- for url in social_links -%}
+      {{ url | jsonify }}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ site.title | jsonify }},
+  "url": {{ '/' | absolute_url | jsonify }},
+  "inLanguage": {{ site.lang | default: 'en' | jsonify }},
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.title | jsonify }}
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      {%- assign search_template = '/search/?q=' | absolute_url | append: '{search_term_string}' -%}
+      "urlTemplate": {{ search_template | jsonify }}
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{%- endif -%}

@@ -26,7 +26,7 @@ sitemap: false
 
   {%- for post in feed_posts -%}
     {%- assign author = site.authors | where: "slug", post.author | first -%}
-    {%- assign section = site.sections | where: "slug", post.section | first -%}
+    {%- assign section = site.data.sections | where: "slug", post.section | first -%}
   <entry>
     <title type="text">{{ post.title | xml_escape }}</title>
     <link rel="alternate" type="text/html" href="{{ post.url | absolute_url }}"/>

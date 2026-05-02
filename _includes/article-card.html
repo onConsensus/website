@@ -21,17 +21,27 @@
 {%- if variant == "lead" -%}{%- assign show_excerpt = true -%}{%- endif -%}
 {%- if variant == "dispatch" -%}{%- assign show_excerpt = true -%}{%- endif -%}
 
-{%- assign section = site.sections | where: "slug", post.section | first -%}
+{%- assign section = site.data.sections | where: "slug", post.section | first -%}
 {%- assign author  = site.authors  | where: "slug", post.author  | first -%}
 
 {%- assign card_class = "card card--" | append: variant -%}
 
 <article class="{{ card_class }}">
 
+  {%- comment -%}
+    Card thumbnail. `width`/`height` are intrinsic-aspect attributes the
+    browser uses to compute aspect-ratio before CSS arrives — they do not
+    fight the `aspect-ratio` rule on `.card__media`, which is what the user
+    actually sees. Decorative `alt=""` because the headline directly below
+    is the accessible name; the card is wrapped in `<article>` and the
+    image link is `aria-hidden`/`tabindex="-1"`.
+  {%- endcomment -%}
   {%- if variant != "dispatch" and post.featured_image -%}
     <a class="card__media" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
       <img src="{{ post.featured_image | relative_url }}"
            alt=""
+           width="1280"
+           height="800"
            loading="lazy"
            decoding="async">
     </a>

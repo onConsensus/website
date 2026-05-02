@@ -1,0 +1,100 @@
+---
+layout: page
+title: Corrections
+permalink: /corrections/
+description: "Every published correction on On Consensus, in chronological order. We log corrections, we date them, and we never silently rewrite."
+image: '/images/h5.png'
+kicker: "Corrections log"
+sitemap: true
+---
+
+<div class="corrections-log">
+
+  <p class="article__deck">
+    Every article on On Consensus that has been corrected, clarified, or
+    retracted is listed below. Posts without corrections are intentionally
+    omitted. The full
+    <a href="/ethos/#corrections">corrections policy</a> is on the ethos page.
+  </p>
+
+  {%- comment -%}
+    Build the list of posts that carry a `corrections:` array of size > 0.
+    Liquid has no `compact` for nested arrays, so we accumulate matches in a
+    fresh array and keep the original publication order (newest first, as
+    `site.posts` already returns).
+  {%- endcomment -%}
+  {%- assign posts_with_corrections = "" | split: "" -%}
+  {%- for post in site.posts -%}
+    {%- if post.corrections and post.corrections.size > 0 -%}
+      {%- assign posts_with_corrections = posts_with_corrections | push: post -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if posts_with_corrections.size > 0 -%}
+
+    <p class="corrections-log__count">
+      {{ posts_with_corrections.size }} article{% if posts_with_corrections.size != 1 %}s{% endif %}
+      with corrections on the record.
+    </p>
+
+    <ol class="corrections-log__list">
+      {%- for post in posts_with_corrections -%}
+        {%- assign section = site.data.sections | where: "slug", post.section | first -%}
+        {%- assign author  = site.authors      | where: "slug", post.author  | first -%}
+
+        <li class="corrections-log__entry">
+          <article class="corrections-log__article" aria-labelledby="corrections-{{ post.slug }}">
+
+            <header class="corrections-log__head">
+              {%- if section -%}
+                <a class="corrections-log__kicker" href="{{ '/sections/' | append: section.slug | append: '/' | relative_url }}">
+                  {{ section.title }}
+                </a>
+              {%- endif -%}
+
+              <h2 class="corrections-log__title" id="corrections-{{ post.slug }}">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h2>
+
+              <p class="corrections-log__meta">
+                {%- if author -%}
+                  By <a href="{{ author.url | relative_url }}">{{ author.name }}</a> ·
+                {%- endif -%}
+                <time datetime="{{ post.date | date_to_xmlschema }}">
+                  {{ post.date | date: "%-d %B %Y" }}
+                </time>
+              </p>
+            </header>
+
+            <ol class="corrections-log__items">
+              {%- for c in post.corrections -%}
+                <li class="corrections-log__item">
+                  <time class="corrections-log__date" datetime="{{ c.date }}">
+                    {{ c.date | date: "%-d %b %Y" }}
+                  </time>
+                  <span class="corrections-log__note">{{ c.note }}</span>
+                </li>
+              {%- endfor -%}
+            </ol>
+
+          </article>
+        </li>
+      {%- endfor -%}
+    </ol>
+
+  {%- else -%}
+
+    <div class="corrections-log__empty">
+      <p>
+        No corrections on the record yet. This is unusual and we do not
+        treat it as a feature: it is more likely that we have not yet
+        spotted them. If you have spotted one we have not, please write
+        to <a href="mailto:corrections@onconsensus.com">corrections@onconsensus.com</a>
+        or open a pull request via the <em>Suggest an edit</em> link at the
+        foot of the relevant article.
+      </p>
+    </div>
+
+  {%- endif -%}
+
+</div>

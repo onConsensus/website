@@ -6,11 +6,33 @@
   <meta name="theme-color" content="#14130f" media="(prefers-color-scheme: dark)">
 
   {%- comment -%}
-    SEO + canonical + OG/Twitter + JSON-LD are handled by jekyll-seo-tag.
-    The Accessibility/SEO task will tighten the JSON-LD output; this layout
-    task just wires the plugin in.
+    SEO + canonical + OG/Twitter card meta are handled by jekyll-seo-tag.
+    Per-page `image:` frontmatter overrides the OG/Twitter image. We pass
+    `title=false` so seo-tag does not emit its own <title>; we render the
+    title below from page.title with the site title appended, which gives
+    us editorial control over the wording (and avoids the seo-tag default
+    that prepends an em-dash). seo-tag still emits a `BlogPosting`
+    JSON-LD on posts; our `_includes/jsonld.html` adds the richer
+    `Article` / `Organization` / `WebSite` blocks alongside it.
   {%- endcomment -%}
-  {% seo %}
+  {% seo title=false %}
+
+  {%- comment -%}
+    Page <title>. We append the site title on every page except the
+    home page (where the page title and the site title are the same
+    string). The masthead's "On Consensus" wordmark already roots the
+    brand visually; the <title> just has to identify the document.
+  {%- endcomment -%}
+  {%- if page.url == '/' -%}
+    <title>{{ site.title }} — {{ site.tagline | default: site.description | strip_html | escape }}</title>
+  {%- elsif page.title -%}
+    <title>{{ page.title | strip_html | escape }} · {{ site.title }}</title>
+  {%- else -%}
+    <title>{{ site.title }}</title>
+  {%- endif -%}
+
+  {%- comment -%} Schema.org JSON-LD — Article on posts, Organization + WebSite elsewhere. {%- endcomment -%}
+  {% include jsonld.html %}
 
   {%- comment -%}
     Feed autodiscovery. /feed.xml is produced by jekyll-feed (Atom 1.0,

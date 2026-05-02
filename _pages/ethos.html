@@ -1,0 +1,98 @@
+---
+layout: page
+title: Ethos
+permalink: /ethos/
+description: "The editorial principles On Consensus operates by — sourcing, conflicts of interest, AI policy, corrections."
+image: '/images/h2.png'
+kicker: "Editorial"
+sitemap: true
+---
+
+<div class="ethos">
+
+  <p class="ethos__intro article__deck">
+    The principles below govern how we run the desk. They are not aspirational
+    and they are not press-release language. We expect to be held to them.
+  </p>
+
+  {%- if site.data.principles and site.data.principles.size > 0 -%}
+
+    {%- comment -%}
+      Anchored table of contents — readable summary of every principle, each
+      a deep-link to its full section below. Renders before the principle bodies
+      so it is reachable as the first heading after the page kicker.
+    {%- endcomment -%}
+    <nav class="ethos__toc" aria-labelledby="ethos-toc-heading">
+      <h2 class="ethos__toc-heading" id="ethos-toc-heading">In short</h2>
+      <ol class="ethos__toc-list">
+        {%- for principle in site.data.principles -%}
+          <li class="ethos__toc-item">
+            <a class="ethos__toc-link" href="#{{ principle.slug }}">
+              <span class="ethos__toc-title">{{ principle.title }}</span>
+              {%- if principle.summary -%}
+                <span class="ethos__toc-summary">{{ principle.summary }}</span>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </nav>
+
+    {%- comment -%}
+      Each principle is a self-contained <article> with the slug as its id so
+      the masthead's `#…` deep-links land cleanly with `:target` scroll-margin
+      from `_reset.scss` at play.
+    {%- endcomment -%}
+    <div class="ethos__principles">
+      {%- for principle in site.data.principles -%}
+        <article class="ethos__principle" id="{{ principle.slug }}" aria-labelledby="ethos-{{ principle.slug }}-heading">
+          <header class="ethos__principle-head">
+            <p class="ethos__principle-kicker">§ Principle {{ forloop.index | prepend: "0" | slice: -2, 2 }}</p>
+            <h2 class="ethos__principle-title" id="ethos-{{ principle.slug }}-heading">
+              {{ principle.title }}
+            </h2>
+            {%- if principle.summary -%}
+              <p class="ethos__principle-summary">{{ principle.summary }}</p>
+            {%- endif -%}
+          </header>
+          <div class="ethos__principle-body article__body">
+            {{ principle.body | markdownify }}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+  {%- else -%}
+    <p><em>Editorial principles forthcoming.</em></p>
+  {%- endif -%}
+
+  <hr class="divider divider--accent" aria-hidden="true">
+
+  <section class="ethos__sections" aria-labelledby="ethos-sections-heading">
+    <h2 class="ethos__sections-heading" id="ethos-sections-heading">The desks</h2>
+    <p>
+      Each section runs on the same principles, with a standing editor
+      responsible for sign-off. Pitches go to the section editor; corrections
+      go to the editor of the affected piece. The
+      <a href="/authors/">masthead</a> has full contact details.
+    </p>
+    <dl class="ethos__sections-list">
+      {%- for section in site.data.sections -%}
+        {%- assign editor = site.authors | where: "slug", section.editor | first -%}
+        <dt>
+          <a href="{{ '/sections/' | append: section.slug | append: '/' | relative_url }}">
+            {{ section.title }}
+          </a>
+        </dt>
+        <dd>
+          {{ section.blurb }}
+          {%- if editor -%}
+            Edited by
+            <a href="{{ editor.url | relative_url }}">{{ editor.name }}</a>.
+          {%- endif -%}
+        </dd>
+      {%- endfor -%}
+    </dl>
+  </section>
+
+</div>

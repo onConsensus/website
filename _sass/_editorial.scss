@@ -1,0 +1,402 @@
+// =============================================================================
+// _editorial.scss
+// Styles for the editorial pages — /ethos, /corrections (and any future
+// editorial-policy page that uses the same primitives).
+//
+// These pages share the long-form `.article__body` rhythm but layer their
+// own structural chrome on top: an anchored TOC, principle blocks numbered
+// like editorial clauses, the corrections log.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// /ethos — anchored principles + table of contents.
+// -----------------------------------------------------------------------------
+
+.ethos {
+  // Container is `.page-article` from `_layouts/page.html`; this class just
+  // groups the editorial-specific blocks below.
+}
+
+.ethos__intro {
+  margin-bottom: var(--space-xl);
+}
+
+// -- TOC -----------------------------------------------------------------
+
+.ethos__toc {
+  margin: var(--space-xl) 0;
+  padding: var(--space-m) 0;
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-hairline);
+}
+
+.ethos__toc-heading {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-s);
+}
+
+.ethos__toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: ethos-toc;
+}
+
+.ethos__toc-item {
+  counter-increment: ethos-toc;
+  padding: var(--space-2xs) 0;
+
+  + .ethos__toc-item {
+    border-top: var(--rule-hairline);
+  }
+}
+
+.ethos__toc-link {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-s);
+  align-items: baseline;
+  text-decoration: none;
+  color: var(--ink);
+  padding: var(--space-2xs) 0;
+
+  &::before {
+    content: counter(ethos-toc, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    color: var(--muted);
+    grid-row: 1 / span 2;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+    background: var(--paper-2);
+  }
+}
+
+.ethos__toc-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-1);
+  line-height: var(--lh-tight);
+}
+
+.ethos__toc-summary {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: var(--step-0);
+  line-height: 1.35;
+  color: var(--ink-2);
+  text-wrap: pretty;
+  grid-column: 2;
+}
+
+// -- Principle blocks ----------------------------------------------------
+
+.ethos__principles {
+  margin-top: var(--space-2xl);
+}
+
+.ethos__principle {
+  margin: 0 0 var(--space-2xl);
+  padding-top: var(--space-l);
+  border-top: var(--rule-thick);
+
+  &:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+.ethos__principle-head {
+  margin-bottom: var(--space-l);
+}
+
+.ethos__principle-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-2xs);
+}
+
+.ethos__principle-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-4);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--ink);
+  margin: 0 0 var(--space-s);
+  text-wrap: balance;
+}
+
+.ethos__principle-summary {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.3;
+  color: var(--ink-2);
+  margin: 0;
+  max-width: var(--measure);
+  text-wrap: balance;
+}
+
+.ethos__principle-body {
+  // Inherits `.article__body` rhythm.
+  max-width: var(--measure);
+
+  // Disable the editorial drop-cap on principle bodies — they read more
+  // like reference clauses than like opening paragraphs.
+  > p:first-of-type::first-letter {
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    color: inherit;
+    float: none;
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+// -- "The desks" tail block ----------------------------------------------
+
+.ethos__sections {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-l);
+  border-top: var(--rule-thick);
+}
+
+.ethos__sections-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-3);
+  margin: 0 0 var(--space-s);
+}
+
+.ethos__sections-list {
+  margin: var(--space-m) 0 0;
+  padding: 0;
+
+  dt {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-1);
+    margin-top: var(--space-m);
+
+    a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+
+      &:hover,
+      &:focus-visible { color: var(--accent); }
+    }
+  }
+
+  dd {
+    margin: var(--space-3xs) 0 0;
+    padding-left: 0;
+    color: var(--ink-2);
+    max-width: var(--measure);
+
+    a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--rule);
+      text-underline-offset: 0.15em;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--accent);
+        text-decoration-color: var(--accent);
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Reusable divider — accent rule.
+// -----------------------------------------------------------------------------
+
+.divider {
+  border: 0;
+  border-top: var(--rule-hairline);
+  margin: var(--space-2xl) 0;
+
+  &--accent {
+    border-top: var(--rule-accent);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// /corrections — the corrections log.
+// -----------------------------------------------------------------------------
+
+.corrections-log {
+  // Inherits `.page-article` width.
+}
+
+.corrections-log__count {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: var(--space-l) 0 var(--space-xl);
+  padding-bottom: var(--space-2xs);
+  border-bottom: var(--rule-thick);
+}
+
+.corrections-log__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: corrections;
+}
+
+.corrections-log__entry {
+  counter-increment: corrections;
+  padding: var(--space-l) 0;
+  border-bottom: var(--rule-hairline);
+
+  &:first-child { padding-top: 0; }
+}
+
+.corrections-log__article {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-s);
+}
+
+.corrections-log__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+}
+
+.corrections-log__kicker {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  align-self: flex-start;
+
+  &::before {
+    content: "§";
+    color: var(--muted);
+    margin-right: var(--space-3xs);
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ink);
+    background: var(--highlight);
+  }
+}
+
+.corrections-log__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-2);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  margin: 0;
+  text-wrap: balance;
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--accent);
+    }
+  }
+}
+
+.corrections-log__meta {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover { color: var(--accent); }
+  }
+}
+
+.corrections-log__items {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-s) 0 0;
+  border-left: var(--rule-accent);
+}
+
+.corrections-log__item {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: var(--space-s);
+  align-items: baseline;
+  padding: var(--space-2xs) var(--space-s);
+
+  + .corrections-log__item {
+    border-top: var(--rule-hairline);
+  }
+
+  @media (max-width: 47.999em) {
+    grid-template-columns: 1fr;
+    gap: var(--space-3xs);
+  }
+}
+
+.corrections-log__date {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.corrections-log__note {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.corrections-log__empty {
+  margin: var(--space-l) 0;
+  padding: var(--space-l) var(--space-m);
+  background: var(--paper-2);
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-thick);
+
+  p {
+    margin: 0;
+    max-width: var(--measure);
+  }
+}

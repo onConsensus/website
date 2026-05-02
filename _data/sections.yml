@@ -1,0 +1,55 @@
+# =============================================================================
+# _data/sections.yml — editorial taxonomy.
+#
+# Surfaced on every layout that needs to know about sections (masthead nav,
+# home columns, section archives, article kickers, JSON-LD `articleSection`,
+# section RSS feeds). The single source of truth for the editorial desk.
+#
+# Fields
+# ------
+#   slug    — URL slug. Posts set `section: <slug>` in frontmatter.
+#   title   — display title.
+#   blurb   — single-sentence editorial summary, used on /, /sections/<slug>/,
+#             and feed metadata.
+#   editor  — slug of the responsible editor in `_authors/`. Surfaces on
+#             /ethos and the section landing pages.
+#   accent  — 2-px section underline colour. The global accent (#B8412E)
+#             remains the only colour with prominence — accents are used as a
+#             single hairline under the section name on cards / kickers.
+# =============================================================================
+
+- slug: governance
+  title: Governance
+  blurb: "DAOs, slashing, voting, and the politics of protocols."
+  editor: k-arnaud
+  accent: "#B8412E"
+
+- slug: research
+  title: Research
+  blurb: "Original analysis and notes from the academic edge."
+  editor: m-vellum
+  accent: "#7A5C3F"
+
+- slug: development
+  title: Development
+  blurb: "Implementation reports, post-mortems, and notes from node operators."
+  editor: r-okafor
+  accent: "#3F5C7A"
+
+- slug: cryptography
+  title: Cryptography
+  blurb: "Primitives, proofs, and the math underneath the chains."
+  editor: m-vellum
+  accent: "#3F7A5C"
+
+- slug: culture
+  title: Culture
+  blurb: "The people, the prose, and the politics of decentralization."
+  editor: k-arnaud
+  accent: "#7A3F5C"
+
+- slug: dispatches
+  title: Dispatches
+  blurb: "Short-form link-blog. On the wire."
+  editor: r-okafor
+  accent: "#5C5C5C"

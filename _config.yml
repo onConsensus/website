@@ -105,34 +105,12 @@ defaults:
 
 #-------------------------------
 # Sections (the editorial taxonomy)
-# A post's `section:` frontmatter must be one of these slugs.
-# `accent` is consumed only as a 2px underline under section names —
-# the global accent (#B8412E) remains the only colour with prominence.
-sections:
-  - slug: governance
-    title: "Governance"
-    blurb: "DAOs, slashing, voting, and the politics of protocols."
-    accent: "#B8412E"
-  - slug: research
-    title: "Research"
-    blurb: "Original analysis and notes from the academic edge."
-    accent: "#7A5C3F"
-  - slug: development
-    title: "Development"
-    blurb: "Implementation reports, post-mortems, and notes from node operators."
-    accent: "#3F5C7A"
-  - slug: cryptography
-    title: "Cryptography"
-    blurb: "Primitives, proofs, and the math underneath the chains."
-    accent: "#3F7A5C"
-  - slug: culture
-    title: "Culture"
-    blurb: "The people, the prose, and the politics of decentralization."
-    accent: "#7A3F5C"
-  - slug: dispatches
-    title: "Dispatches"
-    blurb: "Short-form link-blog. On the wire."
-    accent: "#5C5C5C"
+#
+# The full sections list lives in `_data/sections.yml` (slug, title,
+# blurb, editor, accent). Layouts and feeds read it as
+# `site.data.sections`. Editorial posts set `section: <slug>` in
+# frontmatter; valid slugs are: governance, research, development,
+# cryptography, culture, dispatches.
 
 
 #-------------------------------

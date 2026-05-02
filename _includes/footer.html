@@ -33,6 +33,16 @@
       </ul>
     </div>
 
+    <div class="colophon__col colophon__col--editorial">
+      <h2 class="colophon__heading">Editorial</h2>
+      <ul class="colophon__list">
+        <li><a href="{{ '/ethos/' | relative_url }}">Ethos</a></li>
+        <li><a href="{{ '/contribute/' | relative_url }}">Contribute</a></li>
+        <li><a href="{{ '/corrections/' | relative_url }}">Corrections</a></li>
+        <li><a href="{{ '/colophon/' | relative_url }}">Colophon</a></li>
+      </ul>
+    </div>
+
     <div class="colophon__col colophon__col--feeds">
       <h2 class="colophon__heading">Subscribe</h2>
       <ul class="colophon__list">
@@ -69,7 +79,7 @@
     <hr class="colophon__rule" aria-hidden="true">
 
     <div class="colophon__legal">
-      <span>&copy; {{ site.time | date: "%Y" }} {{ site.title }}.</span>
+      <span>&copy; <time datetime="{{ site.time | date: '%Y' }}">{{ site.time | date: "%Y" }}</time> {{ site.title }}.</span>
       <span>Words: <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">{{ content_license }}</a>.</span>
       <span>Code: <a href="https://opensource.org/license/mit/" rel="license">{{ code_license }}</a>.</span>
       <span>No trackers. No third-party scripts.</span>
