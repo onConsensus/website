@@ -50,7 +50,7 @@
 
     {%- if post.block_height -%}
       <span class="byline__group article__block-height" title="Bitcoin block height at publish">
-        Block #{{ post.block_height }}
+        Block <span data-onchain-block>{{ post.block_height }}</span>
       </span>
     {%- endif -%}
   {%- endif -%}

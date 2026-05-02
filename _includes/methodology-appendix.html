@@ -1,0 +1,48 @@
+{%- comment -%}
+  methodology-appendix.html — "Reproduce this" appendix for research
+  posts that ship a sibling `methodology/<slug>/` directory. The
+  rendering is data-driven: any file in that directory is listed with
+  its size and SHA-256, with a download link to the static asset.
+{%- endcomment -%}
+{%- assign post = include.post | default: page -%}
+{%- assign meth = site.data.methodology[post.slug] -%}
+{%- if meth and meth.files and meth.files.size > 0 -%}
+  <section class="methodology" aria-labelledby="methodology-heading">
+    <h2 class="methodology__heading" id="methodology-heading">Reproduce this</h2>
+    <p class="methodology__intro">
+      The data, queries, and scripts behind this article are checked into
+      the repository and listed below with their SHA-256 hashes. Recompute
+      the hash of any file you download and confirm it matches before
+      relying on the contents.
+    </p>
+    <table class="methodology__files">
+      <thead>
+        <tr>
+          <th scope="col">File</th>
+          <th scope="col" class="methodology__col-size">Size</th>
+          <th scope="col" class="methodology__col-hash">SHA-256</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for f in meth.files -%}
+          <tr>
+            <td>
+              <a href="{{ f.url | relative_url }}" download rel="external">
+                <code>{{ f.name }}</code>
+              </a>
+            </td>
+            <td class="methodology__col-size">{{ f.bytes }} B</td>
+            <td class="methodology__col-hash">
+              <code title="{{ f.sha256 }}">{{ f.sha256 | slice: 0, 16 }}…</code>
+            </td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+    <p class="methodology__verify">
+      Full reproducibility policy at
+      <a href="{{ '/standards/' | relative_url }}#reproducibility">standards · reproducibility</a>;
+      verification recipe at <a href="{{ '/verify/' | relative_url }}#methodology">verify · methodology</a>.
+    </p>
+  </section>
+{%- endif -%}

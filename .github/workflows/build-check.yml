@@ -5,6 +5,12 @@ on:
     branches: [main]
   push:
     branches: [main]
+  # Daily cron: lifts time-based embargoes whose deadline has passed by
+  # rebuilding the site without any source change. The post layout reads
+  # `site.time` against `page.embargo_until`, so a fresh build is the
+  # whole reveal mechanism.
+  schedule:
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +46,34 @@ jobs:
 
       - name: Generate article changelog from git
         run: ruby scripts/build_changelog.rb
+
+      - name: Install OpenTimestamps client
+        run: |
+          python3 -m pip install --quiet --user opentimestamps-client || true
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Refresh Bitcoin tip (best-effort, used for block-based embargoes)
+        run: |
+          set +e
+          tip=$(curl -fsSL --max-time 6 https://mempool.space/api/blocks/tip/height || true)
+          hash=$(curl -fsSL --max-time 6 https://mempool.space/api/blocks/tip/hash || true)
+          if [ -n "$tip" ] && [ -n "$hash" ]; then
+            cat > _data/bitcoin.yml <<EOF
+          tip_height: $tip
+          tip_hash: "$hash"
+          tip_at: "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          source: "mempool.space (refreshed at build time)"
+          EOF
+            echo "[ci] Bitcoin tip refreshed: block $tip"
+          else
+            echo "[ci] Bitcoin tip refresh failed; keeping committed _data/bitcoin.yml"
+          fi
+
+      - name: Generate timestamp / methodology / embargo data
+        run: |
+          ruby scripts/build_timestamps.rb
+          ruby scripts/build_methodology.rb
+          ruby scripts/build_embargoes.rb
 
       - name: Build with Jekyll
         run: bundle exec jekyll build --trace

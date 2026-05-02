@@ -1,0 +1,49 @@
+{%- comment -%}
+  timestamp-footer.html — OpenTimestamps proof affordance, rendered in
+  the article footer. Reads `site.data.timestamps[page.slug]` produced by
+  `scripts/build_timestamps.rb`.
+
+  Three render states match the underlying attestation lifecycle:
+    · verified  — proof committed to a Bitcoin block; show block + date.
+    · pending   — proof file exists, calendar receipts not yet attested.
+    · unstamped — sha is recorded but no .ots yet (first build window).
+{%- endcomment -%}
+{%- assign post = include.post | default: page -%}
+{%- assign ts = site.data.timestamps[post.slug] -%}
+{%- if ts -%}
+  {%- assign sha_short = ts.sha256 | slice: 0, 16 -%}
+  <div class="timestamp-footer" data-status="{{ ts.status }}">
+    <span class="timestamp-footer__label">Timestamped</span>
+    <code class="timestamp-footer__hash" title="SHA-256 of the post source markdown">
+      {{ sha_short }}…
+    </code>
+    {%- if ts.status == 'verified' and ts.block_height -%}
+      <span class="timestamp-footer__attest">
+        · Bitcoin block
+        <span data-onchain-block>{{ ts.block_height }}</span>
+        {%- if ts.attested_at -%}
+          ·
+          <time datetime="{{ ts.attested_at }}">
+            {{ ts.attested_at | date: "%-d %b %Y" }}
+          </time>
+        {%- endif -%}
+      </span>
+    {%- elsif ts.status == 'pending' -%}
+      <span class="timestamp-footer__attest timestamp-footer__attest--pending">
+        · Bitcoin attestation pending
+      </span>
+    {%- else -%}
+      <span class="timestamp-footer__attest timestamp-footer__attest--unstamped">
+        · awaiting first stamp
+      </span>
+    {%- endif -%}
+    {%- if ts.ots_present -%}
+      <a class="timestamp-footer__download"
+         href="{{ ts.ots_path | relative_url }}"
+         download
+         rel="external">Download .ots</a>
+    {%- endif -%}
+    <a class="timestamp-footer__verify"
+       href="{{ '/verify/' | relative_url }}#timestamps">Verify</a>
+  </div>
+{%- endif -%}

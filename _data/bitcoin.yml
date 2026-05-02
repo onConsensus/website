@@ -1,0 +1,9 @@
+# Build-time Bitcoin tip metadata. Refreshed by CI (and by
+# `scripts/build_changelog.rb` companions in post-merge) when network is
+# reachable. Fallback values let the editorial layout render sensibly when
+# the build host is offline — block-based embargoes simply degrade to
+# "informational" until a fresher tip is available.
+tip_height: 893500
+tip_hash: "00000000000000000000000000000000000000000000000000000000deadbeef"
+tip_at: "2026-05-01T00:00:00Z"
+source: "fallback (offline build; replace from mempool.space at next CI run)"

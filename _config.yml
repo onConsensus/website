@@ -142,6 +142,38 @@ license:
   code: "MIT"
 
 #-------------------------------
+# Crypto-native content primitives — see /verify/ for the editorial rationale.
+#
+# `onchain.explorers` configures the link clusters that `/js/onchain.js`
+# rewrites tx hashes / addresses / ENS names / block heights into. Order
+# matters: the first explorer in each list is the visible default; the
+# rest open in a popover so the reader can cross-check provenance.
+#
+# Adding a new explorer is a config-only change — no code edits required.
+onchain:
+  explorers:
+    eth_tx:
+      - { name: "Etherscan",   url: "https://etherscan.io/tx/{value}" }
+      - { name: "Blockscout",  url: "https://eth.blockscout.com/tx/{value}" }
+      - { name: "Otterscan",   url: "https://otterscan.io/tx/{value}" }
+    eth_address:
+      - { name: "Etherscan",   url: "https://etherscan.io/address/{value}" }
+      - { name: "Blockscout",  url: "https://eth.blockscout.com/address/{value}" }
+      - { name: "Otterscan",   url: "https://otterscan.io/address/{value}" }
+    ens:
+      - { name: "ENS app",     url: "https://app.ens.domains/{value}" }
+      - { name: "Etherscan",   url: "https://etherscan.io/name-lookup-search?id={value}" }
+    btc_block:
+      - { name: "mempool.space",  url: "https://mempool.space/block/{value}" }
+      - { name: "Blockstream",    url: "https://blockstream.info/block-height/{value}" }
+
+# Editorial safety: by default the on-chain rewriter only auto-links block
+# heights inside elements with `data-onchain-block` (e.g. the byline) to
+# avoid false positives on bare digit strings in body copy. Authors can
+# opt a body span in with the same attribute.
+onchain_block_heights_in_body: false
+
+#-------------------------------
 # jekyll-feed (Atom output)
 # Editorial decision: jekyll-feed produces an Atom feed at /feed.xml. The
 # hand-rolled /atom.xml and /feed.json sit alongside it for completeness.

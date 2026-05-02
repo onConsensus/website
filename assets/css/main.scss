@@ -40,6 +40,7 @@
 @import "search";          // masthead inline search + /search/ page
 @import "editorial";       // /ethos + /corrections editorial-policy pages
 @import "trust";           // retractions, corrections-notice, disclosures, edit history
+@import "onchain";         // on-chain link clusters, timestamp footer, embargo seal, methodology
 
 // 5 — Modes & utilities (must remain last for cascade reasons)
 @import "dark";            // prefers-color-scheme + [data-theme="dark"]

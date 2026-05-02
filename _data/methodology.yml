@@ -1,0 +1,15 @@
+---
+folding-schemes-without-romance:
+  files:
+  - name: README.md
+    sha256: b8ab2b6784b0aa3e710e1cb97d03005b41a3d76b61f7a6123348811076e8a57d
+    bytes: 1724
+    url: "/methodology/folding-schemes-without-romance/README.md"
+  - name: measurements.csv
+    sha256: c982a6dce77c39fc099494ab5b0b70c0a63824829a846692cf19a7143fda8f84
+    bytes: 899
+    url: "/methodology/folding-schemes-without-romance/measurements.csv"
+  - name: run.rb
+    sha256: '0877314651e1b32f0c24c25139d64dfcaba7bb741a51fe018cd56e0a26061fa7'
+    bytes: 983
+    url: "/methodology/folding-schemes-without-romance/run.rb"

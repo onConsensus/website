@@ -98,5 +98,13 @@
   {%- endcomment -%}
   {%- if page.layout == 'post' -%}
     <script defer src="{{ '/js/reading.js' | relative_url }}"></script>
+    {%- comment -%}
+      On-chain reference rewriter — only needed where prose may contain
+      tx hashes, addresses, ENS names, or block-height markers. The
+      explorer config is emitted as a JSON island consumed by
+      `js/onchain.js`. See `_config.yml :: onchain.explorers`.
+    {%- endcomment -%}
+    {% include onchain-config.html %}
+    <script defer src="{{ '/js/onchain.js' | relative_url }}"></script>
   {%- endif -%}
 </head>

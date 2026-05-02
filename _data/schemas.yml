@@ -25,6 +25,9 @@ post:
     block_height: "Integer. Optional Bitcoin block height at publish, surfaced next to the date."
     corrections: "Array of `{date, note}` entries surfaced on `/corrections` and as an inline notice at the top of the article."
     retracted: "Optional `{date, reason}` map. When present, the post renders a full-width retraction overlay; the original text is preserved beneath. Retractions are an editorial decision and require sign-off per `/standards/#corrections`."
+    embargo_until: "ISO 8601 timestamp. Until this moment, the build hides the article body and renders only the sealed-commit summary (title + author + source SHA-256 + intent statement). After the deadline, the cron-driven build reveals the full text. See `/verify/#embargoes`."
+    embargo_block: "Integer Bitcoin block height. Alternative or additional embargo lift signal. The build compares against the height in `_data/bitcoin.yml` (refreshed at build time)."
+    intent_statement: "Plain-prose statement of what the embargoed article will say at a high level. Visible in the sealed commit during the embargo so a reader can independently verify, after lift, that the published text matches the original promise."
 
 author:
   required:

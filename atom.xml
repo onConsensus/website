@@ -4,8 +4,15 @@ permalink: /atom.xml
 sitemap: false
 ---
 <?xml version="1.0" encoding="utf-8"?>
-{%- assign feed_posts = site.posts | slice: 0, 30 -%}
-{%- assign latest = site.posts | first -%}
+{%- comment -%}
+  Embargoed posts are filtered out: the body lives in `post.content` and
+  must not be advertised in feeds while the seal is still in force. The
+  layout-only gating on /feed/<slug> would otherwise leak here. Same
+  filter is applied on /feed.json and /search.json.
+{%- endcomment -%}
+{%- assign visible_posts = site.posts | where_exp: "p", "p.embargo_until == nil" | where_exp: "p", "p.embargo_block == nil" -%}
+{%- assign feed_posts = visible_posts | slice: 0, 30 -%}
+{%- assign latest = visible_posts | first -%}
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.lang | default: 'en' }}">
 
   <title type="text">{{ site.title | xml_escape }}</title>

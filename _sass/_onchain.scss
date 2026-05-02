@@ -1,0 +1,348 @@
+/* On Consensus — Crypto-native content primitives.
+ *
+ * Styles for the four pieces shipped by the trust-anchoring layer:
+ *   1. `.onchain`        — multi-explorer link clusters injected by
+ *                           `js/onchain.js` over tx hashes, addresses,
+ *                           ENS names, and explicit block-height spans.
+ *   2. `.timestamp-footer` — OTS proof affordance in the article foot.
+ *   3. `.embargo-seal`     — sealed-commit card that stands in for the
+ *                           body of an embargoed article.
+ *   4. `.embargo-lifted`,
+ *      `.repro-badge`,
+ *      `.methodology`      — surrounding affordances on the post page.
+ *
+ * The visual language is deliberately understated: monospace tokens for
+ * hashes/addresses, hairline borders, no chrome that could read as
+ * "crypto product". Everything threads through the existing palette
+ * tokens so dark mode comes along for free.
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. On-chain link clusters                                          */
+
+.onchain {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  position: relative;
+  vertical-align: baseline;
+
+  &__value {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    padding: 0.05em 0.35em;
+    background: var(--color-surface-alt, rgba(0, 0, 0, 0.04));
+    border: 1px solid var(--color-rule, rgba(0, 0, 0, 0.12));
+    border-radius: 2px;
+    cursor: help;
+    white-space: nowrap;
+  }
+
+  /* Pop-out: the rest of the cluster (alt explorers + copy button). */
+  &__pop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-2px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 0s linear 120ms;
+  }
+
+  &:hover &__pop,
+  &:focus-within &__pop,
+  &.is-open &__pop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 0s;
+  }
+
+  &__label {
+    color: var(--color-text-mute);
+    font-style: italic;
+  }
+
+  &__link {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+
+    &:not(:last-of-type)::after {
+      content: " ·";
+      color: var(--color-text-mute);
+      margin-left: 0.15rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+  }
+
+  &__copy {
+    appearance: none;
+    background: none;
+    border: 1px solid var(--color-rule, rgba(0, 0, 0, 0.18));
+    border-radius: 2px;
+    color: var(--color-text);
+    cursor: pointer;
+    font: inherit;
+    padding: 0.05em 0.4em;
+    line-height: 1;
+
+    &:hover { background: var(--color-surface-alt, rgba(0, 0, 0, 0.06)); }
+    &.is-copied {
+      border-color: var(--color-accent, currentColor);
+      color: var(--color-accent, currentColor);
+    }
+  }
+
+  /* Block-height clusters drop the address-style background to read more
+     like a regular numeric value. */
+  &--btc_block .onchain__value {
+    background: transparent;
+    border-color: var(--color-rule, rgba(0, 0, 0, 0.10));
+  }
+}
+
+/* On a touch device with no hover, the popover is one tap away. */
+@media (hover: none) {
+  .onchain__pop { opacity: 1; visibility: visible; transform: none; transition: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Timestamp footer                                                 */
+
+.timestamp-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--color-text-mute);
+  border-top: 1px solid var(--color-rule, rgba(0, 0, 0, 0.10));
+  padding: 0.6rem 0;
+  margin-bottom: 0.6rem;
+
+  &__label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
+  }
+
+  &__hash {
+    background: var(--color-surface-alt, rgba(0, 0, 0, 0.04));
+    border: 1px solid var(--color-rule, rgba(0, 0, 0, 0.10));
+    border-radius: 2px;
+    padding: 0.05em 0.35em;
+  }
+
+  &__attest--pending,
+  &__attest--unstamped {
+    font-style: italic;
+  }
+
+  &__download,
+  &__verify {
+    margin-left: auto;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  &__download + &__verify {
+    margin-left: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Embargo seal                                                     */
+
+.embargo-seal {
+  border: 2px solid var(--color-rule, rgba(0, 0, 0, 0.18));
+  background: var(--color-surface-alt, rgba(0, 0, 0, 0.03));
+  padding: 1.5rem;
+  margin: 1.5rem 0 2.25rem;
+
+  &__inner { max-width: 36rem; margin: 0 auto; }
+
+  &__kicker {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-mute);
+  }
+
+  &__heading {
+    margin: 0 0 0.9rem;
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  &__intent {
+    margin: 0 0 1.1rem;
+    padding: 0.6rem 1rem;
+    border-left: 3px solid var(--color-accent, currentColor);
+    font-style: italic;
+    color: var(--color-text);
+  }
+
+  &__facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 1rem;
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+
+    > div { display: contents; }
+    dt {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-mute);
+    }
+    dd { margin: 0; }
+  }
+
+  &__hash {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    word-break: break-all;
+    background: var(--color-surface, transparent);
+    padding: 0.05em 0.35em;
+    border: 1px solid var(--color-rule, rgba(0, 0, 0, 0.10));
+    border-radius: 2px;
+  }
+
+  &__verify {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--color-text-mute);
+  }
+}
+
+/* Embargoed posts: visually mark the article as a held piece. */
+.article--embargoed .article__head {
+  /* hairline ruler under the head reading "EMBARGO" via a pseudo-element
+     would be nice but accessibility-poor; we lean on the seal card alone. */
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Embargo-lifted ribbon                                            */
+
+.embargo-lifted {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-mute);
+  margin: 0.4rem 0 0.8rem;
+  padding: 0.4rem 0.6rem;
+  border-left: 3px solid var(--color-accent, currentColor);
+  background: var(--color-surface-alt, rgba(0, 0, 0, 0.03));
+
+  &__label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+    margin-right: 0.3rem;
+  }
+
+  code {
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Reproducibility badge                                            */
+
+.repro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0.6rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--color-rule, rgba(0, 0, 0, 0.18));
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  text-decoration: none;
+
+  &:hover { background: var(--color-surface-alt, rgba(0, 0, 0, 0.05)); }
+
+  &__dot {
+    color: var(--color-accent, currentColor);
+    font-size: 0.7em;
+    line-height: 1;
+  }
+
+  &__count {
+    color: var(--color-text-mute);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. Methodology appendix                                             */
+
+.methodology {
+  margin: 2.25rem 0 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-rule, rgba(0, 0, 0, 0.18));
+
+  &__heading {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+  }
+
+  &__intro {
+    color: var(--color-text-mute);
+    font-size: 0.94rem;
+    margin: 0 0 1rem;
+  }
+
+  &__files {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+
+    th, td {
+      text-align: left;
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid var(--color-rule, rgba(0, 0, 0, 0.08));
+      vertical-align: top;
+    }
+    th {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--color-text-mute);
+    }
+    code { background: transparent; padding: 0; }
+  }
+
+  &__col-size,
+  &__col-hash {
+    white-space: nowrap;
+  }
+
+  &__verify {
+    margin: 0.8rem 0 0;
+    font-size: 0.86rem;
+    color: var(--color-text-mute);
+  }
+}

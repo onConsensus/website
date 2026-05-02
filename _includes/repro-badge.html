@@ -1,0 +1,15 @@
+{%- comment -%}
+  repro-badge.html — small "Reproducibility: data + code" pill near
+  the byline, gated on the presence of a methodology directory.
+{%- endcomment -%}
+{%- assign post = include.post | default: page -%}
+{%- assign meth = site.data.methodology[post.slug] -%}
+{%- if meth and meth.files and meth.files.size > 0 -%}
+  <a class="repro-badge"
+     href="#methodology-heading"
+     title="This article ships its data and code; jump to the appendix.">
+    <span class="repro-badge__dot" aria-hidden="true">●</span>
+    Reproducibility: data + code
+    <span class="repro-badge__count">({{ meth.files.size }})</span>
+  </a>
+{%- endif -%}

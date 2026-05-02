@@ -1,0 +1,14 @@
+---
+coordination-disclosure-window:
+  source_sha256: 456c39124d9c779b07a8d55d29fac82c2fbc6f7d63f8bc5c85b9f47ec0676f80
+  embargo_until: '2026-12-15T14:00:00Z'
+  intent_statement: |
+    This article reports the outcome of a coordinated-disclosure agreement
+    between four named sequencer operators and the editorial team of On
+    Consensus. The sealed commit makes a precommitment that the published
+    text will (a) name the four operators, (b) describe the disclosure
+    window agreed to, (c) report any operator that withdrew before the
+    window closed, and (d) carry no compensation or quid pro quo from any
+    named party.
+  sealed_at: '2026-05-02T22:02:02Z'
+  source_bytes: 1582

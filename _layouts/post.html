@@ -3,7 +3,38 @@ layout: default
 ---
 {%- assign section = site.data.sections | where: "slug", page.section | first -%}
 
-<article class="article{% if page.retracted %} article--retracted{% endif %}" itemscope itemtype="https://schema.org/Article">
+{%- comment -%}
+  Embargo gating. A post under embargo renders the sealed-commit summary
+  (`_includes/embargo-seal.html`) in place of its body, hero, and
+  signature blocks. The byline, disclosures, edit history, and trust
+  signals continue to render so readers can see what was promised and
+  by whom. The build happens daily on cron, so a deadline that has
+  passed lifts automatically on the next CI run.
+
+  An embargo lifts when *every* declared gate has passed. Both
+  `embargo_until` and `embargo_block` are optional; setting only one is
+  the common case.
+{%- endcomment -%}
+{%- assign has_embargo = false -%}
+{%- if page.embargo_until or page.embargo_block -%}{%- assign has_embargo = true -%}{%- endif -%}
+{%- assign embargoed = false -%}
+{%- if has_embargo -%}
+  {%- assign time_passed = true -%}
+  {%- if page.embargo_until -%}
+    {%- assign now_ts = site.time | date: '%s' | plus: 0 -%}
+    {%- assign until_ts = page.embargo_until | date: '%s' | plus: 0 -%}
+    {%- if now_ts < until_ts -%}{%- assign time_passed = false -%}{%- endif -%}
+  {%- endif -%}
+  {%- assign block_passed = true -%}
+  {%- if page.embargo_block -%}
+    {%- assign tip = site.data.bitcoin.tip_height | default: 0 | plus: 0 -%}
+    {%- if tip < page.embargo_block -%}{%- assign block_passed = false -%}{%- endif -%}
+  {%- endif -%}
+  {%- unless time_passed and block_passed -%}{%- assign embargoed = true -%}{%- endunless -%}
+{%- endif -%}
+{%- assign embargo_seal = site.data.embargoes[page.slug] -%}
+
+<article class="article{% if page.retracted %} article--retracted{% endif %}{% if embargoed %} article--embargoed{% endif %}" itemscope itemtype="https://schema.org/Article">
 
   {%- comment -%}
     Reading-progress bar. Modern browsers drive `.reading-progress__bar`
@@ -69,11 +100,26 @@ layout: default
 
         {%- comment -%}
           Trust signals immediately under the byline:
+            · "Reproduce this" badge when a methodology directory is shipped
             · "Correction" notice when the article carries logged corrections
             · author disclosures (collapsed)
             · "View edit history" (post-publish git commits)
+            · "Embargo lifted" ribbon when an article carried an embargo
+              and the deadline has now passed
           Each block is self-rendering: empty inputs produce no output.
         {%- endcomment -%}
+        {% include repro-badge.html post=page %}
+        {%- if has_embargo and embargoed == false and embargo_seal -%}
+          <p class="embargo-lifted" role="note">
+            <span class="embargo-lifted__label">Embargo lifted</span>
+            {%- if page.embargo_until -%}
+              · <time datetime="{{ page.embargo_until }}">{{ page.embargo_until | date: "%-d %B %Y" }}</time>
+            {%- endif -%}
+            · sealed sha-256
+            <code title="{{ embargo_seal.source_sha256 }}">{{ embargo_seal.source_sha256 | slice: 0, 16 }}…</code>
+            · <a href="{{ '/verify/' | relative_url }}#embargoes">verify</a>
+          </p>
+        {%- endif -%}
         {%- if page.corrections and page.corrections.size > 0 -%}
           <p class="article__correction-notice" role="note">
             <span class="article__correction-notice-label">Correction</span>
@@ -99,6 +145,9 @@ layout: default
         in frontmatter overrides the default; the default is the headline,
         which is acceptable but worth tightening per-piece.
       {%- endcomment -%}
+      {%- if embargoed -%}
+        {% include embargo-seal.html post=page %}
+      {%- else -%}
       {%- if page.featured_image -%}
         <figure class="article__hero">
           <img src="{{ page.featured_image | relative_url }}"
@@ -120,6 +169,15 @@ layout: default
       <div class="article__body" itemprop="articleBody">
         {{ content }}
       </div>
+
+      {%- comment -%}
+        Reproducibility appendix. Renders only when a sibling
+        `methodology/<slug>/` directory exists in the repo and has been
+        hashed by `scripts/build_methodology.rb` into
+        `_data/methodology.yml`. The "Reproduce this" badge near the
+        byline jumps here.
+      {%- endcomment -%}
+      {% include methodology-appendix.html post=page %}
 
       {%- comment -%}
         PGP signature block — when `pgp_signed: true`, render the signature
@@ -161,7 +219,38 @@ layout: default
         {%- endif -%}
       {%- endif -%}
 
+      {%- comment -%}
+        Corrections log lives inside the !embargoed branch: a correction
+        note can itself disclose the substance of an embargoed piece
+        ("we corrected operator X's name to Y"), so we hold the log
+        until the body is also released. The brief "this article has
+        been corrected N times" notice above the byline is a count
+        only and remains visible.
+      {%- endcomment -%}
+      {%- if page.corrections and page.corrections.size > 0 -%}
+        <section class="article__corrections" aria-labelledby="corrections-heading">
+          <h2 class="article__corrections-heading" id="corrections-heading">Corrections</h2>
+          <ol>
+            {%- for c in page.corrections -%}
+              <li>
+                <time datetime="{{ c.date }}">{{ c.date }}</time>
+                — {{ c.note }}
+              </li>
+            {%- endfor -%}
+          </ol>
+        </section>
+      {%- endif -%}
+
+      {%- endif -%}{%- comment -%} end !embargoed {%- endcomment -%}
+
       <footer class="article__foot">
+        {%- comment -%}
+          OpenTimestamps anchor for the post source. Always renders when
+          `_data/timestamps.yml` carries a record, regardless of embargo
+          state — the seal *is* a verifiable artefact.
+        {%- endcomment -%}
+        {% include timestamp-footer.html post=page %}
+
         <span class="article__license">
           {%- if page.license -%}{{ page.license }}{%- else -%}{{ site.license.content }}{%- endif -%}
         </span>
@@ -176,20 +265,6 @@ layout: default
              rel="external">Suggest an edit</a>
         {%- endif -%}
       </footer>
-
-      {%- if page.corrections and page.corrections.size > 0 -%}
-        <section class="article__corrections" aria-labelledby="corrections-heading">
-          <h2 class="article__corrections-heading" id="corrections-heading">Corrections</h2>
-          <ol>
-            {%- for c in page.corrections -%}
-              <li>
-                <time datetime="{{ c.date }}">{{ c.date }}</time>
-                — {{ c.note }}
-              </li>
-            {%- endfor -%}
-          </ol>
-        </section>
-      {%- endif -%}
 
     </div>
 

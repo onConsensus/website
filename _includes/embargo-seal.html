@@ -1,0 +1,81 @@
+{%- comment -%}
+  embargo-seal.html — full-width seal that replaces the article body
+  while a post is under embargo. Read by `_layouts/post.html` only when
+  the embargo has not yet lifted; the post body is suppressed and this
+  card stands in for it.
+
+  Required:
+    post — the post object (defaults to current `page`).
+  Reads:
+    site.data.embargoes[post.slug] — { source_sha256, embargo_until,
+                                       embargo_block, intent_statement,
+                                       sealed_at, source_bytes }
+{%- endcomment -%}
+{%- assign post = include.post | default: page -%}
+{%- assign seal = site.data.embargoes[post.slug] -%}
+
+<aside class="embargo-seal" role="note" aria-labelledby="embargo-seal-heading">
+  <div class="embargo-seal__inner">
+    <p class="embargo-seal__kicker">Embargo · sealed commit</p>
+    <h2 class="embargo-seal__heading" id="embargo-seal-heading">
+      The full text of this article is held until the embargo lifts.
+    </h2>
+
+    {%- if seal.intent_statement -%}
+      <blockquote class="embargo-seal__intent">
+        {{ seal.intent_statement }}
+      </blockquote>
+    {%- endif -%}
+
+    <dl class="embargo-seal__facts">
+      {%- if post.embargo_until -%}
+        <div>
+          <dt>Lifts at</dt>
+          <dd>
+            <time datetime="{{ post.embargo_until }}">
+              {{ post.embargo_until | date: "%-d %B %Y, %H:%M %Z" }}
+            </time>
+          </dd>
+        </div>
+      {%- endif -%}
+      {%- if post.embargo_block -%}
+        <div>
+          <dt>Or after Bitcoin block</dt>
+          <dd>
+            <span data-onchain-block>{{ post.embargo_block }}</span>
+            {%- if site.data.bitcoin.tip_height -%}
+              <small>(tip at build: {{ site.data.bitcoin.tip_height }})</small>
+            {%- endif -%}
+          </dd>
+        </div>
+      {%- endif -%}
+      <div>
+        <dt>Source SHA-256</dt>
+        <dd><code class="embargo-seal__hash">{{ seal.source_sha256 }}</code></dd>
+      </div>
+      {%- if seal.source_bytes -%}
+        <div>
+          <dt>Source bytes</dt>
+          <dd>{{ seal.source_bytes }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if seal.sealed_at -%}
+        <div>
+          <dt>Sealed at build</dt>
+          <dd>
+            <time datetime="{{ seal.sealed_at }}">
+              {{ seal.sealed_at | date: "%-d %B %Y, %H:%M %Z" }}
+            </time>
+          </dd>
+        </div>
+      {%- endif -%}
+    </dl>
+
+    <p class="embargo-seal__verify">
+      After the embargo lifts, recompute
+      <code>sha256</code> over the post source and confirm it matches the
+      hash above to verify the published text matches what was sealed.
+      Full instructions: <a href="{{ '/verify/' | relative_url }}#embargoes">verify · embargoes</a>.
+    </p>
+  </div>
+</aside>

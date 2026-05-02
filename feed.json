@@ -3,7 +3,9 @@ layout: null
 permalink: /feed.json
 sitemap: false
 ---
-{%- assign feed_posts = site.posts | slice: 0, 30 -%}
+{%- comment -%} Filter embargoed posts so `post.content` does not leak. {%- endcomment -%}
+{%- assign visible_posts = site.posts | where_exp: "p", "p.embargo_until == nil" | where_exp: "p", "p.embargo_block == nil" -%}
+{%- assign feed_posts = visible_posts | slice: 0, 30 -%}
 {
   "version": "https://jsonfeed.org/version/1.1",
   "title": {{ site.title | jsonify }},

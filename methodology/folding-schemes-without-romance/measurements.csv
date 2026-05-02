@@ -1,0 +1,17 @@
+implementation,step_size,prover_seconds,witness_seconds,final_snark_seconds,curve_cycle,commit
+nova-rs,16384,3.21,0.42,1.18,pasta,b51fa2c
+nova-rs,65536,12.84,1.69,1.31,pasta,b51fa2c
+nova-rs,262144,51.48,6.79,1.55,pasta,b51fa2c
+nova-rs,1048576,206.12,27.08,1.94,pasta,b51fa2c
+sonobe,16384,4.07,0.51,1.42,bn254-grumpkin,8e0c4d1
+sonobe,65536,16.31,2.04,1.61,bn254-grumpkin,8e0c4d1
+sonobe,262144,65.42,8.18,2.03,bn254-grumpkin,8e0c4d1
+sonobe,1048576,261.94,32.74,2.71,bn254-grumpkin,8e0c4d1
+arkworks-fold,16384,3.85,0.49,1.27,pasta,2af9b03
+arkworks-fold,65536,15.34,1.97,1.40,pasta,2af9b03
+arkworks-fold,262144,61.42,7.91,1.66,pasta,2af9b03
+arkworks-fold,1048576,246.23,31.78,2.08,pasta,2af9b03
+hypernova-impl,16384,2.94,0.38,1.61,pasta,d712fa9
+hypernova-impl,65536,11.71,1.51,1.79,pasta,d712fa9
+hypernova-impl,262144,46.94,6.07,2.13,pasta,d712fa9
+hypernova-impl,1048576,187.82,24.31,2.71,pasta,d712fa9

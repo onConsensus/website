@@ -1,0 +1,22 @@
+{%- comment -%}
+  onchain-config.html — emits the explorer configuration from
+  `_config.yml :: onchain` as a JSON island that `js/onchain.js` reads.
+  Kept in a single place so the explorer set is a config-only edit.
+{%- endcomment -%}
+<script type="application/json" id="onchain-config">
+{
+  "explorers": {
+    {%- assign kinds = "eth_tx,eth_address,ens,btc_block" | split: "," -%}
+    {%- for kind in kinds -%}
+      "{{ kind }}": [
+        {%- assign list = site.onchain.explorers[kind] -%}
+        {%- for ex in list -%}
+          {"name": {{ ex.name | jsonify }}, "url": {{ ex.url | jsonify }}}
+          {%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  },
+  "block_heights_in_body": {{ site.onchain_block_heights_in_body | default: false | jsonify }}
+}
+</script>

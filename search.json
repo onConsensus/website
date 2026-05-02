@@ -7,7 +7,9 @@ layout: null
 permalink: /search.json
 ---
 [
-{%- for post in site.posts -%}
+{%- comment -%} Embargoed posts are excluded from the search index — both content and even the title; the seal page is the only public surface. {%- endcomment -%}
+{%- assign indexed_posts = site.posts | where_exp: "p", "p.embargo_until == nil" | where_exp: "p", "p.embargo_block == nil" -%}
+{%- for post in indexed_posts -%}
   {%- assign author = site.authors | where: "slug", post.author | first -%}
   {%- assign author_name = author.name | default: post.author | default: "" -%}
   {%- assign section_obj = site.sections | where: "slug", post.section | first -%}
