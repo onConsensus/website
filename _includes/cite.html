@@ -1,0 +1,153 @@
+{%- comment -%}
+  cite.html — "Cite this" disclosure with copy-to-clipboard buttons for
+  BibTeX, RIS, Hayagriva, and a plain-text citation.
+
+  Inputs:
+    post — the post to cite (defaults to `page`).
+
+  The citation copy is rendered server-side as `<pre>` blocks. JS in
+  /js/cite.js wires the copy buttons; without JS the user can still
+  select-all-and-copy from the visible block, so the affordance
+  degrades cleanly.
+
+  Each format embeds:
+    · the article's permanent identifier `oc:YYYY/NNNN` from
+      `_data/permaids.yml` (assigned at build time, immutable)
+    · the OpenTimestamps proof URL when one has been generated
+      (presence read from `_data/timestamps.yml`)
+    · the canonical article URL, the byline name(s), the publish date,
+      and the publication name.
+{%- endcomment -%}
+
+{%- assign post = include.post | default: page -%}
+{%- assign author = site.authors | where: "slug", post.author | first -%}
+{%- assign byline = author.name | default: post.author | default: site.author.name -%}
+{%- assign permaid_key = post.permaid_seed | default: post.slug -%}
+{%- assign permaid = site.data.permaids[permaid_key] | default: site.data.permaids[post.slug] -%}
+{%- assign ts = site.data.timestamps[post.slug] -%}
+
+{%- comment -%}
+  Format-specific escapers. We assemble each field once via Liquid
+  `capture`/`replace` so the on-page <pre> shows exactly the bytes a
+  reference manager will ingest.
+
+  · BibTeX field values sit inside `{...}` — we backslash-escape `\`
+    and the LaTeX specials `&`, `%`, `#`, `_`, `$`. Literal `{` / `}`
+    in a title are not escaped because (a) Liquid 4's parser cannot
+    represent them in `replace:` arguments, and (b) editorial titles
+    on this publication don't carry curly braces.
+  · RIS is line-oriented; embedded newlines must collapse to spaces.
+  · Hayagriva is YAML — we double-quote and escape `\` and `"`.
+{%- endcomment -%}
+
+{%- capture _bib_title -%}{{ post.title | replace: "\\", "\\\\" | replace: "&", "\\&" | replace: "%", "\\%" | replace: "#", "\\#" | replace: "_", "\\_" | replace: "$", "\\$" }}{%- endcapture -%}
+{%- capture _bib_author -%}{{ byline | replace: "\\", "\\\\" | replace: "&", "\\&" }}{%- endcapture -%}
+
+{%- capture _ris_title  -%}{{ post.title | strip_newlines | replace: "  ", " " }}{%- endcapture -%}
+{%- capture _ris_author -%}{{ byline    | strip_newlines }}{%- endcapture -%}
+
+{%- capture _yaml_title  -%}{{ post.title | replace: "\\", "\\\\" | replace: '"', '\"' | strip_newlines }}{%- endcapture -%}
+{%- capture _yaml_author -%}{{ byline    | replace: "\\", "\\\\" | replace: '"', '\"' | strip_newlines }}{%- endcapture -%}
+{%- capture _yaml_pub    -%}{{ site.title | replace: "\\", "\\\\" | replace: '"', '\"' }}{%- endcapture -%}
+{%- assign post_url = post.url | absolute_url -%}
+{%- assign year = post.date | date: "%Y" -%}
+{%- assign iso_date = post.date | date: "%Y-%m-%d" -%}
+{%- assign access_date = site.time | date: "%Y-%m-%d" -%}
+
+{%- comment -%} BibTeX key: {first-author-surname}{year}{first-word-of-title} {%- endcomment -%}
+{%- assign _surname = byline | split: " " | last | downcase | replace: ".", "" -%}
+{%- assign _firstword = post.title | split: " " | first | downcase | replace: ":", "" | replace: ",", "" -%}
+{%- capture bib_key -%}{{ _surname }}{{ year }}{{ _firstword }}{%- endcapture -%}
+
+{%- capture bibtex -%}
+@misc{ {{- bib_key -}},
+  author       = { {{- _bib_author -}} },
+  title        = { {{- _bib_title -}} },
+  howpublished = { {{- site.title }}, {{ post_url -}} },
+  year         = { {{- year -}} },
+  month        = { {{- post.date | date: "%b" | downcase -}} },
+  day          = { {{- post.date | date: "%-d" -}} },
+  url          = { {{- post_url -}} },
+  urldate      = { {{- access_date -}} },
+  note         = { {{- permaid }}{% if ts.ots_present %}; OpenTimestamps proof: {{ '/timestamps/' | append: post.slug | append: '.ots' | absolute_url }}{% endif -%} }
+}
+{%- endcapture -%}
+
+{%- capture ris -%}
+TY  - GEN
+AU  - {{ _ris_author }}
+T1  - {{ _ris_title }}
+PY  - {{ year }}
+DA  - {{ iso_date }}
+PB  - {{ site.title | strip_newlines }}
+UR  - {{ post_url }}
+Y2  - {{ access_date }}
+{% if permaid %}ID  - {{ permaid }}
+{% endif %}{% if ts.ots_present %}N1  - OpenTimestamps proof: {{ '/timestamps/' | append: post.slug | append: '.ots' | absolute_url }}
+{% endif %}ER  -
+{%- endcapture -%}
+
+{%- capture hayagriva -%}
+{{ bib_key }}:
+  type: web
+  title: "{{ _yaml_title }}"
+  author: "{{ _yaml_author }}"
+  date: {{ iso_date }}
+  publisher: "{{ _yaml_pub }}"
+  url: {{ post_url }}
+  serial-number:
+    oc: {{ permaid | default: '~' }}
+{%- if ts.ots_present %}
+  archive: "OpenTimestamps"
+  archive-location: {{ '/timestamps/' | append: post.slug | append: '.ots' | absolute_url }}
+{%- endif %}
+{%- endcapture -%}
+
+{%- capture plain -%}
+{{ byline }}. "{{ post.title }}". {{ site.title }}, {{ post.date | date: "%-d %B %Y" }}. {{ post_url }}{% if permaid %} [{{ permaid }}]{% endif %}{% if ts.ots_present %}. OpenTimestamps proof: {{ '/timestamps/' | append: post.slug | append: '.ots' | absolute_url }}{% endif %}.
+{%- endcapture -%}
+
+<aside class="cite article__cite" aria-labelledby="cite-heading-{{ post.slug }}">
+  <details class="cite__disclosure">
+    <summary class="cite__summary" id="cite-heading-{{ post.slug }}">
+      <span class="cite__summary-label">Cite this article</span>
+      {%- if permaid -%}
+        <code class="cite__permaid" title="On Consensus permanent identifier">{{ permaid }}</code>
+      {%- endif -%}
+    </summary>
+
+    <div class="cite__body">
+      <p class="cite__intro">
+        Stable identifier for this article: <code>{{ permaid | default: 'pending' }}</code>.
+        {%- if ts.ots_present -%}
+          The OpenTimestamps proof of the source markdown is at
+          <a href="{{ '/timestamps/' | append: post.slug | append: '.ots' | relative_url }}">/timestamps/{{ post.slug }}.ots</a>.
+        {%- endif -%}
+      </p>
+
+      <div class="cite__formats" role="tablist" aria-label="Citation format">
+        <button class="cite__tab" role="tab" data-cite-tab="bibtex"   aria-selected="true">BibTeX</button>
+        <button class="cite__tab" role="tab" data-cite-tab="ris"      aria-selected="false">RIS</button>
+        <button class="cite__tab" role="tab" data-cite-tab="hayagriva" aria-selected="false">Hayagriva</button>
+        <button class="cite__tab" role="tab" data-cite-tab="plain"    aria-selected="false">Plain text</button>
+      </div>
+
+      <div class="cite__pane" data-cite-pane="bibtex">
+        <pre class="cite__pre"><code>{{- bibtex | strip -}}</code></pre>
+        <button class="cite__copy" data-cite-copy="bibtex" type="button">Copy BibTeX</button>
+      </div>
+      <div class="cite__pane" data-cite-pane="ris" hidden>
+        <pre class="cite__pre"><code>{{- ris | strip -}}</code></pre>
+        <button class="cite__copy" data-cite-copy="ris" type="button">Copy RIS</button>
+      </div>
+      <div class="cite__pane" data-cite-pane="hayagriva" hidden>
+        <pre class="cite__pre"><code>{{- hayagriva | strip -}}</code></pre>
+        <button class="cite__copy" data-cite-copy="hayagriva" type="button">Copy Hayagriva</button>
+      </div>
+      <div class="cite__pane" data-cite-pane="plain" hidden>
+        <pre class="cite__pre"><code>{{- plain | strip -}}</code></pre>
+        <button class="cite__copy" data-cite-copy="plain" type="button">Copy plain text</button>
+      </div>
+    </div>
+  </details>
+</aside>

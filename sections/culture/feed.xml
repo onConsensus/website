@@ -1,7 +1,8 @@
 ---
-layout: null
-permalink: /sections/culture/feed.xml
+layout: axis-rss
 sitemap: false
-section_slug: culture
+axis: section
+axis_value: culture
+permalink: "/sections/culture/feed.xml"
+axis_archive_url: "/sections/culture/"
 ---
-{% include section-feed.xml section_slug=page.section_slug %}

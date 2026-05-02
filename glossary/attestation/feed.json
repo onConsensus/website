@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: attestation
+permalink: "/glossary/attestation/feed.json"
+axis_archive_url: "/glossary/attestation/"
+---

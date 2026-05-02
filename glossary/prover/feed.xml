@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: glossary
+axis_value: prover
+permalink: "/glossary/prover/feed.xml"
+axis_archive_url: "/glossary/prover/"
+---

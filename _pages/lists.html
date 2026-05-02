@@ -1,0 +1,54 @@
+---
+layout: default
+title: Reading lists
+permalink: /lists/
+description: Editor-curated reading paths through the On Consensus archive — hand-picked, not algorithmic.
+sitemap: true
+---
+
+<section class="lists-archive container container--wide">
+  <header class="page-article__head">
+    <p class="page-article__kicker">Reading lists</p>
+    <h1 class="page-article__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="page-article__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+    <p class="lists-archive__editorial">
+      Each list is a curated path through existing articles. There is
+      no recommendation engine here, no behavioural signal, no machine
+      ranking. The desk hands you the order it would hand a
+      practitioner who walked into the room and asked.
+    </p>
+  </header>
+
+  {%- if site.lists.size > 0 -%}
+    <ol class="lists-archive__list">
+      {%- assign sorted_lists = site.lists | sort: "last_revised" | reverse -%}
+      {%- for list in sorted_lists -%}
+        {%- assign curator = site.authors | where: "slug", list.curator | first -%}
+        <li class="lists-archive__entry">
+          <article class="list-card">
+            <h2 class="list-card__title">
+              <a href="{{ list.url | relative_url }}">{{ list.title }}</a>
+            </h2>
+            {%- if list.description -%}
+              <p class="list-card__deck">{{ list.description | strip_newlines }}</p>
+            {%- endif -%}
+            <p class="list-card__meta">
+              {%- if curator -%}
+                Curated by
+                <a href="{{ curator.url | relative_url }}">{{ curator.name }}</a> ·
+              {%- endif -%}
+              {{ list.entries.size }} entr{% if list.entries.size == 1 %}y{% else %}ies{% endif -%}
+              {%- if list.last_revised -%}
+                · revised <time datetime="{{ list.last_revised }}">{{ list.last_revised | date: "%-d %B %Y" }}</time>
+              {%- endif -%}
+            </p>
+          </article>
+        </li>
+      {%- endfor -%}
+    </ol>
+  {%- else -%}
+    <p class="lists-archive__empty"><em>No reading lists yet.</em></p>
+  {%- endif -%}
+</section>

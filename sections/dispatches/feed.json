@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: section
+axis_value: dispatches
+permalink: "/sections/dispatches/feed.json"
+axis_archive_url: "/sections/dispatches/"
+---

@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: fork-choice
+permalink: "/glossary/fork-choice/feed.json"
+axis_archive_url: "/glossary/fork-choice/"
+---

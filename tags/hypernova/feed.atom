@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: tag
+axis_value: hypernova
+permalink: "/tags/hypernova/feed.atom"
+axis_archive_url: "/tags/hypernova/"
+---

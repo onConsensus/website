@@ -1,0 +1,49 @@
+---
+layout: null
+sitemap: false
+---
+{%- comment -%}
+  axis-atom.xml — Atom 1.0 layout for any taxonomy axis. See axis-rss.xml.
+{%- endcomment -%}
+{% include axis-posts.html %}
+{%- assign feed_url = page.url | absolute_url -%}
+{%- assign axis_url = page.axis_archive_url | default: page.url | absolute_url -%}
+{%- assign latest = axis_posts | first -%}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.lang | default: 'en' }}">
+  <title type="text">{{ site.title | xml_escape }} — {{ axis_label | xml_escape }}</title>
+  <subtitle type="text">{{ axis_blurb | default: site.description | xml_escape }}</subtitle>
+  <link rel="self" type="application/atom+xml" href="{{ feed_url }}"/>
+  <link rel="alternate" type="text/html" hreflang="{{ site.lang | default: 'en' }}" href="{{ axis_url }}"/>
+  <id>{{ feed_url }}</id>
+  <updated>{{ latest.date | default: site.time | date_to_xmlschema }}</updated>
+  <rights>{{ site.license.content | default: "CC-BY-SA-4.0" | xml_escape }}</rights>
+  <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll (hand-rolled, axis={{ page.axis | xml_escape }})</generator>
+  {%- for post in axis_posts limit: 30 -%}
+    {%- assign author = site.authors | where: "slug", post.author | first -%}
+    {%- assign section = site.data.sections | where: "slug", post.section | first -%}
+  <entry>
+    <title type="text">{{ post.title | xml_escape }}</title>
+    <link rel="alternate" type="text/html" href="{{ post.url | absolute_url }}"/>
+    <id>{{ post.url | absolute_url }}</id>
+    <published>{{ post.date | date_to_xmlschema }}</published>
+    <updated>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</updated>
+    {%- if author -%}
+    <author>
+      <name>{{ author.name | xml_escape }}</name>
+      <uri>{{ author.url | absolute_url }}</uri>
+    </author>
+    {%- endif -%}
+    {%- if section -%}
+    <category term="{{ section.slug | xml_escape }}" label="{{ section.title | xml_escape }}" scheme="{{ '/sections/' | absolute_url }}"/>
+    {%- endif -%}
+    {%- for tag in post.tags -%}
+    <category term="{{ tag | xml_escape }}" scheme="{{ '/tags/' | absolute_url }}"/>
+    {%- endfor -%}
+    {%- if post.subtitle -%}<summary type="text">{{ post.subtitle | strip_newlines | xml_escape }}</summary>
+    {%- elsif post.excerpt -%}<summary type="text">{{ post.excerpt | strip_html | strip_newlines | xml_escape }}</summary>{%- endif -%}
+    <rights>{{ post.license | default: site.license.content | xml_escape }}</rights>
+    <content type="html" xml:base="{{ post.url | absolute_url }}"><![CDATA[{{ post.content }}]]></content>
+  </entry>
+  {%- endfor -%}
+</feed>

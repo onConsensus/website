@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: author
+axis_value: m-vellum
+permalink: "/authors/m-vellum/feed.atom"
+axis_archive_url: "/m-vellum/"
+---

@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: glossary
+axis_value: bn254
+permalink: "/glossary/bn254/feed.xml"
+axis_archive_url: "/glossary/bn254/"
+---

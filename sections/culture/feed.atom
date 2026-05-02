@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: section
+axis_value: culture
+permalink: "/sections/culture/feed.atom"
+axis_archive_url: "/sections/culture/"
+---

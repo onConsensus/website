@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: section
+axis_value: culture
+permalink: "/sections/culture/feed.json"
+axis_archive_url: "/sections/culture/"
+---

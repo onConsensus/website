@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: prover
+permalink: "/glossary/prover/feed.json"
+axis_archive_url: "/glossary/prover/"
+---

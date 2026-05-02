@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: tag
+axis_value: supernova
+permalink: "/tags/supernova/feed.atom"
+axis_archive_url: "/tags/supernova/"
+---

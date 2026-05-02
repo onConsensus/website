@@ -85,6 +85,8 @@ jobs:
           ruby scripts/build_timestamps.rb
           ruby scripts/build_methodology.rb
           ruby scripts/build_embargoes.rb
+          ruby scripts/build_permaids.rb
+          ruby scripts/build_feeds.rb
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -1,0 +1,41 @@
+---
+layout: default
+title: Glossary
+permalink: /glossary/
+description: Working definitions of the technical terms On Consensus uses, each with its own per-term feed.
+sitemap: true
+---
+
+<section class="glossary-index container container--wide">
+  <header class="page-article__head">
+    <p class="page-article__kicker">Reference</p>
+    <h1 class="page-article__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="page-article__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+    <p class="glossary-index__editorial">
+      The popovers that appear over <dfn>highlighted terms</dfn> in
+      article prose are sourced from this list. Each term has a
+      dedicated archive page that aggregates every article that uses
+      it, with its own RSS / Atom / JSON feed.
+    </p>
+  </header>
+
+  {%- assign terms = site.data.glossary | sort -%}
+  {%- if terms.size > 0 -%}
+    <dl class="glossary-index__list">
+      {%- for pair in terms -%}
+        {%- assign slug = pair[0] -%}
+        {%- assign entry = pair[1] -%}
+        <dt class="glossary-index__term">
+          <a href="{{ '/glossary/' | append: slug | append: '/' | relative_url }}">
+            {{ entry.display | default: slug }}
+          </a>
+        </dt>
+        <dd class="glossary-index__def">{{ entry.definition | strip_newlines }}</dd>
+      {%- endfor -%}
+    </dl>
+  {%- else -%}
+    <p class="glossary-index__empty"><em>No terms yet.</em></p>
+  {%- endif -%}
+</section>

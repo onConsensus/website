@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: glossary
+axis_value: sequencer
+permalink: "/glossary/sequencer/feed.atom"
+axis_archive_url: "/glossary/sequencer/"
+---

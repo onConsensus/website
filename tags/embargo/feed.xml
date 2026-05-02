@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: tag
+axis_value: embargo
+permalink: "/tags/embargo/feed.xml"
+axis_archive_url: "/tags/embargo/"
+---

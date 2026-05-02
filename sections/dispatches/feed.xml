@@ -1,7 +1,8 @@
 ---
-layout: null
-permalink: /sections/dispatches/feed.xml
+layout: axis-rss
 sitemap: false
-section_slug: dispatches
+axis: section
+axis_value: dispatches
+permalink: "/sections/dispatches/feed.xml"
+axis_archive_url: "/sections/dispatches/"
 ---
-{% include section-feed.xml section_slug=page.section_slug %}

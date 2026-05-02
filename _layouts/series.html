@@ -31,6 +31,8 @@ layout: default
       {%- endif -%}
       <span class="byline__group">{{ series_posts.size }} entr{% if series_posts.size == 1 %}y{% else %}ies{% endif %}</span>
     </div>
+    {%- capture _series_feed_base -%}/series/{{ page.slug }}/{%- endcapture -%}
+    {% include feed-icons.html base=_series_feed_base label=page.title %}
   </header>
 
   {%- if content and content != "" -%}

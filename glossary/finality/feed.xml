@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: glossary
+axis_value: finality
+permalink: "/glossary/finality/feed.xml"
+axis_archive_url: "/glossary/finality/"
+---

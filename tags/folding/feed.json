@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: tag
+axis_value: folding
+permalink: "/tags/folding/feed.json"
+axis_archive_url: "/tags/folding/"
+---

@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: author
+axis_value: r-okafor
+permalink: "/authors/r-okafor/feed.atom"
+axis_archive_url: "/r-okafor/"
+---

@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: glossary
+axis_value: fork-choice
+permalink: "/glossary/fork-choice/feed.atom"
+axis_archive_url: "/glossary/fork-choice/"
+---

@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: multisig
+permalink: "/glossary/multisig/feed.json"
+axis_archive_url: "/glossary/multisig/"
+---

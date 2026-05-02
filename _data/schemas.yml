@@ -63,3 +63,18 @@ series:
   optional:
     cover: "Path under `/images/` for the series cover."
     started: "ISO date the series began."
+
+post_permaid:
+  optional:
+    permaid_seed: "Stable identifier for the article's permaid binding. Defaults to the post's slug on first publish. To rename a post (slug change) without orphaning citations, set this to the original slug *before* renaming — `_data/permaids.yml` keeps the seed → permaid mapping untouched."
+
+list:
+  required:
+    title: "Reading-list title."
+    slug: "URL slug. Must equal the filename without `.md`."
+    description: "1-2 sentence editorial framing shown on the list page and the /lists/ index."
+    curator: "Slug of an entry in `_authors/`."
+    entries: "Ordered array of `{slug, annotation}` maps. `slug` references a published post; `annotation` is a brief editorial note explaining the entry's place in the path. Embargoed posts are auto-filtered from the rendered list until lift."
+  optional:
+    last_revised: "ISO date of the most recent edit to the list."
+    bundle: "`{pdf, epub}` map of relative URLs to the bundled exports when the export pipeline lands. Empty strings are treated as 'pending' and surface a colophon link instead."

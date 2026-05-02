@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: author
+axis_value: m-vellum
+permalink: "/authors/m-vellum/feed.json"
+axis_archive_url: "/m-vellum/"
+---

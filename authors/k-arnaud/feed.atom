@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: author
+axis_value: k-arnaud
+permalink: "/authors/k-arnaud/feed.atom"
+axis_archive_url: "/k-arnaud/"
+---

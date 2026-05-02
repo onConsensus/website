@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: pasta-cycle
+permalink: "/glossary/pasta-cycle/feed.json"
+axis_archive_url: "/glossary/pasta-cycle/"
+---

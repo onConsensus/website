@@ -1,0 +1,27 @@
+{%- comment -%}
+  feed-icons.html — visible RSS / Atom / JSON Feed links.
+
+  Inputs:
+    base — relative URL prefix (e.g. "/sections/research/")
+    label — human-readable name surfaced in the link titles
+{%- endcomment -%}
+{%- assign _base = include.base -%}
+{%- assign _label = include.label | default: "feed" -%}
+<p class="feed-icons" aria-label="{{ _label | xml_escape }} feeds">
+  <span class="feed-icons__label">Subscribe:</span>
+  <a class="feed-icons__link"
+     href="{{ _base | append: 'feed.xml' | relative_url }}"
+     title="{{ _label }} — RSS 2.0"
+     type="application/rss+xml"
+     rel="alternate">RSS</a>
+  <a class="feed-icons__link"
+     href="{{ _base | append: 'feed.atom' | relative_url }}"
+     title="{{ _label }} — Atom 1.0"
+     type="application/atom+xml"
+     rel="alternate">Atom</a>
+  <a class="feed-icons__link"
+     href="{{ _base | append: 'feed.json' | relative_url }}"
+     title="{{ _label }} — JSON Feed 1.1"
+     type="application/feed+json"
+     rel="alternate">JSON</a>
+</p>

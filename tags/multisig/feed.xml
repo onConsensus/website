@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: tag
+axis_value: multisig
+permalink: "/tags/multisig/feed.xml"
+axis_archive_url: "/tags/multisig/"
+---

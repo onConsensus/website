@@ -24,6 +24,8 @@ layout: default
       {%- if page.bio -%}
         <p class="author-head__bio">{{ page.bio | strip_newlines }}</p>
       {%- endif -%}
+      {%- capture _author_feed_base -%}/authors/{{ page.slug }}/{%- endcapture -%}
+      {% include feed-icons.html base=_author_feed_base label=page.name %}
     </div>
   </header>
 

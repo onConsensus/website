@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: section
+axis_value: cryptography
+permalink: "/sections/cryptography/feed.json"
+axis_archive_url: "/sections/cryptography/"
+---

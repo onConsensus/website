@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: tag
+axis_value: criticism
+permalink: "/tags/criticism/feed.atom"
+axis_archive_url: "/tags/criticism/"
+---

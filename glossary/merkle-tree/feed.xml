@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: glossary
+axis_value: merkle-tree
+permalink: "/glossary/merkle-tree/feed.xml"
+axis_archive_url: "/glossary/merkle-tree/"
+---

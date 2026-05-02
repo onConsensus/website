@@ -1,7 +1,8 @@
 ---
-layout: null
-permalink: /sections/governance/feed.xml
+layout: axis-rss
 sitemap: false
-section_slug: governance
+axis: section
+axis_value: governance
+permalink: "/sections/governance/feed.xml"
+axis_archive_url: "/sections/governance/"
 ---
-{% include section-feed.xml section_slug=page.section_slug %}

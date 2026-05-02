@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: author
+axis_value: k-arnaud
+permalink: "/authors/k-arnaud/feed.json"
+axis_archive_url: "/k-arnaud/"
+---

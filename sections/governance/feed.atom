@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: section
+axis_value: governance
+permalink: "/sections/governance/feed.atom"
+axis_archive_url: "/sections/governance/"
+---

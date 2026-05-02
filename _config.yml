@@ -80,6 +80,9 @@ collections:
   series:
     output: true
     permalink: /series/:name
+  lists:
+    output: true
+    permalink: /lists/:name/
 
 
 #-------------------------------
@@ -106,11 +109,23 @@ defaults:
       type: "authors"
     values:
       layout: "author"
+      axis: "author"
   - scope:
       path: ""
       type: "series"
     values:
       layout: "series"
+      axis: "series"
+  - scope:
+      path: ""
+      type: "lists"
+    values:
+      layout: "list"
+      axis: "list"
+  - scope:
+      path: "_pages/sections"
+    values:
+      axis: "section"
 
 
 #-------------------------------

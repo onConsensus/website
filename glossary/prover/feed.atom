@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: glossary
+axis_value: prover
+permalink: "/glossary/prover/feed.atom"
+axis_archive_url: "/glossary/prover/"
+---

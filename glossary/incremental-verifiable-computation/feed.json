@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: incremental-verifiable-computation
+permalink: "/glossary/incremental-verifiable-computation/feed.json"
+axis_archive_url: "/glossary/incremental-verifiable-computation/"
+---

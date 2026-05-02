@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: tag
+axis_value: governance
+permalink: "/tags/governance/feed.json"
+axis_archive_url: "/tags/governance/"
+---

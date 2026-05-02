@@ -1,0 +1,8 @@
+---
+layout: axis-rss
+sitemap: false
+axis: tag
+axis_value: criticism
+permalink: "/tags/criticism/feed.xml"
+axis_archive_url: "/tags/criticism/"
+---

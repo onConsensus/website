@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: section
+axis_value: development
+permalink: "/sections/development/feed.atom"
+axis_archive_url: "/sections/development/"
+---

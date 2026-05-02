@@ -1,0 +1,121 @@
+---
+layout: default
+---
+{%- comment -%}
+  list.html — editor-curated reading list page.
+
+  Frontmatter on a `_lists/<slug>.md` file:
+    title        — list title
+    slug         — must match filename
+    description  — 1-2 sentence editorial framing
+    curator      — slug of an entry in `_authors/`
+    last_revised — ISO date of the most recent edit
+    entries      — ordered array of `{slug, annotation}` maps where
+                   `slug` is a post slug and `annotation` is a brief
+                   prose note explaining the entry's place in the path.
+    bundle       — optional `{pdf: <url>, epub: <url>}` map; when the
+                   export pipeline lands these surface as download links.
+{%- endcomment -%}
+
+{% include axis-posts.html axis="list" axis_value=page.slug %}
+{%- assign curator = site.authors | where: "slug", page.curator | first -%}
+
+{%- comment -%}
+  Estimated total reading time. Mirrors `_includes/byline.html`'s rule:
+  reading_time_override wins; otherwise 220 wpm over plain-text content.
+{%- endcomment -%}
+{%- assign total_minutes = 0 -%}
+{%- for post in axis_posts -%}
+  {%- if post.reading_time_override -%}
+    {%- assign total_minutes = total_minutes | plus: post.reading_time_override -%}
+  {%- else -%}
+    {%- assign words = post.content | strip_html | number_of_words -%}
+    {%- assign minutes = words | divided_by: 220 -%}
+    {%- if minutes < 1 -%}{%- assign minutes = 1 -%}{%- endif -%}
+    {%- assign total_minutes = total_minutes | plus: minutes -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<section class="reading-list container container--wide">
+
+  <header class="reading-list__head">
+    <p class="reading-list__kicker">Reading list</p>
+    <h1 class="reading-list__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="reading-list__deck article__deck">{{ page.description | strip_newlines }}</p>
+    {%- endif -%}
+
+    <div class="reading-list__meta byline">
+      {%- if curator -%}
+        <span class="byline__group">
+          <span class="byline__label">Curated by</span>
+          <a class="byline__author" href="{{ curator.url | relative_url }}">{{ curator.name }}</a>
+        </span>
+      {%- endif -%}
+      <span class="byline__group">
+        {{ axis_posts.size }} entr{% if axis_posts.size == 1 %}y{% else %}ies{% endif %}
+      </span>
+      <span class="byline__group">
+        ≈ {{ total_minutes }} min total
+      </span>
+      {%- if page.last_revised -%}
+        <span class="byline__group">
+          Revised <time datetime="{{ page.last_revised }}">{{ page.last_revised | date: "%-d %B %Y" }}</time>
+        </span>
+      {%- endif -%}
+    </div>
+
+    {%- capture _list_feed_base -%}/lists/{{ page.slug }}/{%- endcapture -%}
+    {% include feed-icons.html base=_list_feed_base label=page.title %}
+
+    {%- if page.bundle.pdf or page.bundle.epub -%}
+      <p class="reading-list__bundle">
+        Download as bundle:
+        {%- if page.bundle.pdf -%}
+          <a href="{{ page.bundle.pdf | relative_url }}">PDF</a>
+        {%- endif -%}
+        {%- if page.bundle.pdf and page.bundle.epub -%} · {%- endif -%}
+        {%- if page.bundle.epub -%}
+          <a href="{{ page.bundle.epub | relative_url }}">EPUB</a>
+        {%- endif -%}
+      </p>
+    {%- else -%}
+      <p class="reading-list__bundle reading-list__bundle--pending">
+        <em>PDF / EPUB bundle pending — see the
+        <a href="{{ '/colophon/' | relative_url }}">colophon</a> for export status.</em>
+      </p>
+    {%- endif -%}
+  </header>
+
+  {%- if content and content != "" -%}
+    <div class="reading-list__intro article__body container--measure">
+      {{ content }}
+    </div>
+  {%- endif -%}
+
+  {%- if axis_posts.size > 0 -%}
+    <ol class="reading-list__entries">
+      {%- for post in axis_posts -%}
+        {%- comment -%}
+          Look up the annotation by slug rather than position. When an
+          embargoed entry is filtered out of `axis_posts`, the
+          remaining annotations stay attached to the right post.
+        {%- endcomment -%}
+        {%- assign entry_meta = page.entries | where: "slug", post.slug | first -%}
+        {%- assign annotation = entry_meta.annotation -%}
+        <li class="reading-list__entry">
+          <span class="reading-list__num" aria-hidden="true">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+          <div class="reading-list__entry-body">
+            {% include article-card.html post=post variant="standard" %}
+            {%- if annotation -%}
+              <p class="reading-list__annotation">{{ annotation | strip_newlines }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  {%- else -%}
+    <p class="reading-list__empty"><em>No entries yet.</em></p>
+  {%- endif -%}
+
+</section>

@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: sequencer
+permalink: "/glossary/sequencer/feed.json"
+axis_archive_url: "/glossary/sequencer/"
+---

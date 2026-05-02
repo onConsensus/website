@@ -1,0 +1,40 @@
+---
+layout: default
+---
+{%- comment -%}
+  axis-archive.html — generic archive page for any single taxonomy axis member.
+  Used by per-tag and per-glossary-term pages. Sections, authors, series,
+  and lists each have a richer dedicated layout.
+{%- endcomment -%}
+{% include axis-posts.html %}
+
+<section class="axis-archive container container--wide">
+  <header class="axis-archive__head">
+    <p class="axis-archive__kicker">{{ page.axis | capitalize }}</p>
+    <h1 class="axis-archive__title article__title">{{ axis_label }}</h1>
+    {%- if axis_blurb -%}
+      <p class="axis-archive__deck article__deck">{{ axis_blurb }}</p>
+    {%- endif -%}
+    {%- capture _archive_feed_base -%}{{ page.url }}{%- endcapture -%}
+    {% include feed-icons.html base=_archive_feed_base label=axis_label %}
+    <p class="axis-archive__count">
+      {{ axis_posts.size }} article{% if axis_posts.size != 1 %}s{% endif %}
+    </p>
+  </header>
+
+  {%- if content and content != "" -%}
+    <div class="axis-archive__intro article__body container--measure">
+      {{ content }}
+    </div>
+  {%- endif -%}
+
+  {%- if axis_posts.size > 0 -%}
+    <div class="axis-archive__list card-grid card-grid--3">
+      {%- for post in axis_posts -%}
+        {% include article-card.html post=post variant="standard" %}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="axis-archive__empty"><em>No articles tagged here yet.</em></p>
+  {%- endif -%}
+</section>

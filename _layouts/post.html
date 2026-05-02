@@ -274,6 +274,14 @@ layout: default
 
       {%- endif -%}{%- comment -%} end !embargoed {%- endcomment -%}
 
+      {%- comment -%}
+        Citation block — BibTeX / RIS / Hayagriva / plain-text exports.
+        Sits *outside* the embargoed gate: even during embargo a reader
+        can cite the (sealed) record, and the seal's permaid +
+        OpenTimestamps proof URL are themselves the editorial commitment.
+      {%- endcomment -%}
+      {% include cite.html post=page %}
+
       <footer class="article__foot">
         {%- comment -%}
           OpenTimestamps anchor for the post source. Always renders when

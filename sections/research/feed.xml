@@ -1,7 +1,8 @@
 ---
-layout: null
-permalink: /sections/research/feed.xml
+layout: axis-rss
 sitemap: false
-section_slug: research
+axis: section
+axis_value: research
+permalink: "/sections/research/feed.xml"
+axis_archive_url: "/sections/research/"
 ---
-{% include section-feed.xml section_slug=page.section_slug %}

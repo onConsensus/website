@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: folding-scheme
+permalink: "/glossary/folding-scheme/feed.json"
+axis_archive_url: "/glossary/folding-scheme/"
+---

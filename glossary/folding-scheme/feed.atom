@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: glossary
+axis_value: folding-scheme
+permalink: "/glossary/folding-scheme/feed.atom"
+axis_archive_url: "/glossary/folding-scheme/"
+---

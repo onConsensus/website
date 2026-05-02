@@ -60,6 +60,42 @@
   {%- endif -%}
 
   {%- comment -%}
+    Per-axis feed autodiscovery for taxonomy archive pages — the page
+    declares its `axis` (section / author / series / tag / glossary /
+    list) + `axis_value`, and we emit the three matching alternate
+    links. Same scheme drives the visible feed icons in the page body.
+  {%- endcomment -%}
+  {%- comment -%}
+    Per-axis archive pages may declare `axis_value` directly in
+    frontmatter, or — for collection pages where axis_value is the
+    collection-item slug or section_slug — let it derive from
+    `page.slug` / `page.section_slug` automatically.
+  {%- endcomment -%}
+  {%- assign _axis_value = page.axis_value | default: page.section_slug | default: page.slug -%}
+  {%- if page.axis and _axis_value -%}
+    {%- assign page_axis_value = _axis_value -%}
+    {%- case page.axis -%}
+      {%- when 'section'  -%}{%- assign _axis_feed_base = '/sections/' | append: page_axis_value | append: '/' -%}
+      {%- when 'author'   -%}{%- assign _axis_feed_base = '/authors/'  | append: page_axis_value | append: '/' -%}
+      {%- when 'series'   -%}{%- assign _axis_feed_base = '/series/'   | append: page_axis_value | append: '/' -%}
+      {%- when 'tag'      -%}{%- assign _axis_feed_base = '/tags/'     | append: page_axis_value | append: '/' -%}
+      {%- when 'glossary' -%}{%- assign _axis_feed_base = '/glossary/' | append: page_axis_value | append: '/' -%}
+      {%- when 'list'     -%}{%- assign _axis_feed_base = '/lists/'    | append: page_axis_value | append: '/' -%}
+    {%- endcase -%}
+    {%- if _axis_feed_base -%}
+      <link rel="alternate" type="application/rss+xml"
+            title="{{ site.title | escape }} — {{ page.axis | capitalize | escape }}: {{ page_axis_value | escape }} (RSS)"
+            href="{{ _axis_feed_base | append: 'feed.xml' | relative_url }}">
+      <link rel="alternate" type="application/atom+xml"
+            title="{{ site.title | escape }} — {{ page.axis | capitalize | escape }}: {{ page_axis_value | escape }} (Atom)"
+            href="{{ _axis_feed_base | append: 'feed.atom' | relative_url }}">
+      <link rel="alternate" type="application/feed+json"
+            title="{{ site.title | escape }} — {{ page.axis | capitalize | escape }}: {{ page_axis_value | escape }} (JSON)"
+            href="{{ _axis_feed_base | append: 'feed.json' | relative_url }}">
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%}
     Self-hosted fonts (woff2). Preload the body face + display 700 + mono 400
     only — italic display hydrates as referenced. font-display: swap is set
     per @font-face in _sass/_typography.scss.
@@ -106,5 +142,11 @@
     {%- endcomment -%}
     {% include onchain-config.html %}
     <script defer src="{{ '/js/onchain.js' | relative_url }}"></script>
+    {%- comment -%}
+      Citation export UI: tab switching + copy-to-clipboard for the
+      "Cite this article" disclosure. The block degrades cleanly
+      without JS — the <pre> contents stay visible and selectable.
+    {%- endcomment -%}
+    <script defer src="{{ '/js/cite.js' | relative_url }}"></script>
   {%- endif -%}
 </head>

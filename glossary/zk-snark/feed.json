@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: zk-snark
+permalink: "/glossary/zk-snark/feed.json"
+axis_archive_url: "/glossary/zk-snark/"
+---

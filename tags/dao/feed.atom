@@ -1,0 +1,8 @@
+---
+layout: axis-atom
+sitemap: false
+axis: tag
+axis_value: dao
+permalink: "/tags/dao/feed.atom"
+axis_archive_url: "/tags/dao/"
+---

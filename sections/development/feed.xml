@@ -1,7 +1,8 @@
 ---
-layout: null
-permalink: /sections/development/feed.xml
+layout: axis-rss
 sitemap: false
-section_slug: development
+axis: section
+axis_value: development
+permalink: "/sections/development/feed.xml"
+axis_archive_url: "/sections/development/"
 ---
-{% include section-feed.xml section_slug=page.section_slug %}

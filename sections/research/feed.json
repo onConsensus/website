@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: section
+axis_value: research
+permalink: "/sections/research/feed.json"
+axis_archive_url: "/sections/research/"
+---

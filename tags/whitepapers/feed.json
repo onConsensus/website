@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: tag
+axis_value: whitepapers
+permalink: "/tags/whitepapers/feed.json"
+axis_archive_url: "/tags/whitepapers/"
+---

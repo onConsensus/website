@@ -26,6 +26,8 @@ layout: default
     {%- if section.blurb -%}
       <p class="section-archive__deck article__deck">{{ section.blurb }}</p>
     {%- endif -%}
+    {%- capture _section_feed_base -%}/sections/{{ section_slug }}/{%- endcapture -%}
+    {% include feed-icons.html base=_section_feed_base label=section.title %}
   </header>
 
   {%- if content and content != "" -%}

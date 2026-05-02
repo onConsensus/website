@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: tag
+axis_value: criticism
+permalink: "/tags/criticism/feed.json"
+axis_archive_url: "/tags/criticism/"
+---

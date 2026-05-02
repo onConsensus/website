@@ -1,0 +1,8 @@
+---
+layout: axis-jsonfeed
+sitemap: false
+axis: glossary
+axis_value: bn254
+permalink: "/glossary/bn254/feed.json"
+axis_archive_url: "/glossary/bn254/"
+---

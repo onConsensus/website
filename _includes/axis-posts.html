@@ -1,0 +1,94 @@
+{%- comment -%}
+  axis-posts.html — resolve a list of posts for a taxonomy axis.
+
+  Inputs (from caller scope, usually `page`):
+    axis        — one of: section, author, series, tag, glossary, list
+    axis_value  — the slug of the axis member (e.g. "research", "zk")
+
+  Output:
+    axis_posts  — list of visible posts that belong to the axis
+    axis_label  — human-readable display label for the axis member
+    axis_blurb  — short editorial description of the axis member, if any
+
+  All gated through `visible-posts.html` so embargoed posts never leak
+  into a taxonomy feed or archive page. Lists are special: their
+  membership is an explicit ordered array of post slugs supplied by
+  the list page itself, so we walk that order rather than chronology.
+{%- endcomment -%}
+
+{%- assign _axis = include.axis | default: page.axis -%}
+{%- assign _axis_value = include.axis_value | default: page.axis_value -%}
+
+{% include visible-posts.html %}
+
+{%- if _axis == "section" -%}
+  {%- assign axis_posts = visible_posts | where: "section", _axis_value -%}
+  {%- assign _section = site.data.sections | where: "slug", _axis_value | first -%}
+  {%- assign axis_label = _section.title | default: _axis_value -%}
+  {%- assign axis_blurb = _section.blurb -%}
+
+{%- elsif _axis == "author" -%}
+  {%- assign axis_posts = visible_posts | where: "author", _axis_value -%}
+  {%- assign _author = site.authors | where: "slug", _axis_value | first -%}
+  {%- assign axis_label = _author.name | default: _axis_value -%}
+  {%- assign axis_blurb = _author.bio | strip_newlines -%}
+
+{%- elsif _axis == "series" -%}
+  {%- assign axis_posts = visible_posts | where: "series", _axis_value -%}
+  {%- assign _series = site.series | where: "slug", _axis_value | first -%}
+  {%- assign axis_label = _series.title | default: _axis_value -%}
+  {%- assign axis_blurb = _series.description | strip_newlines -%}
+
+{%- elsif _axis == "tag" -%}
+  {%- assign _tag_matches = "" | split: "" -%}
+  {%- for p in visible_posts -%}
+    {%- if p.tags contains _axis_value -%}
+      {%- assign _tag_matches = _tag_matches | push: p -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign axis_posts = _tag_matches -%}
+  {%- assign axis_label = _axis_value -%}
+  {%- assign axis_blurb = nil -%}
+
+{%- elsif _axis == "glossary" -%}
+  {%- assign _glossary_entry = site.data.glossary[_axis_value] -%}
+  {%- assign _glossary_matches = "" | split: "" -%}
+  {%- for p in visible_posts -%}
+    {%- if p.tags contains _axis_value -%}
+      {%- assign _glossary_matches = _glossary_matches | push: p -%}
+    {%- elsif p.glossary_terms contains _axis_value -%}
+      {%- assign _glossary_matches = _glossary_matches | push: p -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign axis_posts = _glossary_matches -%}
+  {%- assign axis_label = _glossary_entry.display | default: _axis_value -%}
+  {%- assign axis_blurb = _glossary_entry.definition | strip_newlines -%}
+
+{%- elsif _axis == "list" -%}
+  {%- assign _list = site.lists | where: "slug", _axis_value | first -%}
+  {%- assign _list_matches = "" | split: "" -%}
+  {%- if _list.entries -%}
+    {%- for entry in _list.entries -%}
+      {%- assign _entry_slug = entry.slug | default: entry -%}
+      {%- assign _candidate = visible_posts | where: "slug", _entry_slug | first -%}
+      {%- if _candidate -%}
+        {%- assign _list_matches = _list_matches | push: _candidate -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- assign axis_posts = _list_matches -%}
+  {%- assign axis_label = _list.title | default: _axis_value -%}
+  {%- assign axis_blurb = _list.description | strip_newlines -%}
+
+{%- else -%}
+  {%- assign axis_posts = visible_posts -%}
+  {%- assign axis_label = site.title -%}
+  {%- assign axis_blurb = site.tagline -%}
+{%- endif -%}
+
+{%- comment -%}
+  Lists preserve editorial order; everything else is reverse-chronological.
+{%- endcomment -%}
+{%- if _axis != "list" -%}
+  {%- assign axis_posts = axis_posts | sort: "date" | reverse -%}
+{%- endif -%}
