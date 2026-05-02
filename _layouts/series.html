@@ -1,7 +1,8 @@
 ---
 layout: default
 ---
-{%- assign series_posts = site.posts | where: "series", page.slug | sort: "date" -%}
+{% include visible-posts.html %}
+{%- assign series_posts = visible_posts | where: "series", page.slug | sort: "date" -%}
 {%- assign editor = site.authors | where: "slug", page.editor | first -%}
 
 <section class="series-archive container container--wide">

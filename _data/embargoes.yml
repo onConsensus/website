@@ -10,7 +10,7 @@ coordination-disclosure-window:
     window agreed to, (c) report any operator that withdrew before the
     window closed, and (d) carry no compensation or quid pro quo from any
     named party.
-  sealed_at: '2026-05-02T22:19:24Z'
+  sealed_at: '2026-05-02T22:24:49Z'
   source_bytes: 1582
   sealed_commit: 472cf4cbb4ea5a5d4daf15e79c518e0aaa7be730
   sealed_path: _posts/2026-04-30-coordination-disclosure-window.md

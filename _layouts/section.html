@@ -11,7 +11,8 @@ layout: default
 
 {%- assign section_slug = page.section_slug | default: page.slug -%}
 {%- assign section = site.data.sections | where: "slug", section_slug | first -%}
-{%- assign section_posts = site.posts | where: "section", section_slug | sort: "date" | reverse -%}
+{% include visible-posts.html %}
+{%- assign section_posts = visible_posts | where: "section", section_slug | sort: "date" | reverse -%}
 
 <section class="section-archive container container--wide">
 

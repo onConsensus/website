@@ -1,0 +1,115 @@
+name: deploy
+
+# Deploy On Consensus to GitHub Pages.
+#
+# This workflow is the deterministic embargo-lift trigger: a daily cron
+# runs the same Jekyll build that any push would, but **publishes** the
+# resulting `_site/` to Pages. Because the layout decides "is this post
+# currently embargoed?" against `site.time` and the build-time Bitcoin
+# tip, every cron run re-evaluates the predicate at the new wall-clock
+# moment. As soon as a deadline passes, the next cron-driven deploy
+# replaces the seal page with the full body — without anyone needing
+# to push a commit.
+#
+# The legacy "build-check.yml" job continues to run the htmlproofer
+# linter on every PR/push but does not deploy. Keeping the two
+# workflows separate lets the lint job fail loudly without affecting
+# what visitors see, and lets the deploy job finish quickly because
+# it skips htmlproofer.
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Hourly. Embargoes are timestamped to the minute, but Pages is
+    # rate-limited to ~10 deploys per hour and we don't need finer
+    # granularity than this for editorial use. Hourly cron means a
+    # 14:00 UTC lift goes live no later than 14:59 UTC.
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time so the cron and a push don't race.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build _site/ for Pages
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+      BUNDLE_PATH: vendor/bundle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history so build_changelog.rb can derive post-publish
+          # edits from `git log` and build_embargoes.rb can capture
+          # the introducing commit for each sealed post.
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Install OpenTimestamps client (for verify pass)
+        run: |
+          python3 -m pip install --quiet --user opentimestamps-client
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Refresh Bitcoin tip from mempool.space
+        run: |
+          set +e
+          tip=$(curl -fsSL --max-time 6 https://mempool.space/api/blocks/tip/height || true)
+          hash=$(curl -fsSL --max-time 6 https://mempool.space/api/blocks/tip/hash || true)
+          if [ -n "$tip" ] && [ -n "$hash" ]; then
+            cat > _data/bitcoin.yml <<EOF
+          tip_height: $tip
+          tip_hash: "$hash"
+          tip_at: "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          source: "mempool.space (refreshed at deploy time)"
+          EOF
+          fi
+
+      - name: Generate timestamp / methodology / embargo / changelog data
+        run: |
+          ruby scripts/build_changelog.rb
+          ruby scripts/build_timestamps.rb
+          ruby scripts/build_methodology.rb
+          ruby scripts/build_embargoes.rb
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        run: bundle exec jekyll build --trace
+        env:
+          JEKYLL_ENV: production
+
+      - name: Assert embargo gating (no body leak in _site/)
+        run: ruby scripts/assert_embargo.rb _site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publish:
+    name: Publish to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

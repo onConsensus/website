@@ -15,8 +15,13 @@
 
 {%- if page.tags and page.tags.size > 0 -%}
   {%- assign candidates = "" | split: "" -%}
+  {%- comment -%}
+    Related-link surfaces titles + decks; embargoed posts must not
+    appear here. Mirrors the post layout's gating predicate.
+  {%- endcomment -%}
+  {% include visible-posts.html %}
 
-  {%- for post in site.posts -%}
+  {%- for post in visible_posts -%}
     {%- if post.url == page.url -%}{%- continue -%}{%- endif -%}
     {%- assign shared = 0 -%}
     {%- for tag in post.tags -%}

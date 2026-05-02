@@ -5,7 +5,8 @@
 {%- endcomment -%}
 {%- assign section_slug = include.section_slug -%}
 {%- assign section = site.data.sections | where: "slug", section_slug | first -%}
-{%- assign section_posts = site.posts | where: "section", section_slug -%}
+{% include visible-posts.html %}
+{%- assign section_posts = visible_posts | where: "section", section_slug -%}
 {%- assign section_url = '/sections/' | append: section_slug | append: '/' | absolute_url -%}
 {%- assign feed_url = '/sections/' | append: section_slug | append: '/feed.xml' | absolute_url -%}
 <?xml version="1.0" encoding="UTF-8"?>

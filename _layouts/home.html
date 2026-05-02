@@ -11,13 +11,21 @@ layout: default
   top of this layout.
 {%- endcomment -%}
 
-{%- assign featured_post = site.posts | where: "featured", true | first -%}
+{%- comment -%}
+  Filter out currently-embargoed posts from every front-page surface
+  so the seal page is the only public surface for held content.
+  `_includes/visible-posts.html` mirrors the layout's predicate so a
+  post auto-appears the moment its gates lift.
+{%- endcomment -%}
+{% include visible-posts.html %}
+
+{%- assign featured_post = visible_posts | where: "featured", true | first -%}
 {%- if featured_post == nil -%}
-  {%- assign featured_post = site.posts | first -%}
+  {%- assign featured_post = visible_posts | first -%}
 {%- endif -%}
 
 {%- assign latest_posts = "" | split: "" -%}
-{%- for post in site.posts -%}
+{%- for post in visible_posts -%}
   {%- if post.url == featured_post.url -%}{%- continue -%}{%- endif -%}
   {%- assign latest_posts = latest_posts | push: post -%}
   {%- if latest_posts.size >= 10 -%}{%- break -%}{%- endif -%}
@@ -65,7 +73,7 @@ layout: default
       <div class="card-grid card-grid--5">
         {%- for section in primary_sections limit: 5 -%}
           {%- assign section_url = '/sections/' | append: section.slug | append: '/' -%}
-          {%- assign section_post = site.posts | where: "section", section.slug | first -%}
+          {%- assign section_post = visible_posts | where: "section", section.slug | first -%}
           <div class="home__section-col">
             <header class="home__section-col-head" style="--section-accent: {{ section.accent }};">
               <a class="home__section-col-title" href="{{ section_url | relative_url }}">
@@ -87,7 +95,7 @@ layout: default
   {%- endif -%}
 
   {%- comment -%} Dispatches column — link-blog gets its own short stack. {%- endcomment -%}
-  {%- assign dispatches = site.posts | where: "section", "dispatches" -%}
+  {%- assign dispatches = visible_posts | where: "section", "dispatches" -%}
   {%- if dispatches.size > 0 -%}
     <section class="home__dispatches container container--wide" aria-labelledby="home-dispatches-title">
       <header class="home__section-head">

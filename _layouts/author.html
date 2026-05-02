@@ -2,7 +2,8 @@
 layout: default
 ---
 {%- assign author_slug = page.slug -%}
-{%- assign author_posts = site.posts | where: "author", author_slug | sort: "date" | reverse -%}
+{% include visible-posts.html %}
+{%- assign author_posts = visible_posts | where: "author", author_slug | sort: "date" | reverse -%}
 
 <section class="author-archive container container--wide">
 

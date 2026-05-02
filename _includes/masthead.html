@@ -5,8 +5,9 @@
 {%- endcomment -%}
 
 {%- assign now_iso = site.time | date: "%Y-%m-%d" -%}
-{%- assign latest_height = site.posts | map: "block_height" | compact | first -%}
-{%- assign post_count = site.posts | size -%}
+{% include visible-posts.html %}
+{%- assign latest_height = visible_posts | map: "block_height" | compact | first -%}
+{%- assign post_count = visible_posts | size -%}
 
 <header class="masthead page__masthead" role="banner">
   <div class="masthead__inner">
