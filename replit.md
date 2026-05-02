@@ -14,8 +14,9 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - **Plugins (GitHub-Pages allow-list only):** `jekyll-feed`, `jekyll-seo-tag`,
   `jekyll-redirect-from`, `jekyll-sitemap`, `jekyll-paginate`.
 - **Templating:** Liquid.
-- **Styles:** Sass/SCSS (legacy `_sass/` from prior theme; will be replaced in
-  Task #2 — Design system).
+- **Styles:** Sass/SCSS — *Plaintext Cypherpunk Broadsheet* design system
+  living in `_sass/` and entered through `assets/css/main.scss`. Self-hosted
+  woff2 fonts under `assets/fonts/`. See "Design system" below.
 - **Package manager:** Bundler.
 - **No Node toolchain.** No npm, no Webpack, no Vite — by design.
 
@@ -30,8 +31,12 @@ Aesthetic: *Plaintext Cypherpunk Broadsheet*. No hype, no gradients.
 - `_posts/` — articles (`/feed/:slug`).
 - `_pages/` — static pages (about, etc).
 - `_includes/`, `_layouts/` — current layouts are inherited from the legacy
-  *VJs Mag* theme and will be fully replaced in Task #3.
-- `_sass/` — legacy SCSS, to be replaced in Task #2.
+  *VJs Mag* theme and will be fully replaced in Task #3. `_includes/head.html`
+  has already been swapped to load the new design system + font preloads.
+- `_sass/` — *Plaintext Cypherpunk Broadsheet* design system partials.
+- `assets/css/main.scss` — single SCSS entry point that wires the cascade.
+- `assets/fonts/` — self-hosted woff2 (Newsreader, Source Serif 4,
+  IBM Plex Mono, Cormorant Garamond italic).
 - `signatures/` — PGP signature blocks for `pgp_signed: true` posts. Lives
   *outside* `_posts/` so Jekyll never ingests sigs as posts.
 - `images/` — static image assets.
@@ -64,9 +69,36 @@ Bluesky, Nostr, GitHub, Farcaster, RSS.
 - Public directory: `_site`.
 - Apex domain: `onconsensus.com` (CNAME committed).
 
+## Design system — Plaintext Cypherpunk Broadsheet
+*Built in Task #2.* All visual tokens live in CSS custom properties on `:root`
+so dark/print modes inherit them and Liquid never has to know about colour.
+
+- **Entry:** `assets/css/main.scss` (front-matter triggers Jekyll's SCSS
+  converter; output → `/assets/css/main.css`).
+- **Cascade order:** `_tokens` → `_reset` → `_typography` → `_layout` →
+  components (`_masthead`, `_card`, `_article`, `_author`, `_pagination`,
+  `_glossary`, `_code`) → modes (`_dark`, `_print`) → `_utilities`.
+- **Palette:** paper `#f4f1ea`, ink `#1a1a1a`, accent `#b8412e`,
+  muted `#6b6258`, highlight `#e8dfc9`. Dark mode inverts and softens the red.
+- **Type stack (self-hosted woff2, `font-display: swap`):** Newsreader
+  (display), Source Serif 4 (body, 19px / 1.65), IBM Plex Mono (UI / metadata),
+  Cormorant Garamond italic (drop caps & section openers). Body face +
+  display 700 + mono 400 are `<link rel="preload">`-ed in `<head>`.
+- **Fluid type scale:** `clamp()` based on a 1.250 (major third) ratio,
+  anchored 17px → 19px between 320px and 1280px viewports.
+- **Layout:** 12-col CSS grid container, fixed 680px reading measure,
+  right-hand marginalia gutter (`14rem`) activates above 72em — the Reading
+  Experience task wires footnotes / pull-quotes / glossary popovers into it.
+- **Sass runtime caveat:** the github-pages gem pins
+  `jekyll-sass-converter 1.5.2` (Ruby Sass 3.7.4 — pre-modules), so the
+  partials are wired with `@import`. The architecture is Dart-Sass-friendly
+  (no `nth()` / `math.div()` / colour arithmetic on Sass variables — every
+  dynamic value is a CSS custom property), so a future migration to Dart Sass
+  + `@use` is a one-pass refactor of `assets/css/main.scss` alone.
+
 ## Roadmap (Tasks)
 1. **Foundation: config, collections & seed content** — *complete.*
-2. Design system: Plaintext Cypherpunk Broadsheet SCSS.
+2. **Design system: Plaintext Cypherpunk Broadsheet SCSS** — *complete.*
 3. Layouts & includes.
 4. Home, sections, archives & feeds.
 5. Client-side search.

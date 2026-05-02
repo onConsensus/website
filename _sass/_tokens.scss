@@ -1,0 +1,125 @@
+// =============================================================================
+// _tokens.scss
+// Design tokens for *Plaintext Cypherpunk Broadsheet* — palette, type scale,
+// spacing, layout. Everything downstream reads from these custom properties.
+// Light mode is primary; dark overrides live in `_dark.scss`.
+// =============================================================================
+
+:root {
+  // ---------------------------------------------------------------------------
+  // Palette — newsprint paper, near-black ink, single oxidized red accent.
+  // Never pure black, never pure white.
+  // ---------------------------------------------------------------------------
+  --paper:      #f4f1ea;   // warm off-white, like newsprint
+  --paper-2:    #ece8de;   // slightly deeper, for inset bands
+  --ink:        #1a1a1a;   // near-black body text
+  --ink-2:      #2b2b2b;   // softer ink for secondary copy
+  --rule:       #1a1a1a;   // hairline rule colour
+  --accent:     #b8412e;   // oxidized red — used sparingly
+  --accent-ink: #f4f1ea;   // text laid on accent fills
+  --muted:      #6b6258;   // metadata, captions, datelines
+  --highlight:  #e8dfc9;   // pull-quote / callout band
+
+  // Reusable focus ring — 2px solid accent with a paper offset.
+  --focus-ring:        2px solid var(--accent);
+  --focus-ring-offset: 2px;
+
+  // ---------------------------------------------------------------------------
+  // Hairline rules — broadsheet uses 1px rules everywhere.
+  // ---------------------------------------------------------------------------
+  --rule-hairline: 1px solid var(--rule);
+  --rule-thick:    2px solid var(--rule);
+  --rule-double:   3px double var(--rule);
+  --rule-accent:   2px solid var(--accent);
+
+  // ---------------------------------------------------------------------------
+  // Type stack — all self-hosted woff2.
+  // ---------------------------------------------------------------------------
+  --font-display: "Newsreader", "GT Sectra Free", Georgia, "Times New Roman", serif;
+  --font-body:    "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono:    "IBM Plex Mono", "SFMono-Regular", "Menlo", Consolas, monospace;
+  --font-italic:  "Cormorant Garamond", Georgia, "Times New Roman", serif;
+
+  // ---------------------------------------------------------------------------
+  // Fluid type scale — 1.250 (major third) ratio.
+  // Min @ 320px viewport, max @ 1280px. Body anchors at 19px desktop.
+  // Generated for a base of 17px (mobile) → 19px (desktop) to keep editorial
+  // density.
+  // ---------------------------------------------------------------------------
+  --step--2: clamp(0.6800rem, 0.6373rem + 0.2133vw, 0.7600rem);  // micro
+  --step--1: clamp(0.8500rem, 0.7967rem + 0.2667vw, 0.9500rem);  // small
+  --step-0:  clamp(1.0625rem, 0.9958rem + 0.3333vw, 1.1875rem);  // body — 17→19
+  --step-1:  clamp(1.3281rem, 1.2448rem + 0.4167vw, 1.4844rem);  // lede / h6
+  --step-2:  clamp(1.6602rem, 1.5560rem + 0.5208vw, 1.8555rem);  // h5
+  --step-3:  clamp(2.0752rem, 1.9450rem + 0.6510vw, 2.3193rem);  // h4
+  --step-4:  clamp(2.5940rem, 2.4313rem + 0.8137vw, 2.8992rem);  // h3
+  --step-5:  clamp(3.2425rem, 3.0391rem + 1.0171vw, 3.6240rem);  // h2
+  --step-6:  clamp(4.0531rem, 3.7989rem + 1.2713vw, 4.5302rem);  // h1
+  --step-7:  clamp(5.0664rem, 4.7486rem + 1.5891vw, 5.6628rem);  // masthead
+
+  // ---------------------------------------------------------------------------
+  // Line-height & rhythm.
+  // ---------------------------------------------------------------------------
+  --lh-tight:    1.15;   // display headings
+  --lh-snug:     1.25;
+  --lh-body:     1.65;   // long-read body — Source Serif 4 @ 19px
+  --lh-loose:    1.85;
+  --tracking-mono: 0.08em;   // IBM Plex Mono caps
+  --tracking-display: -0.005em;
+
+  // ---------------------------------------------------------------------------
+  // Spacing scale (rem, doubling-ish).
+  // ---------------------------------------------------------------------------
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-s:   1rem;
+  --space-m:   1.5rem;
+  --space-l:   2rem;
+  --space-xl:  3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8rem;
+
+  // ---------------------------------------------------------------------------
+  // Layout — fixed reading measure + 12-col container + marginalia gutter.
+  // ---------------------------------------------------------------------------
+  --measure:        42.5rem;   // ≈ 680px reading column
+  --measure-narrow: 34rem;     // ≈ 544px (lede / cards)
+  --container:      72rem;     // ≈ 1152px
+  --container-wide: 80rem;     // ≈ 1280px
+  --gutter:         clamp(1rem, 2.5vw, 2rem);
+  --columns:        12;
+
+  // Right-hand marginalia gutter on desktop (footnotes, pull quotes,
+  // glossary popovers). Articles below `--bp-marginalia` collapse it inline.
+  --marginalia-w: 14rem;     // ≈ 224px
+  --marginalia-gap: var(--space-l);
+
+  // ---------------------------------------------------------------------------
+  // Breakpoints (used in media queries via `min-width`).
+  // ---------------------------------------------------------------------------
+  --bp-s:           30em;    //  480px
+  --bp-m:           48em;    //  768px
+  --bp-l:           64em;    // 1024px — masthead nav goes horizontal
+  --bp-marginalia:  72em;    // 1152px — marginalia gutter activates
+  --bp-xl:          80em;    // 1280px
+
+  // ---------------------------------------------------------------------------
+  // Motion. Honours `prefers-reduced-motion` in `_reset.scss`.
+  // ---------------------------------------------------------------------------
+  --motion-fast:   120ms;
+  --motion-base:   200ms;
+  --motion-slow:   400ms;
+  --ease-standard: cubic-bezier(0.2, 0.0, 0.2, 1);
+
+  // ---------------------------------------------------------------------------
+  // Z-index scale.
+  // ---------------------------------------------------------------------------
+  --z-base:     0;
+  --z-rise:     10;
+  --z-sticky:   100;
+  --z-overlay:  500;
+  --z-modal:    1000;
+  --z-toast:    1500;
+}

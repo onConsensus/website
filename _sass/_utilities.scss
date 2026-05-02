@@ -1,0 +1,151 @@
+// =============================================================================
+// _utilities.scss
+// Single-purpose utility classes — last in the cascade.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Visually-hidden — accessible to assistive tech, invisible to sighted users.
+// -----------------------------------------------------------------------------
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Skip-to-content variant — visible on focus.
+.visually-hidden-focusable:not(:focus):not(:active) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// -----------------------------------------------------------------------------
+// Display.
+// -----------------------------------------------------------------------------
+.u-block      { display: block !important; }
+.u-inline     { display: inline !important; }
+.u-inline-block { display: inline-block !important; }
+.u-flex       { display: flex !important; }
+.u-grid       { display: grid !important; }
+.u-hidden     { display: none !important; }
+
+@media (min-width: 48em) { .u-hidden\@m { display: none !important; } }
+@media (min-width: 64em) { .u-hidden\@l { display: none !important; } }
+@media (max-width: 47.999em) { .u-hidden\@-m { display: none !important; } }
+
+// -----------------------------------------------------------------------------
+// Text.
+// -----------------------------------------------------------------------------
+.u-text-left   { text-align: left   !important; }
+.u-text-center { text-align: center !important; }
+.u-text-right  { text-align: right  !important; }
+
+.u-text-balance { text-wrap: balance; }
+.u-text-pretty  { text-wrap: pretty;  }
+
+.u-uppercase   { text-transform: uppercase !important; letter-spacing: var(--tracking-mono); }
+.u-lowercase   { text-transform: lowercase !important; }
+.u-italic      { font-style: italic !important; }
+
+.u-mono        { font-family: var(--font-mono) !important; }
+.u-display     { font-family: var(--font-display) !important; }
+.u-italic-display { font-family: var(--font-italic) !important; font-style: italic !important; }
+
+.u-tnum        { font-variant-numeric: tabular-nums; }
+.u-onum        { font-variant-numeric: oldstyle-nums proportional-nums; }
+
+// -----------------------------------------------------------------------------
+// Colour.
+// -----------------------------------------------------------------------------
+.u-ink         { color: var(--ink)     !important; }
+.u-muted       { color: var(--muted)   !important; }
+.u-accent      { color: var(--accent)  !important; }
+
+.u-bg-paper     { background: var(--paper)     !important; }
+.u-bg-paper-2   { background: var(--paper-2)   !important; }
+.u-bg-highlight { background: var(--highlight) !important; }
+.u-bg-ink       { background: var(--ink)       !important; color: var(--paper) !important; }
+
+// -----------------------------------------------------------------------------
+// Borders / rules.
+// -----------------------------------------------------------------------------
+.u-rule-top    { border-top:    var(--rule-hairline) !important; }
+.u-rule-bottom { border-bottom: var(--rule-hairline) !important; }
+.u-rule-y      { border-top: var(--rule-hairline) !important; border-bottom: var(--rule-hairline) !important; }
+
+.u-rule-thick  { border-top-width: 2px !important; border-bottom-width: 2px !important; }
+.u-rule-accent { border-color: var(--accent) !important; }
+
+// -----------------------------------------------------------------------------
+// Spacing — margin/padding helpers on the spacing scale.
+// Generated for: 3xs, 2xs, xs, s, m, l, xl, 2xl.
+// -----------------------------------------------------------------------------
+$spaces: ("3xs", "2xs", "xs", "s", "m", "l", "xl", "2xl");
+
+@each $size in $spaces {
+  .u-m-#{$size}   { margin:        var(--space-#{$size}) !important; }
+  .u-mt-#{$size}  { margin-top:    var(--space-#{$size}) !important; }
+  .u-mr-#{$size}  { margin-right:  var(--space-#{$size}) !important; }
+  .u-mb-#{$size}  { margin-bottom: var(--space-#{$size}) !important; }
+  .u-ml-#{$size}  { margin-left:   var(--space-#{$size}) !important; }
+  .u-mx-#{$size}  { margin-left:   var(--space-#{$size}) !important; margin-right:  var(--space-#{$size}) !important; }
+  .u-my-#{$size}  { margin-top:    var(--space-#{$size}) !important; margin-bottom: var(--space-#{$size}) !important; }
+
+  .u-p-#{$size}   { padding:        var(--space-#{$size}) !important; }
+  .u-pt-#{$size}  { padding-top:    var(--space-#{$size}) !important; }
+  .u-pr-#{$size}  { padding-right:  var(--space-#{$size}) !important; }
+  .u-pb-#{$size}  { padding-bottom: var(--space-#{$size}) !important; }
+  .u-pl-#{$size}  { padding-left:   var(--space-#{$size}) !important; }
+  .u-px-#{$size}  { padding-left:   var(--space-#{$size}) !important; padding-right:  var(--space-#{$size}) !important; }
+  .u-py-#{$size}  { padding-top:    var(--space-#{$size}) !important; padding-bottom: var(--space-#{$size}) !important; }
+}
+
+.u-m-0  { margin:  0 !important; }
+.u-p-0  { padding: 0 !important; }
+.u-mt-0 { margin-top: 0 !important; }
+.u-mb-0 { margin-bottom: 0 !important; }
+
+// -----------------------------------------------------------------------------
+// Width.
+// -----------------------------------------------------------------------------
+.u-w-full    { width: 100% !important; }
+.u-w-measure { max-width: var(--measure) !important; }
+.u-mx-auto   { margin-left: auto !important; margin-right: auto !important; }
+
+// -----------------------------------------------------------------------------
+// Misc.
+// -----------------------------------------------------------------------------
+.u-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.u-no-bullet { list-style: none !important; padding-left: 0 !important; }
+
+// `<noscript>` banners and the like — broadsheet-flavour notice strip.
+.notice {
+  padding: var(--space-2xs) var(--space-s);
+  background: var(--highlight);
+  border-top: var(--rule-accent);
+  border-bottom: var(--rule-hairline);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink);
+  text-align: center;
+}

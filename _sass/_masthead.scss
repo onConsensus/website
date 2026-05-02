@@ -1,0 +1,298 @@
+// =============================================================================
+// _masthead.scss
+// Site header — wordmark, dateline, section nav, search affordance, RSS link.
+// Mobile: stacked, nav collapses to a single horizontally-scrolling rail.
+// Desktop: classical broadsheet — wordmark centred (or left), nav below,
+// thick accent rule beneath.
+// =============================================================================
+
+.masthead {
+  background: var(--paper);
+  border-bottom: var(--rule-thick);
+  padding-block: var(--space-s) 0;
+}
+
+.masthead__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-s);
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+// -----------------------------------------------------------------------------
+// Dateline — top-row strip: ISO date, block-height stub, edition number.
+// -----------------------------------------------------------------------------
+
+.masthead__dateline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-m);
+  align-items: baseline;
+  padding-bottom: var(--space-2xs);
+  border-bottom: var(--rule-hairline);
+
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.masthead__dateline > * + * {
+  position: relative;
+  padding-left: var(--space-m);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: calc((var(--space-m) - 1px) / 2);
+    top: 0.15em;
+    bottom: 0.15em;
+    border-left: var(--rule-hairline);
+  }
+}
+
+.masthead__edition {
+  margin-left: auto;   // push the edition tag to the right edge
+  padding-left: 0;
+
+  &::before {
+    display: none;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Wordmark — Newsreader display, set in heavy weight, small accent rule below.
+// -----------------------------------------------------------------------------
+
+.masthead__wordmark {
+  display: block;
+  margin: var(--space-m) 0 var(--space-xs);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-7);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--ink);
+    text-decoration: none;
+  }
+}
+
+.masthead__tagline {
+  margin: 0 auto var(--space-s);
+  max-width: 36rem;
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink-2);
+  text-wrap: balance;
+}
+
+// -----------------------------------------------------------------------------
+// Primary nav — the section bar.
+// -----------------------------------------------------------------------------
+
+.masthead__nav {
+  border-top: var(--rule-hairline);
+  border-bottom: var(--rule-accent);
+  margin-top: var(--space-s);
+}
+
+.masthead__nav-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.masthead__nav-item {
+  flex: 0 0 auto;
+  + .masthead__nav-item {
+    border-left: var(--rule-hairline);
+  }
+}
+
+.masthead__nav-link {
+  display: inline-block;
+  padding: var(--space-2xs) var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--motion-fast) var(--ease-standard),
+              background var(--motion-fast) var(--ease-standard);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+    background: var(--paper-2);
+    text-decoration: none;
+  }
+
+  &[aria-current="page"],
+  &.is-active {
+    color: var(--accent);
+    background: var(--paper);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Toolbar — search affordance, RSS, theme toggle (right-aligned).
+// -----------------------------------------------------------------------------
+
+.masthead__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  margin-left: auto;
+  padding: var(--space-2xs) var(--space-s);
+}
+
+.masthead__tool {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--ease-standard);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--accent);
+  }
+}
+
+// Layout adjustments at desktop.
+@media (min-width: 64em) {
+  .masthead__inner {
+    gap: var(--space-m);
+  }
+
+  .masthead__nav {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .masthead__nav-list {
+    flex: 1 1 auto;
+    overflow-x: visible;
+  }
+
+  .masthead__tools {
+    border-left: var(--rule-hairline);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Footer — colophon, license, secondary nav, RSS/Atom/JSON Feed links.
+// -----------------------------------------------------------------------------
+
+.colophon {
+  background: var(--paper);
+  border-top: var(--rule-thick);
+  padding: var(--space-xl) 0 var(--space-l);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.colophon__inner {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-l);
+}
+
+@media (min-width: 48em) {
+  .colophon__inner {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+.colophon__heading {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: var(--space-s);
+}
+
+.colophon__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li + li {
+    margin-top: var(--space-2xs);
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--muted);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--accent);
+    }
+  }
+}
+
+.colophon__rule {
+  grid-column: 1 / -1;
+  border: 0;
+  border-top: var(--rule-hairline);
+  margin: var(--space-l) 0 var(--space-s);
+}
+
+.colophon__legal {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-m);
+  align-items: baseline;
+  font-size: var(--step--2);
+
+  a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+
+    &:hover { color: var(--accent); }
+  }
+}

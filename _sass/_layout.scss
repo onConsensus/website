@@ -1,0 +1,216 @@
+// =============================================================================
+// _layout.scss
+// Layout primitives — container, 12-col grid, fixed reading measure (680px),
+// right-hand marginalia gutter on desktop, page skeleton.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Page skeleton — sticky footer.
+// -----------------------------------------------------------------------------
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page__main {
+  flex: 1 0 auto;
+  padding-top: var(--space-l);
+  padding-bottom: var(--space-3xl);
+}
+
+.page__masthead,
+.page__footer {
+  flex: 0 0 auto;
+}
+
+// -----------------------------------------------------------------------------
+// Skip link — visually hidden until focused.
+// -----------------------------------------------------------------------------
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-toast);
+  padding: var(--space-2xs) var(--space-s);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-110%);
+  transition: transform var(--motion-fast) var(--ease-standard);
+
+  &:focus {
+    transform: translateY(0);
+    outline: var(--focus-ring);
+    outline-offset: 0;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Containers — site-width wrappers.
+// -----------------------------------------------------------------------------
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--wide {
+  max-width: var(--container-wide);
+}
+
+.container--measure {
+  max-width: var(--measure);
+}
+
+.container--measure-wide {
+  // Measure plus the right-hand marginalia gutter (when present).
+  max-width: calc(var(--measure) + var(--marginalia-w) + var(--marginalia-gap));
+}
+
+// -----------------------------------------------------------------------------
+// 12-column grid.
+// -----------------------------------------------------------------------------
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.grid--rows-tight {
+  row-gap: var(--space-s);
+}
+
+.grid--rows-loose {
+  row-gap: var(--space-xl);
+}
+
+// Span helpers: .col-1 through .col-12.
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    grid-column: span #{$i};
+  }
+}
+
+// Tablet+ overrides.
+@media (min-width: 48em) {
+  @for $i from 1 through 12 {
+    .col-m-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+}
+
+// Desktop+ overrides.
+@media (min-width: 64em) {
+  @for $i from 1 through 12 {
+    .col-l-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Reading frame — fixed 680px measure with right-hand marginalia gutter on
+// desktop. The marginalia rail collapses inline below `--bp-marginalia`.
+//
+// Markup contract:
+//   <div class="reading">
+//     <div class="reading__body">…long-form prose, 680px max…</div>
+//     <aside class="reading__rail">…footnotes, pull quotes, glossary…</aside>
+//   </div>
+// -----------------------------------------------------------------------------
+
+.reading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-m);
+  width: 100%;
+  max-width: calc(var(--measure) + var(--marginalia-w) + var(--marginalia-gap));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.reading__body {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.reading__rail {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.45;
+  color: var(--muted);
+
+  > * + * {
+    margin-top: var(--space-m);
+  }
+}
+
+@media (min-width: 72em) {
+  .reading {
+    grid-template-columns: minmax(0, var(--measure)) var(--marginalia-w);
+    column-gap: var(--marginalia-gap);
+    align-items: start;
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+
+  .reading__body {
+    margin-inline: 0;
+  }
+
+  .reading__rail {
+    position: relative;
+    border-left: var(--rule-hairline);
+    padding-left: var(--space-s);
+
+    // Sticky footnotes on tall articles — opt in via .reading__rail--sticky.
+    &--sticky {
+      position: sticky;
+      top: var(--space-l);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Stack & cluster utilities (Every Layout-style).
+// -----------------------------------------------------------------------------
+
+.stack > * + * {
+  margin-top: var(--space-s);
+}
+
+.stack-m > * + * { margin-top: var(--space-m); }
+.stack-l > * + * { margin-top: var(--space-l); }
+.stack-xl > * + * { margin-top: var(--space-xl); }
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-s);
+  align-items: center;
+}
+
+// Hairline section divider.
+.divider {
+  border: 0;
+  border-top: var(--rule-hairline);
+  margin: var(--space-xl) 0;
+}
+
+.divider--accent {
+  border-top-color: var(--accent);
+  border-top-width: 2px;
+}

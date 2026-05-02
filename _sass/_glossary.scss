@@ -1,0 +1,148 @@
+// =============================================================================
+// _glossary.scss
+// `<dfn>` glossary terms — author wraps a term in
+//   <dfn data-term="merkle-tree">merkle tree</dfn>
+// and a small JS file (Reading-Experience task) attaches the matching
+// definition from `_data/glossary.yml` as `data-definition` on the element.
+//
+// Until JS lands, the dfn renders as a marked term with a dotted underline.
+// CSS-only popover when `data-definition` is present.
+// =============================================================================
+
+dfn {
+  position: relative;
+  font-style: normal;
+  font-weight: 500;
+  border-bottom: 1px dotted var(--accent);
+  cursor: help;
+  color: var(--ink);
+
+  // Mono `?` after the term to telegraph "definition available".
+  &[data-definition]::after {
+    content: "?";
+    display: inline-block;
+    margin-left: 0.15em;
+    padding: 0 0.25em;
+    font-family: var(--font-mono);
+    font-size: 0.7em;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--accent);
+    background: var(--paper-2);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    vertical-align: super;
+  }
+
+  // CSS-only popover.
+  &[data-definition]::before {
+    content: attr(data-definition);
+    position: absolute;
+    bottom: calc(100% + var(--space-2xs));
+    left: 0;
+    z-index: var(--z-overlay);
+    width: max-content;
+    max-width: min(22rem, 80vw);
+    padding: var(--space-xs) var(--space-s);
+
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+    text-align: left;
+    white-space: normal;
+
+    border: var(--rule-hairline);
+    border-color: var(--ink);
+    border-radius: 2px;
+    box-shadow: 4px 4px 0 0 var(--accent);
+
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity var(--motion-fast) var(--ease-standard),
+                transform var(--motion-fast) var(--ease-standard);
+  }
+
+  &[data-definition]:hover::before,
+  &[data-definition]:focus::before,
+  &[data-definition]:focus-within::before {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// /glossary index page — definition list, broadsheet ledger style.
+// -----------------------------------------------------------------------------
+
+.glossary-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-thick);
+}
+
+.glossary-list__entry {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xs);
+  padding: var(--space-s) 0;
+  border-bottom: var(--rule-hairline);
+
+  &:last-child { border-bottom: 0; }
+
+  @media (min-width: 48em) {
+    grid-template-columns: 14rem 1fr;
+    gap: var(--space-l);
+  }
+}
+
+.glossary-list__term {
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--accent);
+
+  // The cryptographic-flavour prefix — `sha256(term)`.
+  &::before {
+    content: "sha256(";
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  &::after {
+    content: ")";
+    color: var(--muted);
+    font-weight: 400;
+  }
+}
+
+.glossary-list__definition {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.glossary-list__cite {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}

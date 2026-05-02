@@ -1,0 +1,157 @@
+// =============================================================================
+// _code.scss
+// Block code + Rouge syntax highlighting overrides.
+// Keeps the broadsheet aesthetic: monospace IBM Plex, hairline borders, no
+// rounded corners, ink/paper duotone with a single accent for keywords.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Block <pre><code>…</code></pre>
+// -----------------------------------------------------------------------------
+
+pre {
+  margin: var(--space-l) 0;
+  padding: var(--space-s) var(--space-m);
+  background: var(--paper-2);
+  border: var(--rule-hairline);
+  border-left: var(--rule-thick);
+  border-left-color: var(--accent);
+
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink);
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;
+  tab-size: 2;
+}
+
+pre > code {
+  display: block;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  white-space: pre;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+}
+
+// Rouge wraps highlighted blocks in `.highlight` (and `figure.highlight` when
+// line-numbers are on). Match those structures.
+.highlight {
+  margin: var(--space-l) 0;
+  background: var(--paper-2);
+  border: var(--rule-hairline);
+  border-left: var(--rule-thick);
+  border-left-color: var(--accent);
+
+  pre {
+    margin: 0;
+    border: 0;
+    padding: var(--space-s) var(--space-m);
+    background: transparent;
+  }
+
+  // Line-number gutter (Rouge `linenos: table`).
+  table {
+    border: 0;
+    margin: 0;
+    width: 100%;
+    font-size: var(--step--1);
+  }
+
+  table td {
+    padding: 0;
+    border: 0;
+    vertical-align: top;
+  }
+
+  .gutter,
+  .lineno,
+  .gl {
+    width: 1%;
+    padding-right: var(--space-s);
+    text-align: right;
+    color: var(--muted);
+    user-select: none;
+    border-right: var(--rule-hairline);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .code,
+  .gl + td {
+    padding-left: var(--space-s);
+    width: 100%;
+  }
+}
+
+// Filename / lang label above a code block — opt-in via wrapping markup.
+.code-figure {
+  margin: var(--space-l) 0;
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-s);
+    padding: var(--space-3xs) var(--space-m);
+    background: var(--ink);
+    color: var(--paper);
+    border: var(--rule-hairline);
+    border-bottom: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+  }
+
+  &__lang { color: var(--accent-ink); opacity: 0.7; }
+  &__name { color: var(--accent); margin-left: auto; }
+
+  pre, .highlight { margin-top: 0; }
+}
+
+// -----------------------------------------------------------------------------
+// Rouge (`base16` light) token colours, retuned to ink + accent only.
+// Reference: https://github.com/rouge-ruby/rouge/wiki/List-of-tokens
+// -----------------------------------------------------------------------------
+
+.highlight {
+  // Comments
+  .c, .c1, .cm, .cp, .cs, .cd { color: var(--muted); font-style: italic; }
+
+  // Keywords / declarations
+  .k, .kc, .kd, .kn, .kp, .kr, .kt { color: var(--accent); font-weight: 500; }
+
+  // Strings
+  .s, .s1, .s2, .sa, .sb, .sc, .sd, .se, .sh, .si, .sx, .sr, .ss,
+  .dl { color: var(--ink); background: var(--highlight); padding: 0 0.1em; }
+
+  // Numbers
+  .m, .mb, .mf, .mh, .mi, .mo, .il { color: var(--ink-2); font-weight: 500; }
+
+  // Built-ins, functions, classes
+  .nb, .nf, .nx, .nc, .nn { color: var(--ink); font-weight: 600; }
+
+  // Variables
+  .nv, .vc, .vg, .vi { color: var(--ink); font-style: italic; }
+
+  // Operators / punctuation
+  .o, .ow, .p { color: var(--ink-2); }
+
+  // Tags / attribute names (HTML/XML)
+  .nt { color: var(--accent); }
+  .na { color: var(--ink); font-style: italic; }
+
+  // Errors / generic diff markers
+  .err   { color: var(--accent); background: var(--highlight); }
+  .gd    { color: var(--accent); background: rgba(184, 65, 46, 0.08); }
+  .gi    { color: var(--ink);    background: rgba(0, 0, 0, 0.04); }
+  .gh, .gu { color: var(--accent); font-weight: 600; }
+  .gp    { color: var(--muted); }
+  .gs    { font-weight: 600; }
+  .ge    { font-style: italic; }
+}

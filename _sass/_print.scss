@@ -1,0 +1,155 @@
+// =============================================================================
+// _print.scss
+// Clean print stylesheet — broadsheet on paper.
+// Hides chrome (nav, toolbars, share, comments), exposes URLs after links,
+// keeps a single ink-on-paper colour set. Page margins set generously so
+// reading measure stays about 65 characters.
+// =============================================================================
+
+@media print {
+  // -------------------------------------------------------------------------
+  // Page metrics.
+  // -------------------------------------------------------------------------
+  @page {
+    margin: 18mm 16mm 22mm;
+    size: auto;
+  }
+
+  // -------------------------------------------------------------------------
+  // Force ink-on-paper, drop backgrounds.
+  // -------------------------------------------------------------------------
+  :root {
+    --paper:     #ffffff;
+    --paper-2:   #ffffff;
+    --ink:       #000000;
+    --ink-2:     #000000;
+    --rule:      #000000;
+    --accent:    #000000;
+    --muted:     #444444;
+    --highlight: #ffffff;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  // -------------------------------------------------------------------------
+  // Hide everything that isn't editorial.
+  // -------------------------------------------------------------------------
+  .masthead__nav,
+  .masthead__tools,
+  .masthead__dateline,
+  .reading-progress,
+  .pagination,
+  .post-nav,
+  .colophon,
+  .skip-link,
+  .reading__rail,        // marginalia inlines via footnotes block instead
+  .share-buttons,
+  .related,
+  .search,
+  .glossary-list__cite,
+  .toggle-theme,
+  .scroll-top,
+  nav,
+  [hidden] {
+    display: none !important;
+  }
+
+  // Keep the wordmark + tagline as a plain header.
+  .masthead {
+    border: 0 !important;
+    padding: 0 0 6mm !important;
+    margin-bottom: 6mm !important;
+    border-bottom: 1pt solid #000 !important;
+  }
+
+  .masthead__wordmark {
+    font-size: 24pt !important;
+    text-align: left !important;
+    margin: 0 0 2mm !important;
+  }
+
+  .masthead__tagline {
+    font-size: 10pt !important;
+    text-align: left !important;
+    margin: 0 !important;
+  }
+
+  // -------------------------------------------------------------------------
+  // Show URLs after links (skip mailto, tel, fragments, glossary popovers).
+  // -------------------------------------------------------------------------
+  a {
+    color: #000 !important;
+    text-decoration: underline !important;
+    word-wrap: break-word;
+  }
+
+  a[href^="http"]::after,
+  a[href^="https"]::after {
+    content: " <" attr(href) ">";
+    font-family: var(--font-mono);
+    font-size: 9pt;
+    color: #444;
+    word-break: break-all;
+  }
+
+  a[href^="#"]::after,
+  a[href^="mailto:"]::after,
+  a[href^="tel:"]::after,
+  a.no-print-url::after,
+  .footnote-ref::after,
+  .footnotes a::after,
+  .reversefootnote::after {
+    content: "" !important;
+  }
+
+  // -------------------------------------------------------------------------
+  // Body prose tweaks for ink.
+  // -------------------------------------------------------------------------
+  .article__hero img,
+  .card__media img,
+  img {
+    filter: grayscale(1) contrast(1.1) !important;
+    border: 0.5pt solid #000 !important;
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  blockquote,
+  pre,
+  .highlight,
+  figure,
+  table {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    color: #000 !important;
+  }
+
+  h2 + p, h3 + p, h4 + p {
+    page-break-before: avoid;
+  }
+
+  // Footnotes always render at the foot, even though the marginalia rail
+  // is hidden in print.
+  .footnotes {
+    display: block !important;
+    border-top: 1pt solid #000 !important;
+    margin-top: 8mm !important;
+    padding-top: 4mm !important;
+    font-size: 9pt !important;
+  }
+
+  // PGP sig block is editorial — keep it, but flatten.
+  .pgp-signature {
+    background: transparent !important;
+    border: 0.5pt solid #000 !important;
+    page-break-inside: avoid;
+  }
+}

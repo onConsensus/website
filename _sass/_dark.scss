@@ -1,0 +1,90 @@
+// =============================================================================
+// _dark.scss
+// `prefers-color-scheme: dark` overrides.
+// Inverts the paper/ink relationship — dark paper, warm bone-white ink — and
+// softens the oxidized red so it doesn't burn at low luminance.
+// Manual override: <html data-theme="dark"> applies the same tokens.
+// =============================================================================
+
+@mixin dark-tokens {
+  // Inverted paper/ink. Never pure white, never pure black.
+  --paper:      #14130f;   // deep ink-black with a warm cast
+  --paper-2:    #1d1c18;   // slightly raised band
+  --ink:        #ece6d6;   // warm bone-white body text
+  --ink-2:      #c9c2b1;
+  --rule:       #c9c2b1;   // hairlines: bone, not paper
+
+  // Soften the accent — full-saturation oxide red blooms on dark paper.
+  --accent:     #d8745e;   // brick red, lifted
+  --accent-ink: #14130f;
+
+  --muted:      #8a8377;
+  --highlight:  #2c2a23;   // muted band for callouts / pull-quotes
+
+  // Recompute compound tokens that depend on palette vars so they pick up
+  // the inverted colours automatically.
+  --rule-hairline: 1px solid var(--rule);
+  --rule-thick:    2px solid var(--rule);
+  --rule-double:   3px double var(--rule);
+  --rule-accent:   2px solid var(--accent);
+  --focus-ring:    2px solid var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include dark-tokens;
+  }
+}
+
+// Manual override (Reading-Experience task wires the toggle).
+:root[data-theme="dark"] {
+  @include dark-tokens;
+}
+
+// Force-light override (lets readers pin the broadsheet's intended look).
+:root[data-theme="light"] {
+  // Tokens already default to the light palette; nothing to override here.
+}
+
+// -----------------------------------------------------------------------------
+// Component-level dark adjustments — most chrome inherits from tokens, but a
+// few decorations need extra coaxing.
+// -----------------------------------------------------------------------------
+
+@mixin dark-components {
+  // Lift duotone images so they don't go murky on dark paper.
+  .article__hero img,
+  .card__media img,
+  .author-card__avatar,
+  .author-head__avatar {
+    filter: grayscale(1) contrast(0.95) brightness(1.05);
+  }
+
+  // Subtle inversion for code blocks — keep the accent rule on the left.
+  pre,
+  .highlight {
+    background: #1a1815;
+    border-color: var(--rule);
+  }
+
+  // Glossary popover — flip to paper-on-ink for legibility on dark.
+  dfn[data-definition]::before {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    box-shadow: 4px 4px 0 0 var(--accent);
+  }
+
+  // Mark/highlight band stays warm on dark.
+  mark { background: var(--highlight); color: var(--ink); }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include dark-components;
+  }
+}
+
+:root[data-theme="dark"] {
+  @include dark-components;
+}

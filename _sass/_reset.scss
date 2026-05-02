@@ -1,0 +1,121 @@
+// =============================================================================
+// _reset.scss
+// Modern CSS reset — Andy Bell-style, lightly editorialised.
+// https://piccalil.li/blog/a-more-modern-css-reset/
+// =============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+ul,
+ol {
+  padding-left: 1.25em;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  padding-left: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-skip-ink: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+// Anchor scroll target offset (sticky masthead, footnote returns).
+:target {
+  scroll-margin-top: var(--space-xl);
+}
+
+// Honour `prefers-reduced-motion`.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Visible focus, never removed.
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}

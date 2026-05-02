@@ -1,0 +1,362 @@
+// =============================================================================
+// _article.scss
+// Long-form article shell — head matter (kicker, headline, deck, byline,
+// dateline, block-height), body prose hooks, asides (pull quote, footnote,
+// glossary marginalia), PGP signature block, post-foot.
+//
+// Detailed footnote/glossary/drop-cap *behaviour* lives in the Reading
+// Experience task — this file declares the styles those features rely on.
+// =============================================================================
+
+.article {
+  // Default container is `.reading` from `_layout.scss`. The article itself
+  // is just typographic colour; the grid is upstream.
+}
+
+// -----------------------------------------------------------------------------
+// Head matter — broadsheet stack: section kicker, headline, deck, byline.
+// -----------------------------------------------------------------------------
+
+.article__head {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-l);
+  border-bottom: var(--rule-thick);
+}
+
+.article__kicker {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-s);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: var(--rule-accent);
+  padding-bottom: 2px;
+}
+
+.article__kicker::before {
+  content: "§ ";
+  color: var(--muted);
+}
+
+.article__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-6);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  margin: 0 0 var(--space-s);
+  text-wrap: balance;
+}
+
+.article__deck {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: var(--step-2);
+  line-height: 1.3;
+  color: var(--ink-2);
+  margin: 0 0 var(--space-l);
+  max-width: var(--measure);
+  text-wrap: balance;
+}
+
+.article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-m);
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible { color: var(--accent); }
+  }
+
+  // Each meta segment after the first gets a hairline separator.
+  > * + * {
+    position: relative;
+    padding-left: var(--space-m);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: calc((var(--space-m) - 1px) / 2);
+      top: 0.15em;
+      bottom: 0.15em;
+      border-left: var(--rule-hairline);
+    }
+  }
+}
+
+.article__byline-author {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.article__block-height {
+  // Secondary date display: "Block #847,231"
+  font-variant-numeric: tabular-nums;
+}
+
+// -----------------------------------------------------------------------------
+// Featured image / hero figure.
+// -----------------------------------------------------------------------------
+
+.article__hero {
+  margin: 0 0 var(--space-xl);
+
+  img {
+    width: 100%;
+    height: auto;
+    border: var(--rule-hairline);
+    // Duotoned to ink + paper — overridable per-image.
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  figcaption {
+    margin-top: var(--space-2xs);
+    padding-top: var(--space-2xs);
+    border-top: var(--rule-hairline);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    color: var(--muted);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Body prose — vertical rhythm between block elements within the article.
+// -----------------------------------------------------------------------------
+
+.article__body {
+  // Spacing between consecutive blocks.
+  > * + * { margin-top: var(--space-m); }
+  > * + h2 { margin-top: var(--space-2xl); }
+  > * + h3 { margin-top: var(--space-xl); }
+  > * + h4 { margin-top: var(--space-l); }
+  > * + figure,
+  > * + blockquote,
+  > * + pre,
+  > * + table { margin-top: var(--space-l); }
+
+  // Headings inside articles get a hairline above their first instance.
+  h2 {
+    padding-top: var(--space-m);
+    border-top: var(--rule-hairline);
+  }
+
+  // Drop-cap hook — first paragraph of `.article__body` (Reading Experience
+  // task wires the Liquid filter that adds `.has-dropcap`).
+  > p:first-of-type::first-letter,
+  > .has-dropcap::first-letter {
+    font-family: var(--font-italic);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+    float: left;
+    font-size: 4.4em;
+    line-height: 0.85;
+    padding: 0.05em 0.12em 0 0;
+    margin-top: 0.05em;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Pull quote — desktop pulls into right marginalia, mobile inline.
+// Markup: <aside class="pullquote">…</aside>
+// -----------------------------------------------------------------------------
+
+.pullquote {
+  margin: var(--space-l) 0;
+  padding: var(--space-s) 0;
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-thick);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-2);
+  line-height: 1.25;
+  color: var(--ink);
+  text-wrap: balance;
+
+  cite {
+    display: block;
+    margin-top: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--muted);
+
+    &::before { content: "— "; }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Footnote markers in body + footnote items in marginalia.
+// (Reading-Experience task wires the IntersectionObserver that toggles
+// `.is-active` on the marginalia footnote when its anchor scrolls into view.)
+// -----------------------------------------------------------------------------
+
+.footnote-ref,
+a.footnote {
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+  text-decoration: none;
+  color: var(--accent);
+  padding: 0 0.1em;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-radius: 2px;
+  }
+}
+
+.footnotes {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-l);
+  border-top: var(--rule-hairline);
+  font-size: var(--step--1);
+  font-family: var(--font-mono);
+  line-height: 1.5;
+  color: var(--muted);
+
+  ol { padding-left: 1.5em; }
+
+  li + li { margin-top: var(--space-xs); }
+
+  li.is-active {
+    background: var(--highlight);
+    margin-left: -0.5em;
+    padding: 0.25em 0.5em;
+  }
+
+  a.reversefootnote {
+    margin-left: 0.25em;
+    text-decoration: none;
+    color: var(--accent);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Article foot — share buttons, license stamp, edit link, errata.
+// -----------------------------------------------------------------------------
+
+.article__foot {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-l);
+  border-top: var(--rule-thick);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s) var(--space-l);
+  align-items: baseline;
+
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.article__license {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3xs);
+
+  &::before {
+    content: "©";
+    font-family: var(--font-display);
+    font-size: 1.1em;
+    color: var(--ink);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// PGP signature block — ASCII-art frame at end of `pgp_signed: true` posts.
+// Markup: <pre class="pgp-signature">…</pre>
+// -----------------------------------------------------------------------------
+
+.pgp-signature {
+  margin: var(--space-2xl) 0 0;
+  padding: var(--space-s) var(--space-m);
+  background: var(--paper-2);
+  border: var(--rule-hairline);
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-thick);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  line-height: 1.4;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+// -----------------------------------------------------------------------------
+// Series banner — strip atop articles that belong to an editorial series.
+// -----------------------------------------------------------------------------
+
+.series-banner {
+  margin: 0 0 var(--space-l);
+  padding: var(--space-s) var(--space-m);
+  border-top: var(--rule-accent);
+  border-bottom: var(--rule-hairline);
+  background: var(--paper-2);
+
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+
+    &:hover { color: var(--accent); }
+  }
+
+  strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Reading-progress bar — sits at very top of viewport on post pages.
+// Animated by Reading-Experience task; CSS just styles the chrome.
+// -----------------------------------------------------------------------------
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  z-index: var(--z-sticky);
+  pointer-events: none;
+
+  &__bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width var(--motion-fast) linear;
+  }
+}

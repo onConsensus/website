@@ -1,0 +1,44 @@
+---
+# Front-matter is required so Jekyll runs the SCSS converter on this file.
+---
+
+/*!---------------------------------------------------------------------------
+ * On Consensus — Plaintext Cypherpunk Broadsheet
+ * Compiled stylesheet entry. All design tokens, components, and overrides
+ * cascade from the partials below.
+ *
+ * Build runtime: github-pages gem → jekyll-sass-converter 1.5.2 → sass 3.7.4
+ * (Ruby Sass / LibSass-era). `@use` / `@forward` are NOT supported by this
+ * converter, so the cascade is wired with `@import`. The architecture is
+ * Dart-Sass-friendly (no `nth()` / `math.div()` / colour-arithmetic on Sass
+ * variables — every dynamic value is a CSS custom property), so a future
+ * migration to Dart Sass + `@use` is a one-pass refactor of this file alone.
+ * --------------------------------------------------------------------------- */
+
+@charset "utf-8";
+
+// 0 — Tokens (CSS custom properties: palette, type scale, spacing, layout)
+@import "tokens";
+
+// 1 — Modern reset (Andy Bell-style)
+@import "reset";
+
+// 2 — Typography (self-hosted @font-face, body rhythm, headings, prose)
+@import "typography";
+
+// 3 — Layout primitives (container, 12-col grid, reading frame, marginalia)
+@import "layout";
+
+// 4 — Components
+@import "masthead";        // site header + footer/colophon
+@import "card";            // article cards (lead / standard / dispatch / horizontal)
+@import "article";         // long-form article shell
+@import "author";          // bylines + author cards/archive
+@import "pagination";      // numbered + post-to-post nav
+@import "glossary";        // <dfn> popovers + glossary index
+@import "code";            // pre/code + Rouge syntax highlighting
+
+// 5 — Modes & utilities (must remain last for cascade reasons)
+@import "dark";            // prefers-color-scheme + [data-theme="dark"]
+@import "print";           // print-only overrides
+@import "utilities";       // single-purpose helpers
