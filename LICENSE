@@ -1,0 +1,29 @@
+On Consensus — Dual License
+===========================
+
+This repository is dual-licensed. The split mirrors the editorial decision
+that the prose is a creative-commons publication and the build chassis
+underneath it is free software.
+
+1.  **Editorial content** — every Markdown / HTML article, the prose inside
+    layouts and includes, all author bios, series notes, editorial pages,
+    images under `images/`, and the prose copy in `_data/` — is licensed
+    under the **Creative Commons Attribution-ShareAlike 4.0 International
+    License (CC BY-SA 4.0)**. See `LICENSE-CONTENT` for the full text.
+
+2.  **Code, configuration, and stylesheets** — the Liquid templates'
+    structural markup, every `.scss`, `.js`, `.yml`, and `.rb` file, the
+    GitHub Actions workflows under `.github/workflows/`, the Decap CMS
+    configuration under `admin/`, and the Jekyll build chassis itself — is
+    licensed under the **MIT License**. See `LICENSE-CODE` for the full
+    text.
+
+When a single file mixes prose and code (a layout that contains structural
+HTML and editorial copy, for example), the prose portion is CC BY-SA 4.0
+and the structural portion is MIT. Reuse either under the terms that
+match the part you are reusing.
+
+The On Consensus name, masthead, and logo are not licensed for reuse and
+remain the property of the publication.
+
+Copyright © 2026 On Consensus and contributors.

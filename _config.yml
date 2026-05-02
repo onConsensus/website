@@ -5,6 +5,7 @@ tagline: "On governance, cryptography, and the architectures of trust."
 description: "On Consensus is an editorial publication on decentralized & distributed technologies — governance, research, development, cryptography, and culture. No hype, no gradients, just the wire."
 url: "https://onconsensus.com"
 baseurl: ""
+repository: "onConsensus/onconsensus"
 email: "editors@onconsensus.com"
 lang: en
 timezone: UTC
@@ -38,11 +39,20 @@ paginate: 12
 # `/feed/page3/`, … This is the conventional v1 pattern.
 paginate_path: "/feed/page:num"
 
+# Files & paths included in the build output that Jekyll would otherwise skip
+# (everything starting with `.` is excluded by default).
+include:
+  - .well-known
+
 # Files & paths excluded from the build output
 exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - LICENSE
+  - LICENSE-CODE
+  - LICENSE-CONTENT
+  - CODE_OF_CONDUCT.md
   - node_modules
   - vendor
   - .replit

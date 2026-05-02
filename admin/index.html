@@ -1,0 +1,103 @@
+---
+layout: null
+permalink: /admin/index.html
+sitemap: false
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Editorial Desk · On Consensus</title>
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <!--
+      Decap CMS (formerly Netlify CMS) — single-page editorial admin.
+      Backend is GitHub (see /admin/config.yml). Editorial workflow is on,
+      so every save lands as a pull request against `main`.
+    -->
+    <script src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+    <script>
+      // Register the production stylesheet inside the preview pane so what
+      // editors see in /admin/ matches the published article on
+      // onconsensus.com — same fonts, measure, drop caps, pull-quotes.
+      CMS.registerPreviewStyle('/assets/css/main.css');
+
+      // Wrap the preview body so the .article cascade applies. Decap renders
+      // the markdown body as the children; we slot it into the same
+      // semantic shell `_layouts/post.html` uses in production.
+      var h = window.h;
+      var createClass = window.createClass;
+
+      var PostPreview = createClass({
+        render: function () {
+          var entry = this.props.entry;
+          var widgetFor = this.props.widgetFor;
+          var title = entry.getIn(['data', 'title']) || '';
+          var subtitle = entry.getIn(['data', 'subtitle']) || '';
+          var section = entry.getIn(['data', 'section']) || '';
+          var date = entry.getIn(['data', 'date']);
+          var dateStr = date ? new Date(date).toUTCString() : '';
+
+          return h(
+            'article',
+            { className: 'article' },
+            h(
+              'header',
+              { className: 'article__header' },
+              section
+                ? h('p', { className: 'article__kicker' }, section)
+                : null,
+              h('h1', { className: 'article__title' }, title),
+              subtitle
+                ? h('p', { className: 'article__subtitle' }, subtitle)
+                : null,
+              dateStr
+                ? h(
+                    'p',
+                    { className: 'article__byline' },
+                    h('time', null, dateStr)
+                  )
+                : null
+            ),
+            h(
+              'div',
+              { className: 'article__body' },
+              widgetFor('body')
+            )
+          );
+        },
+      });
+
+      CMS.registerPreviewTemplate('posts', PostPreview);
+
+      var PagePreview = createClass({
+        render: function () {
+          var entry = this.props.entry;
+          var widgetFor = this.props.widgetFor;
+          var title = entry.getIn(['data', 'title']) || '';
+          var kicker = entry.getIn(['data', 'kicker']) || '';
+          return h(
+            'article',
+            { className: 'page' },
+            h(
+              'header',
+              { className: 'page__header' },
+              kicker ? h('p', { className: 'article__kicker' }, kicker) : null,
+              h('h1', { className: 'article__title' }, title)
+            ),
+            h(
+              'div',
+              { className: 'article__body' },
+              widgetFor('body')
+            )
+          );
+        },
+      });
+
+      CMS.registerPreviewTemplate('pages', PagePreview);
+    </script>
+  </body>
+</html>

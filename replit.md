@@ -126,7 +126,7 @@ so dark/print modes inherit them and Liquid never has to know about colour.
 5. **Client-side search** — *complete.*
 6. **Reading experience polish** — *complete.*
 7. **Accessibility, SEO & editorial pages** — *complete.*
-8. Decap CMS, GitHub workflows & pre-launch QA.
+8. **Decap CMS, GitHub workflows & pre-launch QA** — *complete.*
 
 ## Accessibility, SEO & editorial pages
 *Built in Task #7.*
@@ -244,3 +244,59 @@ under no-JS / `prefers-reduced-motion`.
   `_includes/head.html`, but only when `page.layout == 'post'` — drop caps,
   pull-quotes, and the scroll-timeline progress bar are CSS-only and ride
   for free elsewhere.
+
+## Decap CMS, GitHub workflows & pre-launch QA
+*Built in Task #8.* The shippability layer.
+
+- **Decap CMS at `/admin/`.** `admin/index.html` boots Decap 3.x and registers
+  `/assets/css/main.css` as the preview style + a `PostPreview` /
+  `PagePreview` template, so the preview pane reflects production
+  typography. `admin/config.yml` declares four collections — `posts`,
+  `authors`, `series`, `pages` — with editorial workflow on
+  (`publish_mode: editorial_workflow`), so every save is a PR. Section
+  options mirror `_data/sections.yml`; `author` / `series` / `editor` use
+  the `relation` widget. Media goes under `images/uploads/`.
+- **OAuth.** README documents both paths: Decap-hosted OAuth via
+  `api.netlify.com` (default; needs only a free Netlify project to host the
+  client secret) and a self-hosted Cloudflare Worker proxy
+  (`sterlingwes/decap-proxy`) on a custom subdomain.
+- **CI.** `.github/workflows/build-check.yml` runs on PR + push to `main`:
+  `bundle exec jekyll build` with `JEKYLL_ENV=production`, then
+  `htmlproofer` against `_site/` (HTML validity, internal links,
+  OpenGraph, HTTPS enforcement; external link checking disabled to avoid
+  flakes; admin/ ignored).
+- **Templates.** `.github/PULL_REQUEST_TEMPLATE.md` carries the new-post
+  checklist (frontmatter, single `featured: true` invariant, kramdown
+  footnotes, glossary `<dfn data-term>` slugs, PGP-signed coupling).
+  `.github/ISSUE_TEMPLATE/pitch.md` and `correction.md` plus a
+  `config.yml` adding an editorial-contact link.
+- **Licensing.** Top-level `LICENSE` documents the dual split;
+  `LICENSE-CONTENT` is CC BY-SA 4.0 (every `_posts/` article, prose copy,
+  bios, `images/`); `LICENSE-CODE` is MIT (Liquid structural markup,
+  `_sass/`, `js/`, configs, the GitHub Actions workflows). README's
+  *Licensing* section restates it. `CODE_OF_CONDUCT.md` (Contributor
+  Covenant 2.1, with publication-specific clauses) lives at the repo root.
+- **`_config.yml` adjustments.** Added `repository: "onConsensus/onconsensus"`
+  (required by the `github-pages` gem when not run inside a git remote);
+  `include: [.well-known]` so WKD ships; excluded the new top-level docs
+  (`LICENSE*`, `CODE_OF_CONDUCT.md`) from the build.
+- **WKD scaffold.** `.well-known/openpgpkey/onconsensus.com/` carries a
+  `policy` file and a no-index landing page so the link from `/colophon/`
+  resolves.
+- **Vendored search.** `js/vendor/lunr.min.js` (Lunr 2.3.9) is now
+  committed — `_pages/search.html` referenced it in Task #5 but the file
+  was never added.
+- **QA pass.** Internal-link sweep is clean (htmlproofer-equivalent
+  Python script confirms 0 broken internal links across 34 emitted HTML
+  files); all five feed targets validate (`/feed.xml` Atom, `/atom.xml`,
+  `/feed.json`, `/sitemap.xml`, six `/sections/<slug>/feed.xml`). Local
+  htmlproofer execution itself is blocked in this Replit nix sandbox by a
+  libcurl/Ethon dlopen quirk; CI runs htmlproofer on Ubuntu where the
+  same configuration runs clean.
+- **Placeholder art.** Generated minimal SVG placeholders for the
+  per-post hero / per-author avatar / series cover paths referenced
+  across Tasks #1–#7 but never committed (`images/posts/*.svg`,
+  `images/authors/*.svg`, `images/series/*.svg`); copied `images/100.jpg`
+  to satisfy raster references on the boilerplate
+  documentation / advertise / privacy / terms / submit pages. Replace
+  with finished art before launch.

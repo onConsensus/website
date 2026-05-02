@@ -1,0 +1,192 @@
+# =============================================================================
+# Decap CMS — On Consensus editorial desk.
+#
+# Every save is a commit on a contributor branch; "Save" advances state in the
+# editorial workflow (draft → in review → ready) and "Publish" opens / merges
+# the pull request against `main`.
+#
+# OAuth: see README.md → "Decap CMS authentication" for the two supported
+# paths (Decap-hosted OAuth, and a Cloudflare Worker proxy you self-host).
+# =============================================================================
+
+backend:
+  name: github
+  repo: onConsensus/onconsensus
+  branch: main
+  # Use the Decap-hosted OAuth gateway by default. Override `base_url` (and
+  # `auth_endpoint`) in a fork to point at your own Cloudflare Worker proxy
+  # — the README documents both paths.
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+  # Editorial workflow: every save is a PR. Reviewers gate `main`.
+  open_authoring: false
+
+publish_mode: editorial_workflow
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+site_url: https://onconsensus.com
+display_url: https://onconsensus.com
+logo_url: https://onconsensus.com/images/h1.png
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# Section taxonomy mirrors `_data/sections.yml`. Keep in sync.
+collections:
+  # ---------------------------------------------------------------------------
+  # Posts — the wire.
+  # ---------------------------------------------------------------------------
+  - name: posts
+    label: Posts
+    label_singular: Post
+    folder: _posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    path: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: md
+    format: frontmatter
+    preview_path: "feed/{{slug}}"
+    summary: "{{title}} — {{section}} — {{date | date('YYYY-MM-DD')}}"
+    sortable_fields: [date, title, section, author]
+    view_filters:
+      - label: "Section: Governance"
+        field: section
+        pattern: governance
+      - label: "Section: Research"
+        field: section
+        pattern: research
+      - label: "Section: Development"
+        field: section
+        pattern: development
+      - label: "Section: Cryptography"
+        field: section
+        pattern: cryptography
+      - label: "Section: Culture"
+        field: section
+        pattern: culture
+      - label: "Section: Dispatches"
+        field: section
+        pattern: dispatches
+      - label: "Featured"
+        field: featured
+        pattern: true
+      - label: "PGP signed"
+        field: pgp_signed
+        pattern: true
+    fields:
+      - { name: title, label: Headline, widget: string }
+      - { name: subtitle, label: Standfirst, widget: string, required: false, hint: "One-sentence deck that sets up the article." }
+      - { name: author, label: Author, widget: relation, collection: authors, search_fields: [name, slug], value_field: slug, display_fields: [name] }
+      - { name: date, label: Publish date, widget: datetime, format: "YYYY-MM-DD HH:mm:ss Z", date_format: "YYYY-MM-DD", time_format: "HH:mm", picker_utc: true }
+      - name: section
+        label: Section
+        widget: select
+        options:
+          - { label: "Governance", value: governance }
+          - { label: "Research", value: research }
+          - { label: "Development", value: development }
+          - { label: "Cryptography", value: cryptography }
+          - { label: "Culture", value: culture }
+          - { label: "Dispatches (link-blog)", value: dispatches }
+      - { name: series, label: Series, widget: relation, collection: series, search_fields: [title, slug], value_field: slug, display_fields: [title], required: false }
+      - { name: tags, label: Tags, widget: list, required: false, hint: "Free-form, lowercased, hyphenated." }
+      - { name: excerpt, label: Excerpt, widget: text, required: false, hint: "~155 chars. Used in cards, feeds, and meta description." }
+      - { name: featured_image, label: Featured image, widget: image, required: false, hint: "Lead photo. Path under /images/." }
+      - { name: featured_caption, label: Featured caption, widget: string, required: false, hint: "Caption + credit for the lead image." }
+      - { name: image, label: OG / Twitter card image, widget: image, required: false, hint: "Optional override. Falls back to the featured image." }
+      - { name: featured, label: Home-page lead?, widget: boolean, default: false, hint: "Exactly one post should carry this." }
+      - { name: pgp_signed, label: PGP-signed?, widget: boolean, default: false, hint: "If true, the matching /signatures/<slug>.sig is rendered inline." }
+      - { name: block_height, label: Block height at publish, widget: number, value_type: int, required: false, min: 0 }
+      - { name: license, label: License, widget: select, default: "CC-BY-SA-4.0", options: ["CC-BY-SA-4.0", "CC-BY-4.0", "CC0-1.0", "All rights reserved"] }
+      - { name: canonical_url, label: Canonical URL, widget: string, required: false, hint: "External URL if cross-posted." }
+      - { name: reading_time_override, label: Reading time override (min), widget: number, value_type: int, required: false, min: 1 }
+      - name: corrections
+        label: Corrections log
+        widget: list
+        required: false
+        summary: "{{fields.date}} — {{fields.note}}"
+        fields:
+          - { name: date, label: Date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - { name: note, label: Note, widget: text }
+      - { name: body, label: Body, widget: markdown, hint: "Kramdown. Footnotes via [^1] / [^1]: …. Use <dfn data-term=\"slug\">term</dfn> for glossary popovers." }
+
+  # ---------------------------------------------------------------------------
+  # Authors — masthead.
+  # ---------------------------------------------------------------------------
+  - name: authors
+    label: Authors
+    label_singular: Author
+    folder: _authors
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    identifier_field: slug
+    summary: "{{name}} — {{slug}}"
+    fields:
+      - { name: name, label: Display name, widget: string }
+      - { name: slug, label: Slug, widget: string, hint: "Must equal the filename without .md." }
+      - { name: bio, label: Bio, widget: text, required: false }
+      - { name: avatar, label: Avatar, widget: image, required: false }
+      - { name: pgp_fingerprint, label: PGP fingerprint, widget: string, required: false, hint: "Long-form, surfaced on the author page." }
+      - { name: joined_date, label: Joined, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - name: links
+        label: Links
+        widget: object
+        required: false
+        fields:
+          - { name: mastodon, label: Mastodon, widget: string, required: false }
+          - { name: bluesky, label: Bluesky, widget: string, required: false }
+          - { name: nostr, label: Nostr, widget: string, required: false, hint: "npub… string." }
+          - { name: github, label: GitHub, widget: string, required: false }
+          - { name: website, label: Website, widget: string, required: false }
+      - { name: body, label: Note, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------------------
+  # Series — multi-part investigations.
+  # ---------------------------------------------------------------------------
+  - name: series
+    label: Series
+    label_singular: Series entry
+    folder: _series
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    identifier_field: slug
+    summary: "{{title}} — {{status}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string, hint: "Must equal the filename without .md." }
+      - { name: description, label: Description, widget: text }
+      - { name: editor, label: Editor, widget: relation, collection: authors, search_fields: [name, slug], value_field: slug, display_fields: [name] }
+      - { name: status, label: Status, widget: select, options: [open, closed], default: open }
+      - { name: started, label: Started, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: cover, label: Cover, widget: image, required: false }
+      - { name: body, label: Note, widget: markdown, required: false }
+
+  # ---------------------------------------------------------------------------
+  # Pages — masthead pages and section landings (read-only fields for the
+  # taxonomy hooks; copy is freely editable).
+  # ---------------------------------------------------------------------------
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: _pages
+    create: false
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    summary: "{{title}}"
+    fields:
+      - { name: layout, label: Layout, widget: hidden, default: page }
+      - { name: title, label: Title, widget: string }
+      - { name: permalink, label: Permalink, widget: string, hint: "e.g. /about/" }
+      - { name: kicker, label: Kicker, widget: string, required: false }
+      - { name: description, label: Description, widget: text, required: false }
+      - { name: image, label: OG / Twitter image, widget: image, required: false }
+      - { name: body, label: Body, widget: markdown }

@@ -1,0 +1,51 @@
+name: build-check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Jekyll build + htmlproofer
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+      BUNDLE_PATH: vendor/bundle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Install htmlproofer
+        run: gem install html-proofer --version "~> 5.0"
+
+      - name: Build with Jekyll
+        run: bundle exec jekyll build --trace
+
+      - name: Run htmlproofer on _site/
+        run: |
+          htmlproofer ./_site \
+            --disable-external \
+            --check-html \
+            --check-img-http \
+            --check-opengraph \
+            --enforce-https \
+            --ignore-empty-alt \
+            --ignore-missing-alt \
+            --ignore-urls "/^https:\/\/onconsensus\.com/,/example\.(com|org)/,/^npub1/" \
+            --ignore-files "/_site\/admin\//"

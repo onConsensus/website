@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="M. VELLUM">
+  <rect width="100%" height="100%" fill="#f4f1ea"/>
+  <rect x="2" y="2" width="252" height="252" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <line x1="0" y1="0" x2="256" y2="256" stroke="#b8412e" stroke-width="1" opacity="0.35"/>
+  <line x1="256" y1="0" x2="0" y2="256" stroke="#b8412e" stroke-width="1" opacity="0.35"/>
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+        font-family="'IBM Plex Mono', monospace" font-size="18" fill="#1a1a1a">M. VELLUM</text>
+</svg>
