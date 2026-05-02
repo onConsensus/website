@@ -3,8 +3,8 @@ layout: null
 permalink: /feed.json
 sitemap: false
 ---
-{%- comment -%} Filter embargoed posts so `post.content` does not leak. {%- endcomment -%}
-{%- assign visible_posts = site.posts | where_exp: "p", "p.embargo_until == nil" | where_exp: "p", "p.embargo_block == nil" -%}
+{%- comment -%} Embargo-aware filter; posts re-enter once gates pass. {%- endcomment -%}
+{% include visible-posts.html %}
 {%- assign feed_posts = visible_posts | slice: 0, 30 -%}
 {
   "version": "https://jsonfeed.org/version/1.1",

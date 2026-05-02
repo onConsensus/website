@@ -67,30 +67,41 @@ Dir[File.join(POSTS, '*.md')].sort.each do |path|
   slug = slug_for(path)
   body = File.binread(path)
   sha  = Digest::SHA256.hexdigest(body)
-  ots_path = File.join(OUT, "#{slug}.ots")
 
-  if !File.exist?(ots_path) && ots_available
-    # `ots stamp` works on a file. Stamp the post markdown directly so
-    # the proof commits to the same byte-stream we hashed.
+  # We keep the canonical proof adjacent to its source (`_posts/<file>.md.ots`)
+  # so `ots upgrade <file>.md.ots` from the dedicated `timestamps`
+  # workflow can refresh it as Bitcoin confirms calendar attestations.
+  # We additionally publish a copy at `timestamps/<slug>.ots` for
+  # public download — that path is what `_data/timestamps.yml` exposes
+  # to the post footer and to `/verify/`.
+  ots_src    = "#{path}.ots"          # canonical, lives next to the .md
+  ots_public = File.join(OUT, "#{slug}.ots")
+
+  if !File.exist?(ots_src) && ots_available
     out, status = Open3.capture2e('ots', 'stamp', path)
     if status.success?
-      # ots writes alongside the input as <path>.ots; move into our tree.
-      src = "#{path}.ots"
-      FileUtils.mv(src, ots_path) if File.exist?(src)
       stamped += 1
     else
       warn "[build_timestamps] ots stamp failed for #{slug}: #{out.lines.last}"
     end
   end
 
+  # Mirror the canonical proof into the public download tree on every
+  # run so upgrades that the timestamps workflow has applied
+  # (`ots upgrade _posts/*.md.ots`) reach `/timestamps/<slug>.ots`.
+  if File.exist?(ots_src)
+    FileUtils.cp(ots_src, ots_public) unless \
+      File.exist?(ots_public) && FileUtils.identical?(ots_src, ots_public)
+  end
+
   block_height = nil
   attested_at  = nil
   status_label = 'unstamped'
 
-  if File.exist?(ots_path)
+  if File.exist?(ots_src)
     status_label = 'pending'
     if ots_available
-      _stdout, stderr, st = Open3.capture3('ots', 'verify', ots_path, '-f', path)
+      _stdout, stderr, st = Open3.capture3('ots', 'verify', ots_src, '-f', path)
       if st.success?
         block_height, attested_at = parse_verify(stderr)
         status_label = block_height ? 'verified' : 'pending'
@@ -102,7 +113,7 @@ Dir[File.join(POSTS, '*.md')].sort.each do |path|
   records[slug] = {
     'sha256'       => sha,
     'ots_path'     => "/timestamps/#{slug}.ots",
-    'ots_present'  => File.exist?(ots_path),
+    'ots_present'  => File.exist?(ots_public),
     'block_height' => block_height,
     'attested_at'  => attested_at,
     'status'       => status_label

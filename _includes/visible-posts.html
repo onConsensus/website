@@ -1,0 +1,43 @@
+{%- comment -%}
+  Computes a `visible_posts` array containing every post that is NOT
+  currently embargoed — i.e. posts with no embargo metadata at all,
+  PLUS posts whose declared embargo gates have all passed. The
+  predicate mirrors `_layouts/post.html` exactly: a post is held only
+  while at least one declared gate is still in force, so once a
+  deadline lifts the post automatically reappears in feeds, search,
+  and any other surface that includes this file.
+
+  Inputs:
+    site.posts                       — the corpus
+    site.time                        — build clock (Jekyll injects)
+    site.data.bitcoin.tip_height     — refreshed by CI from mempool.space
+
+  Output (set in caller's scope):
+    visible_posts  — Array<Post> excluding currently-embargoed posts
+
+  Liquid has no list `push`, so we capture a comma-separated slug
+  whitelist and re-filter `site.posts` with `where_exp ... contains`.
+  Slugs are unique per Jekyll, so this is unambiguous.
+{%- endcomment -%}
+{%- assign now_epoch = site.time | date: '%s' | plus: 0 -%}
+{%- assign tip_height = site.data.bitcoin.tip_height | default: 0 | plus: 0 -%}
+{%- capture visible_slugs_csv -%}
+{%- for p in site.posts -%}
+  {%- if p.embargo_until or p.embargo_block -%}
+    {%- assign time_passed = true -%}
+    {%- if p.embargo_until -%}
+      {%- assign until_ts = p.embargo_until | date: '%s' | plus: 0 -%}
+      {%- if now_epoch < until_ts -%}{%- assign time_passed = false -%}{%- endif -%}
+    {%- endif -%}
+    {%- assign block_passed = true -%}
+    {%- if p.embargo_block and tip_height < p.embargo_block -%}
+      {%- assign block_passed = false -%}
+    {%- endif -%}
+    {%- if time_passed and block_passed -%}{{ p.slug }},{%- endif -%}
+  {%- else -%}
+    {{ p.slug }},
+  {%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign visible_slugs = visible_slugs_csv | split: ',' -%}
+{%- assign visible_posts = site.posts | where_exp: "p", "visible_slugs contains p.slug" -%}

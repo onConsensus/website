@@ -167,11 +167,14 @@ onchain:
       - { name: "mempool.space",  url: "https://mempool.space/block/{value}" }
       - { name: "Blockstream",    url: "https://blockstream.info/block-height/{value}" }
 
-# Editorial safety: by default the on-chain rewriter only auto-links block
-# heights inside elements with `data-onchain-block` (e.g. the byline) to
-# avoid false positives on bare digit strings in body copy. Authors can
-# opt a body span in with the same attribute.
-onchain_block_heights_in_body: false
+# Block heights in article markdown auto-render as multi-explorer
+# links by default (mempool.space, Blockstream). The rewriter only
+# considers numbers in the live Bitcoin range (700_000 ≤ n ≤ tip+1)
+# and skips already-linked text, code, pre, and ancestors marked
+# `data-onchain="off"`. Authors can disable per-block by wrapping
+# the digit in `<span data-onchain="off">…</span>` or per-section
+# by setting the attribute on a parent element.
+onchain_block_heights_in_body: true
 
 #-------------------------------
 # jekyll-feed (Atom output)

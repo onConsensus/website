@@ -7,9 +7,14 @@ layout: null
 permalink: /search.json
 ---
 [
-{%- comment -%} Embargoed posts are excluded from the search index — both content and even the title; the seal page is the only public surface. {%- endcomment -%}
-{%- assign indexed_posts = site.posts | where_exp: "p", "p.embargo_until == nil" | where_exp: "p", "p.embargo_block == nil" -%}
-{%- for post in indexed_posts -%}
+{%- comment -%}
+  Search index excludes currently-embargoed posts (both content and
+  even the title — the seal page at the canonical URL is the only
+  public surface while the gates hold). Posts auto-reappear once
+  their deadline passes; see `_includes/visible-posts.html`.
+{%- endcomment -%}
+{% include visible-posts.html %}
+{%- for post in visible_posts -%}
   {%- assign author = site.authors | where: "slug", post.author | first -%}
   {%- assign author_name = author.name | default: post.author | default: "" -%}
   {%- assign section_obj = site.sections | where: "slug", post.section | first -%}

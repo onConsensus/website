@@ -1,0 +1,97 @@
+name: timestamps
+
+# Persistent OpenTimestamps anchoring.
+#
+# `build-check.yml` only validates the site for each push/PR; its
+# generated `.ots` files vanish with the runner. This workflow is the
+# *durable* anchor: it stamps every post that lacks a proof, upgrades
+# pending proofs once a Bitcoin block confirms the calendar
+# attestations (typically 3–6 hours after the initial stamp), and
+# commits the `.ots` files plus the refreshed `_data/timestamps.yml`
+# back to `main`. GitHub Pages then serves them at
+# `/timestamps/<slug>.ots` so any reader can run
+#   ots verify _posts/<slug>.md
+# offline.
+#
+# Triggers:
+#   - push to _posts/  → stamp the new posts immediately
+#   - 3-hourly cron    → upgrade pending proofs as Bitcoin confirms
+#   - manual dispatch  → re-stamp on demand
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_posts/**"
+      - "scripts/build_timestamps.rb"
+  schedule:
+    - cron: "23 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  # One stamping run at a time — prevents two cron invocations from
+  # racing on the same `.ots` files and producing a merge conflict
+  # against themselves.
+  group: timestamps-main
+  cancel-in-progress: false
+
+jobs:
+  stamp:
+    name: Stamp + upgrade OpenTimestamps proofs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Install OpenTimestamps client
+        run: |
+          python3 -m pip install --quiet --user opentimestamps-client
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Stamp new posts and upgrade pending proofs
+        run: |
+          set -e
+          # First pass: `ots stamp` any post that does not yet have a
+          # `.ots` neighbour. The script writes proofs adjacent to the
+          # source markdown (`_posts/<slug>.md.ots`) and copies them
+          # into `timestamps/<slug>.ots` for public serving.
+          ruby scripts/build_timestamps.rb
+
+          # Second pass: try to upgrade every pending proof. `ots
+          # upgrade` is a no-op until at least one calendar's
+          # attestation is in a confirmed Bitcoin block; once it is,
+          # the `.ots` file becomes self-contained and verifiable
+          # offline forever.
+          shopt -s nullglob
+          for f in _posts/*.md.ots; do
+            ots upgrade "$f" || true
+          done
+          # Refresh the data file with new statuses after upgrades.
+          ruby scripts/build_timestamps.rb
+
+      - name: Commit refreshed proofs
+        run: |
+          set -e
+          git config user.name  "onconsensus-timestamps[bot]"
+          git config user.email "timestamps@onconsensus.com"
+          # Track only the artefacts this job is allowed to touch.
+          git add _posts/*.md.ots timestamps/*.ots _data/timestamps.yml 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "[timestamps] no changes to commit"
+            exit 0
+          fi
+          git commit -m "timestamps: stamp + upgrade proofs [skip ci]"
+          # Retry once on push race (cron + push collision).
+          git push origin HEAD:main || (git pull --rebase origin main && git push origin HEAD:main)
