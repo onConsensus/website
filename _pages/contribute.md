@@ -63,6 +63,26 @@ under [CC-BY-SA-4.0](/colophon/#licensing) by default. Authors who
 need a different licence — for republication into journals or for
 licensing constraints from prior work — should flag it in the pitch.
 
+### Audio editions and `audio_override`
+
+Every published article gets a build-time text-to-speech narration
+linked from a player at the top of the post and shipped as an episode
+in the [combined and per-section podcast feeds](/podcast/). To replace
+the synthetic narration with a hand-recorded edition, drop the file
+into the repo (e.g. `/audio/<slug>.mp3`) and add `audio_override:` to
+the article's frontmatter pointing at that path.
+
+Two rules to keep podcast clients happy:
+
+- **Prefer in-repo files.** When `audio_override:` starts with `/`
+  the build pipeline resolves the byte size and emits a correct
+  `<enclosure length>` in the RSS. Apple Podcasts and several
+  aggregators silently drop items whose enclosure length is zero.
+- **If you must host remotely**, use a server that returns a stable
+  `Content-Length`. The build cannot probe arbitrary URLs at
+  generation time, so remote overrides currently ship with
+  `length="0"` and are best-effort only.
+
 ## File a correction
 
 Every article has a *Suggest an edit* link at its foot, going
