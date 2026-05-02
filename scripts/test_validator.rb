@@ -40,6 +40,12 @@ def fixture_root
   FileUtils.mkdir_p File.join(dir, '_lists')
   FileUtils.mkdir_p File.join(dir, '_data')
 
+  # Copy the real schema into the fixture so SCHEMA_PATH (now
+  # rooted at --root) resolves. Drift tests overwrite this file
+  # with a doctored copy.
+  FileUtils.cp(File.join(ROOT, '_data', 'schemas.yml'),
+               File.join(dir, '_data', 'schemas.yml'))
+
   File.write(File.join(dir, '_data', 'sections.yml'), [
     { 'slug' => 'research',     'title' => 'Research',     'editor' => 'a-test', 'accent' => '#000', 'blurb' => 'x' },
     { 'slug' => 'cryptography', 'title' => 'Cryptography', 'editor' => 'a-test', 'accent' => '#000', 'blurb' => 'x' }
@@ -212,21 +218,19 @@ yaml_files.each do |f|
 end
 pass!("#{yaml_files.size} per-acronym rules verified") if failures.empty? || !failures.last.to_s.include?('Acronym')
 
-# Test 9: schema drift detection actually fires when a field is added.
+# Test 9: schema drift detection actually fires when a schema field
+# lacks a TYPES entry. Now that SCHEMA_PATH honours --root, we can
+# substitute a doctored schema in the fixture root and assert the
+# validator's true behaviour (not just output presence).
 puts "[test_validator] 9. schema drift detection"
 dir = fixture_root
 schema_path = File.join(dir, '_data', 'schemas.yml')
-# Read the real schema, copy it, and add an unmapped field.
 real = YAML.load_file(File.join(ROOT, '_data', 'schemas.yml'))
-real['post']['optional']['unmapped_field'] = 'A test'
+real['post']['optional']['unmapped_field'] = 'A test field with no TYPES entry'
 File.write(schema_path, real.to_yaml)
-# The validator reads schemas.yml from the *real* repo path, not the
-# tmp dir, so we can't easily test drift in isolation. Instead, we
-# eyeball the validator's own output: detect_schema_drift inspects
-# SCHEMA which is loaded from the script's own ROOT. So this test
-# only checks that the drift detector exists and runs without error.
 status, output = run_validator(dir)
-output.include?('validate_frontmatter') ? pass!('drift detector present in output') : fail!(failures, 'drift detector present', output)
+fired = output.include?('schema drift') && output.include?('unmapped_field')
+fired ? pass!('drift detector flagged unmapped_field') : fail!(failures, 'drift detector flagged unmapped_field', output)
 FileUtils.rm_rf dir
 
 if failures.empty?

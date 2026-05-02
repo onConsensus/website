@@ -16,7 +16,7 @@
 set -e
 
 if git diff --cached --name-only --diff-filter=ACMR | \
-     grep -E '^(_posts|_authors|_series|_lists)/|^_data/sections\.yml$' \
+     grep -E '^(_posts|_authors|_series|_lists)/|^_data/(sections|schemas)\.yml$' \
      >/dev/null; then
   echo "[pre-commit] running scripts/validate_frontmatter.rb"
   ruby "$(git rev-parse --show-toplevel)/scripts/validate_frontmatter.rb" || {

@@ -47,7 +47,10 @@ ROOT = if (idx = ARGV.index('--root'))
 # Schema source of truth
 # ---------------------------------------------------------------------------
 
-SCHEMA_PATH = File.join(File.expand_path('..', __dir__), '_data', 'schemas.yml')
+# Honour --root for both content trees and schema path so the
+# fixture-based self-test (scripts/test_validator.rb) can substitute
+# its own schema and exercise drift-detection in isolation.
+SCHEMA_PATH = File.join(ROOT, '_data', 'schemas.yml')
 SCHEMA = YAML.safe_load_file(SCHEMA_PATH, permitted_classes: [Date, Time])
 
 def required_keys(kind)  ; (SCHEMA.dig(kind, 'required') || {}).keys end
