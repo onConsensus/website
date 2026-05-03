@@ -139,15 +139,25 @@ defaults:
 
 
 #-------------------------------
-# Social (decentralized stack only — no X/Twitter)
-# Editorial decision: the audience reads the open social web.
+# Social profiles. The decentralized stack (mastodon, bluesky, nostr,
+# farcaster, github) is where editorial activity lives; the centralized
+# accounts below are mirrors maintained for reach. All links surface
+# in the masthead "Follow" disclosure and the footer Follow column,
+# rendered as inline-SVG icons via `_includes/social-icons.html`.
 social:
-  mastodon: "https://mastodon.social/@onconsensus"
-  bluesky: "https://bsky.app/profile/onconsensus.com"
-  nostr: "npub1onconsensus000000000000000000000000000000000000000000000000"
-  github: "https://github.com/onConsensus"
+  mastodon:  "https://mastodon.social/@onconsensus"
+  bluesky:   "https://bsky.app/profile/onconsensus.com"
+  nostr:     "npub1onconsensus000000000000000000000000000000000000000000000000"
+  github:    "https://github.com/onConsensus"
   farcaster: "https://warpcast.com/onconsensus"
-  rss: "/feed.xml"
+  twitter:   "https://twitter.com/onconsensus"
+  facebook:  "https://facebook.com/onconsensus"
+  linkedin:  "https://www.linkedin.com/company/onconsensus"
+  instagram: "https://instagram.com/onconsensus"
+  youtube:   "https://www.youtube.com/@onconsensus"
+  tiktok:    "https://tiktok.com/@onconsensus"
+  tumblr:    "https://onconsensus.tumblr.com"
+  rss:       "/feed.xml"
 
 
 #-------------------------------
