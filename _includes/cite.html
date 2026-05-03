@@ -139,25 +139,46 @@ Y2  - {{ access_date }}
         can select-and-copy any of them. With JS, only the active
         pane stays visible and the tabs switch between them.
       {%- endcomment -%}
+      {%- comment -%}
+        Download links point at the prebuilt sidecar files written by
+        `scripts/build_citations.rb` (see `feed/<slug>.{bib,ris,hayagriva.yaml}`).
+        Reference managers (Zotero, BibDesk, Mendeley) ingest those files
+        directly, and the link works with JS disabled — the copy button
+        next to it remains the convenience path for in-browser use.
+      {%- endcomment -%}
+      {%- assign bib_href  = '/feed/' | append: post.slug | append: '.bib' -%}
+      {%- assign ris_href  = '/feed/' | append: post.slug | append: '.ris' -%}
+      {%- assign hg_href   = '/feed/' | append: post.slug | append: '.hayagriva.yaml' -%}
       <div class="cite__pane" data-cite-pane="bibtex">
         <h3 class="cite__pane-label">BibTeX</h3>
         <pre class="cite__pre"><code>{{- bibtex | strip -}}</code></pre>
-        <button class="cite__copy" data-cite-copy="bibtex" type="button">Copy BibTeX</button>
+        <p class="cite__actions">
+          <button class="cite__copy" data-cite-copy="bibtex" type="button">Copy BibTeX</button>
+          <a class="cite__download" href="{{ bib_href | relative_url }}" download="{{ post.slug }}.bib" rel="external">Download .bib</a>
+        </p>
       </div>
       <div class="cite__pane" data-cite-pane="ris">
         <h3 class="cite__pane-label">RIS</h3>
         <pre class="cite__pre"><code>{{- ris | strip -}}</code></pre>
-        <button class="cite__copy" data-cite-copy="ris" type="button">Copy RIS</button>
+        <p class="cite__actions">
+          <button class="cite__copy" data-cite-copy="ris" type="button">Copy RIS</button>
+          <a class="cite__download" href="{{ ris_href | relative_url }}" download="{{ post.slug }}.ris" rel="external">Download .ris</a>
+        </p>
       </div>
       <div class="cite__pane" data-cite-pane="hayagriva">
         <h3 class="cite__pane-label">Hayagriva</h3>
         <pre class="cite__pre"><code>{{- hayagriva | strip -}}</code></pre>
-        <button class="cite__copy" data-cite-copy="hayagriva" type="button">Copy Hayagriva</button>
+        <p class="cite__actions">
+          <button class="cite__copy" data-cite-copy="hayagriva" type="button">Copy Hayagriva</button>
+          <a class="cite__download" href="{{ hg_href | relative_url }}" download="{{ post.slug }}.hayagriva.yaml" rel="external">Download .hayagriva.yaml</a>
+        </p>
       </div>
       <div class="cite__pane" data-cite-pane="plain">
         <h3 class="cite__pane-label">Plain text</h3>
         <pre class="cite__pre"><code>{{- plain | strip -}}</code></pre>
-        <button class="cite__copy" data-cite-copy="plain" type="button">Copy plain text</button>
+        <p class="cite__actions">
+          <button class="cite__copy" data-cite-copy="plain" type="button">Copy plain text</button>
+        </p>
       </div>
     </div>
   </details>

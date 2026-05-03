@@ -10,6 +10,7 @@ ruby scripts/build_timestamps.rb   || echo "[post-merge] timestamps regen skippe
 ruby scripts/build_methodology.rb  || echo "[post-merge] methodology regen skipped"
 ruby scripts/build_embargoes.rb    || echo "[post-merge] embargoes regen skipped"
 ruby scripts/build_permaids.rb     || echo "[post-merge] permaids regen skipped"
+ruby scripts/build_citations.rb    || echo "[post-merge] citations regen skipped"
 ruby scripts/build_feeds.rb        || echo "[post-merge] feeds regen skipped"
 ruby scripts/build_audio.rb        || echo "[post-merge] audio regen skipped"
 ruby scripts/build_podcast.rb      || echo "[post-merge] podcast regen skipped"
