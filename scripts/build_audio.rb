@@ -41,6 +41,7 @@ ROOT        = File.expand_path('..', __dir__)
 POSTS_DIR   = File.join(ROOT, '_posts')
 AUDIO_DIR   = File.join(ROOT, 'audio')
 DATA_PATH   = File.join(ROOT, '_data', 'audio.yml')
+LEX_PATH    = File.join(ROOT, '_data', 'pronunciation.yml')
 PIPER       = ENV['PIPER_BIN']  || 'piper'
 PIPER_VOICE = ENV['PIPER_VOICE']
 FFMPEG      = ENV['FFMPEG_BIN'] || 'ffmpeg'
@@ -94,6 +95,39 @@ def to_plain(md)
   s.strip
 end
 
+# Load the pronunciation lexicon. Returns a struct of compiled
+# token-substitutions and pattern-substitutions. Missing or empty
+# files are tolerated — the script still produces audio, just
+# without rewrites.
+def load_lexicon(path)
+  unless File.exist?(path)
+    warn "[build_audio] no lexicon at #{path}; proceeding without rewrites."
+    return { tokens: [], patterns: [] }
+  end
+  data = YAML.safe_load_file(path) || {}
+  tokens = (data['tokens'] || {}).map do |k, v|
+    # Whole-word, case-sensitive. Word boundaries must accommodate
+    # tokens that begin or end with non-word characters (none today,
+    # but guard anyway).
+    [/(?<![A-Za-z0-9])#{Regexp.escape(k.to_s)}(?![A-Za-z0-9])/, v.to_s]
+  end
+  patterns = (data['patterns'] || []).map do |entry|
+    [Regexp.new(entry.fetch('match')), entry.fetch('to').to_s]
+  end
+  { tokens: tokens, patterns: patterns }
+end
+
+# Apply the lexicon to plain prose. Patterns run first so compound
+# forms like "ERC-4337" or "EIP-1559" are rewritten before the bare
+# token rules ("ERC", "EIP") can clobber them. Tokens run second
+# for whole-word substitutions like "EVM" → "ee vee em".
+def apply_lexicon(text, lex)
+  out = text.dup
+  lex[:patterns].each { |re, sub| out.gsub!(re, sub) }
+  lex[:tokens].each   { |re, sub| out.gsub!(re, sub) }
+  out
+end
+
 def write_manifest(map)
   body = map.empty? ? "{}\n" : map.sort.to_h.to_yaml.sub("---\n", '')
   File.write(DATA_PATH, HEADER + body)
@@ -135,6 +169,7 @@ end
 # ---------------------------------------------------------------------------
 
 existing = existing_manifest
+lexicon  = load_lexicon(LEX_PATH)
 piper_ok = have?(PIPER)
 ff_ok    = have?(FFMPEG)
 
@@ -152,7 +187,7 @@ Dir[File.join(POSTS_DIR, '*.md')].sort.each do |path|
   next if fm['audio_override']
   next if fm['embargo_until'] || fm['embargo_block']
 
-  prose_plain = to_plain(prose)
+  prose_plain = apply_lexicon(to_plain(prose), lexicon)
   next if prose_plain.empty?
   digest = Digest::SHA256.hexdigest(prose_plain)
   out_mp3 = File.join(AUDIO_DIR, "#{slug}.mp3")

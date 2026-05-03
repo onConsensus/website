@@ -1,0 +1,132 @@
+# _data/pronunciation.yml — TTS pronunciation lexicon.
+#
+# Used by scripts/build_audio.rb to rewrite crypto jargon into a
+# spoken form Piper (en_US-amy-medium) can pronounce. Editors add
+# new entries here; the script applies them during the prose
+# pre-processing pass before synthesis.
+#
+# Two sections:
+#
+#   tokens:    whole-word, case-sensitive substitutions. Each key is
+#              matched as a standalone token (word boundaries on each
+#              side) and replaced with the spoken form.
+#
+#   patterns:  regex substitutions, applied in order. Use `\1`, `\2`
+#              etc. in `to:` to reference capture groups. Patterns
+#              are anchored only as written; add `\b` yourself if
+#              you need word boundaries.
+#
+# Application order: patterns first, then tokens. This lets
+# compound forms like "ERC-4337" or "EIP-1559" be rewritten by a
+# pattern before the bare "ERC" / "EIP" token rule can clobber the
+# digits.
+#
+# Keep entries short and phonetic. Prefer plain English spellings of
+# the spoken sound — e.g. "zee kay", not IPA. Piper does not consume
+# eSpeak phonemes from this file.
+#
+# When you add a term: re-run `ruby scripts/build_audio.rb` locally
+# (with PIPER_BIN/PIPER_VOICE set) and listen to the affected post.
+
+tokens:
+  # Cryptography / proof systems
+  ZK:        "zee kay"
+  zk:        "zee kay"
+  SNARK:     "snark"
+  SNARKs:    "snarks"
+  STARK:     "stark"
+  STARKs:    "starks"
+  KZG:       "kay zee gee"
+  FRI:       "free"
+  IVC:       "eye vee see"
+  PCS:       "pee see ess"
+
+  # Execution / VMs / chains
+  EVM:       "ee vee em"
+  zkEVM:     "zee kay ee vee em"
+  SVM:       "ess vee em"
+  WASM:      "wazum"
+  L1:        "layer one"
+  L2:        "layer two"
+  L3:        "layer three"
+  ETH:       "eath"
+  BTC:       "bitcoin"
+  TPS:       "tee pee ess"
+
+  # Rollups / data availability
+  rollup:    "roll-up"
+  rollups:   "roll-ups"
+  DA:        "dee ay"
+  EigenDA:   "eigen dee ay"
+  blob:      "blob"
+  blobs:     "blobs"
+
+  # MEV / consensus
+  MEV:       "em ee vee"
+  PBS:       "pee bee ess"
+  MPC:       "em pee see"
+  BLS:       "bee ell ess"
+  PoS:       "proof of stake"
+  PoW:       "proof of work"
+  RANDAO:    "ran-day-oh"
+
+  # Wallets / accounts
+  multisig:    "multi-sig"
+  multisigs:   "multi-sigs"
+  EOA:         "ee oh ay"
+  AA:          "ay ay"
+  ERC:         "E R C"
+  EIP:         "E I P"
+  BIP:         "B I P"
+
+  # Naming / infra
+  ENS:       "ee en ess"
+  IPFS:      "eye pee eff ess"
+  RPC:       "are pee see"
+  P2P:       "peer to peer"
+  DHT:       "dee aitch tee"
+
+  # Validator clients (Ethereum CL/EL)
+  Lighthouse: "Lighthouse"
+  Nimbus:     "Nim-bus"
+  Prysm:      "Prism"
+  Teku:       "Tek-oo"
+  Lodestar:   "Lode-star"
+  Geth:       "Geth"
+  Erigon:     "Air-i-gon"
+  Nethermind: "Nether-mind"
+  Besu:       "Bess-oo"
+  Reth:       "Reth"
+
+  # Solana / others
+  Anchor:    "Anchor"
+  Firedancer: "Fire-dancer"
+
+# Patterns are applied in order, after tokens. Each entry has:
+#   match: a Ruby regex (as a string)
+#   to:    replacement (supports \1, \2 capture references)
+patterns:
+  # EIP-1559 → "E I P fifteen fifty-nine" — read the digits as a number.
+  - match: '\bEIP-?(\d+)\b'
+    to:    'E I P \1'
+  - match: '\bERC-?(\d+)\b'
+    to:    'E R C \1'
+  - match: '\bBIP-?(\d+)\b'
+    to:    'B I P \1'
+
+  # Hex addresses / hashes: 0xabcdef…  →  "zero x abcdef and so on"
+  # First six hex chars, then a spoken ellipsis. Avoids Piper trying
+  # to read forty hex characters as one word.
+  - match: '\b0x([0-9a-fA-F]{6})[0-9a-fA-F]+\b'
+    to:    'zero x \1 and so on'
+  # Short hex (≤6 chars): just say "zero x" then the chars.
+  - match: '\b0x([0-9a-fA-F]{1,6})\b'
+    to:    'zero x \1'
+
+  # Plain ENS names ending in .eth → "name dot eth"
+  - match: '\b([a-z0-9-]{3,})\.eth\b'
+    to:    '\1 dot eth'
+
+  # Gas units: "21000 gwei" stays readable; "1e18" → "one times ten to the eighteen"
+  - match: '\b1e(\d+)\b'
+    to:    'one times ten to the \1'
