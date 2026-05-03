@@ -1,19 +1,27 @@
 name: audio
 
-# Build-time TTS narration for every post.
+# Build-time TTS narration for every post + podcast cover artwork.
 #
-# This workflow runs on pushes to `main` that touch posts and on
-# manual dispatch. It installs Piper + ffmpeg, regenerates any
-# missing or stale `audio/<slug>.mp3` files (content-hash skip),
-# refreshes `_data/audio.yml`, and commits the result back to `main`
-# so the next deploy picks up the new audio.
+# This workflow runs on pushes to `main` that touch posts, the audio
+# or artwork generators, the editorial taxonomy, the vendored
+# typefaces, or this workflow file — and on manual dispatch. It:
+#   1. installs Piper + ffmpeg + ImageMagick,
+#   2. regenerates any missing or stale `audio/<slug>.mp3` files
+#      (content-hash skip), refreshing `_data/audio.yml`,
+#   3. regenerates `images/podcast/<section>.png` cover art from
+#      `_data/sections.yml` (also content-hash skip),
+#   4. commits the result back to `main` so the next deploy picks
+#      up the new audio + artwork.
 
 on:
   push:
     branches: [main]
     paths:
       - "_posts/**"
+      - "_data/sections.yml"
+      - "assets/fonts/**"
       - "scripts/build_audio.rb"
+      - "scripts/build_podcast_artwork.rb"
       - ".github/workflows/audio.yml"
   workflow_dispatch:
 
@@ -33,10 +41,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install ffmpeg + piper
+      - name: Install ffmpeg + piper + imagemagick
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y ffmpeg python3-pip curl
+          sudo apt-get install -y ffmpeg python3-pip curl imagemagick
           pip install --user piper-tts
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
@@ -62,14 +70,17 @@ jobs:
       - name: Generate narration
         run: ruby scripts/build_audio.rb
 
-      - name: Commit audio + manifest
+      - name: Generate podcast cover art
+        run: ruby scripts/build_podcast_artwork.rb
+
+      - name: Commit audio + artwork + manifest
         run: |
           git config user.name  "on-consensus-audio-bot"
           git config user.email "audio@onconsensus.com"
-          git add audio _data/audio.yml
+          git add audio _data/audio.yml images/podcast
           if git diff --cached --quiet; then
-            echo "no audio changes"
+            echo "no audio or artwork changes"
           else
-            git commit -m "audio: regenerate narration"
+            git commit -m "audio: regenerate narration + cover art"
             git push
           fi
