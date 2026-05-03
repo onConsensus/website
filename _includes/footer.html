@@ -58,13 +58,13 @@
         <li><a href="{{ '/glossary/' | relative_url }}">By glossary term</a></li>
         <li><a href="{{ '/lists/'    | relative_url }}">By reading list</a></li>
         <li><a href="{{ '/standards/#feeds' | relative_url }}">How to subscribe →</a></li>
-        {%- if site.social.mastodon -%}
-        <li><a href="{{ site.social.mastodon }}" rel="me">Mastodon</a></li>
-        {%- endif -%}
-        {%- if site.social.bluesky -%}
-        <li><a href="{{ site.social.bluesky }}" rel="me">Bluesky</a></li>
-        {%- endif -%}
       </ul>
+      {%- comment -%}
+        Social mirrors. Editorial activity lives on the decentralized
+        stack (mastodon, bluesky, nostr, farcaster); the centralized
+        accounts are mirrors maintained for reach.
+      {%- endcomment -%}
+      {% include social-icons.html label="On the social web" %}
     </div>
 
     <div class="colophon__col colophon__col--build">

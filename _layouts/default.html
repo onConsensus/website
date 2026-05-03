@@ -8,6 +8,13 @@
   {%- comment -%} Skip-to-content link — first focusable element on the page. {%- endcomment -%}
   <a class="skip-link" href="#main">Skip to content</a>
 
+  {%- comment -%}
+    Inline-SVG sprite for site.social.* icons. Emitted once per page,
+    just inside <body>, so both the masthead and the colophon can
+    reference its <symbol> ids via <use href="#oc-social-…">.
+  {%- endcomment -%}
+  {% include social-icons-defs.html %}
+
   {% include masthead.html %}
 
   <main id="main" class="page__main" role="main">

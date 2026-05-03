@@ -1,0 +1,73 @@
+{%- comment -%}
+  social-icons.html — render the configured site.social.* entries as a
+  list of inline-SVG icons. No third-party scripts, no tracker pixels;
+  the SVG glyphs are embedded directly so they inherit `currentColor`
+  and respect the site's dark-mode + print stylesheets.
+
+  Optional includes parameters:
+    label  — heading text rendered above the icon row (e.g. "Mirrors").
+             Omit to render the icon row only.
+    class  — extra class appended to the wrapping <ul>.
+
+  The order below is the display order. To add a new platform, drop a
+  new entry into the array literal and add a matching `<symbol>` in
+  `_includes/social-icons-defs.html`.
+{%- endcomment -%}
+
+{%- assign _social_order = "mastodon,bluesky,nostr,github,farcaster,twitter,facebook,linkedin,instagram,youtube,tiktok,tumblr" | split: "," -%}
+
+{%- assign _has_any = false -%}
+{%- for key in _social_order -%}
+  {%- assign url = site.social[key] -%}
+  {%- if url and url != "" -%}{%- assign _has_any = true -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+
+{%- if _has_any -%}
+  {%- if include.label -%}
+    <p class="social-icons__label">{{ include.label }}</p>
+  {%- endif -%}
+  <ul class="social-icons {{ include.class }}" aria-label="On Consensus on social platforms">
+    {%- for key in _social_order -%}
+      {%- assign url = site.social[key] -%}
+      {%- if url and url != "" -%}
+        {%- assign rel = "me noopener" -%}
+        {%- comment -%}
+          Mastodon and Bluesky support `rel="me"` verification; the
+          centralized mirrors do not, so they get plain `noopener`
+          to keep referrer leakage minimal.
+        {%- endcomment -%}
+        {%- case key -%}
+          {%- when "facebook","linkedin","twitter","instagram","youtube","tiktok","tumblr" -%}
+            {%- assign rel = "noopener external" -%}
+        {%- endcase -%}
+        {%- case key -%}
+          {%- when "twitter"   -%}{%- assign label = "Twitter / X" -%}
+          {%- when "facebook"  -%}{%- assign label = "Facebook"    -%}
+          {%- when "linkedin"  -%}{%- assign label = "LinkedIn"    -%}
+          {%- when "instagram" -%}{%- assign label = "Instagram"   -%}
+          {%- when "youtube"   -%}{%- assign label = "YouTube"     -%}
+          {%- when "tiktok"    -%}{%- assign label = "TikTok"      -%}
+          {%- when "tumblr"    -%}{%- assign label = "Tumblr"      -%}
+          {%- when "mastodon"  -%}{%- assign label = "Mastodon"    -%}
+          {%- when "bluesky"   -%}{%- assign label = "Bluesky"     -%}
+          {%- when "nostr"     -%}{%- assign label = "Nostr"       -%}
+          {%- when "github"    -%}{%- assign label = "GitHub"      -%}
+          {%- when "farcaster" -%}{%- assign label = "Farcaster"   -%}
+        {%- endcase -%}
+        {%- if key == "nostr" -%}
+          {%- assign href = "https://njump.me/" | append: url -%}
+        {%- else -%}
+          {%- assign href = url -%}
+        {%- endif -%}
+        <li class="social-icons__item social-icons__item--{{ key }}">
+          <a class="social-icons__link" href="{{ href }}" rel="{{ rel }}" aria-label="{{ label }}" title="{{ label }}">
+            <svg class="social-icons__svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+              <use href="#oc-social-{{ key }}"></use>
+            </svg>
+            <span class="visually-hidden">{{ label }}</span>
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

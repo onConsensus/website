@@ -1,0 +1,83 @@
+// _social-icons.scss — inline SVG glyphs for site.social.* mirrors.
+//
+// Renders a horizontal row of square hit-targets, each carrying one
+// platform glyph from `_includes/social-icons-defs.html`. The icons
+// inherit `currentColor`, so they ride the existing dark-mode and
+// print cascades without any media-query of their own. Hit areas
+// are 32×32 to satisfy WCAG 2.5.5 (Target Size) on touch devices.
+
+.social-icons {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.4rem;
+
+  &__label {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted, #555);
+    margin: 0.6rem 0 0.25rem;
+  }
+
+  &__item { margin: 0; padding: 0; }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0.5pt solid currentColor;
+    border-radius: 2px;
+    color: var(--color-text-muted, #555);
+    text-decoration: none;
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-link, #b8412e);
+      border-color: var(--color-link, #b8412e);
+      background: var(--color-surface-raised, transparent);
+      outline: none;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--color-link, #b8412e);
+    }
+  }
+
+  &__svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    display: block;
+    fill: currentColor;
+  }
+}
+
+// Inside the masthead Follow disclosure: tighten gap and align with
+// the surrounding mono auxiliary text.
+.masthead__follow-panel .social-icons {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 0.5pt solid currentColor;
+}
+
+// Inside the colophon Follow column: drop borders so the icons read
+// as a quiet badge row rather than a buttons strip.
+.colophon__col--feeds .social-icons {
+  margin-top: 0.6rem;
+
+  .social-icons__link {
+    border-color: transparent;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+@media print {
+  .social-icons { display: none; }
+}

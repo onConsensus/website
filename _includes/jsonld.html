@@ -91,6 +91,13 @@
     {%- if site.social.bluesky   -%}{%- assign social_links = social_links | push: site.social.bluesky   -%}{%- endif -%}
     {%- if site.social.github    -%}{%- assign social_links = social_links | push: site.social.github    -%}{%- endif -%}
     {%- if site.social.farcaster -%}{%- assign social_links = social_links | push: site.social.farcaster -%}{%- endif -%}
+    {%- if site.social.twitter   -%}{%- assign social_links = social_links | push: site.social.twitter   -%}{%- endif -%}
+    {%- if site.social.facebook  -%}{%- assign social_links = social_links | push: site.social.facebook  -%}{%- endif -%}
+    {%- if site.social.linkedin  -%}{%- assign social_links = social_links | push: site.social.linkedin  -%}{%- endif -%}
+    {%- if site.social.instagram -%}{%- assign social_links = social_links | push: site.social.instagram -%}{%- endif -%}
+    {%- if site.social.youtube   -%}{%- assign social_links = social_links | push: site.social.youtube   -%}{%- endif -%}
+    {%- if site.social.tiktok    -%}{%- assign social_links = social_links | push: site.social.tiktok    -%}{%- endif -%}
+    {%- if site.social.tumblr    -%}{%- assign social_links = social_links | push: site.social.tumblr    -%}{%- endif -%}
     {%- for url in social_links -%}
       {{ url | jsonify }}{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
