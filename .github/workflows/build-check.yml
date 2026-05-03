@@ -88,6 +88,15 @@ jobs:
           ruby scripts/build_feeds.rb
           ruby scripts/build_list_bundles.rb
 
+      - name: Check permaid immutability (no silent drift)
+        # Re-runs scripts/build_permaids.rb against the previously
+        # committed `_data/permaids.yml` and fails the build if any
+        # already-issued `oc:YYYY/NNNN` mapping changed. New permaids
+        # for new posts are allowed (append-only). See the script
+        # header and `post_permaid` in `_data/schemas.yml` for the
+        # rename-via-`permaid_seed` escape hatch.
+        run: ruby scripts/check_permaids_immutable.rb
+
       - name: Build with Jekyll
         run: bundle exec jekyll build --trace
 
