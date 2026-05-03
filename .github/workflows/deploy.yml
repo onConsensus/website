@@ -60,6 +60,23 @@ jobs:
           ruby-version: "3.2"
           bundler-cache: true
 
+      - name: Set up Node (for list-bundle PDF rendering)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright + Chromium
+        # Needed by `scripts/render_list_bundles.js` to render each
+        # list's `_site/lists/<slug>/bundle/index.html` to a fresh
+        # `_site/lists/<slug>.pdf` on every deploy. Doing this in the
+        # deploy build (rather than only in the push-only
+        # `list-bundles.yml` workflow) means the hourly embargo-lift
+        # cron republishes PDFs in lockstep with the on-page list.
+        run: |
+          npm init -y >/dev/null
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+
       - name: Install OpenTimestamps client (for verify pass)
         run: |
           python3 -m pip install --quiet --user opentimestamps-client
@@ -87,6 +104,7 @@ jobs:
           ruby scripts/build_embargoes.rb
           ruby scripts/build_permaids.rb
           ruby scripts/build_feeds.rb
+          ruby scripts/build_list_bundles.rb
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -98,6 +116,13 @@ jobs:
 
       - name: Assert embargo gating (no body leak in _site/)
         run: ruby scripts/assert_embargo.rb _site
+
+      - name: Render reading-list PDF bundles
+        # Renders directly into `_site/lists/<slug>.pdf`, which the
+        # Pages artifact upload below will pick up. Means a freshly
+        # un-embargoed entry appears in the PDF on the very next
+        # hourly deploy, in lockstep with the on-page list.
+        run: node scripts/render_list_bundles.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

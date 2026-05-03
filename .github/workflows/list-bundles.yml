@@ -1,0 +1,91 @@
+name: list-bundles
+
+# Reading-list PDF bundles.
+#
+# `scripts/build_list_bundles.rb` runs alongside the other content
+# generators on every push (post-merge.sh, deploy.yml, build-check.yml)
+# and writes:
+#   * `lists/<slug>.epub`             — committed; pure-Ruby zip writer
+#   * `lists/<slug>/bundle.html`      — Jekyll source stub (PDF target)
+#   * `_lists/<slug>.md` frontmatter  — `bundle.pdf` / `bundle.epub` URLs
+#
+# This workflow handles the only step that needs a browser: rendering
+# each list's bundle HTML to `lists/<slug>.pdf` via headless Chromium,
+# then committing the PDFs back to git so the next deploy ships them.
+# Mirrors `broadsheet.yml`'s pattern.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_lists/**"
+      - "_posts/**"
+      - "_layouts/list-bundle.html"
+      - "assets/css/list-bundle.scss"
+      - "scripts/build_list_bundles.rb"
+      - "scripts/render_list_bundles.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: list-bundles
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build list bundle PDFs
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+      BUNDLE_PATH: vendor/bundle
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+
+      - name: Install Playwright + Chromium
+        run: |
+          npm init -y >/dev/null
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Refresh stubs and build site
+        run: |
+          ruby scripts/build_list_bundles.rb
+          bundle exec jekyll build
+
+      - name: Render list bundle PDFs
+        run: node scripts/render_list_bundles.js
+
+      - name: Commit PDFs
+        run: |
+          mkdir -p lists
+          shopt -s nullglob
+          changed=0
+          for src in _site/lists/*.pdf; do
+            name=$(basename "$src")
+            cp "$src" "lists/$name"
+            changed=1
+          done
+          if [ "$changed" = "0" ]; then
+            echo "no list bundle PDFs produced — skipping commit"
+            exit 0
+          fi
+          git config user.name  "on-consensus-press-bot"
+          git config user.email "press@onconsensus.com"
+          git add lists/*.pdf
+          if git diff --cached --quiet; then
+            echo "no list bundle changes"
+          else
+            git commit -m "press: refresh reading-list bundles"
+            git push
+          fi

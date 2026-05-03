@@ -1,0 +1,232 @@
+---
+# Self-contained stylesheet for reading-list bundle PDFs. Not loaded by
+# any page on the website — only by `_layouts/list-bundle.html`, which
+# scripts/render_list_bundles.js opens in headless Chromium and prints
+# to PDF. Keep visually consonant with the broadsheet but laid out as
+# a single-column reader rather than a four-column newspaper.
+---
+
+@charset "utf-8";
+
+@page {
+  size: A4;
+  margin: 18mm 18mm 22mm;
+}
+@page :first {
+  margin-top: 14mm;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  background: #fff;
+  color: #000;
+  font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  font-size: 10.5pt;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+a { color: #000; text-decoration: underline; word-wrap: break-word; }
+
+h1, h2, h3, h4 {
+  font-family: "IBM Plex Serif", Georgia, serif;
+  font-weight: 700;
+  line-height: 1.2;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+p { margin: 0 0 0.7em; orphans: 3; widows: 3; }
+
+blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 2pt solid #000;
+  font-style: italic;
+}
+
+code, pre, kbd, samp {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  font-size: 0.92em;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 0.5pt solid #888;
+  padding: 6pt 8pt;
+  background: #fafafa;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+// ----- Masthead -------------------------------------------------------------
+.list-bundle__masthead {
+  text-align: center;
+  border-bottom: 2pt double #000;
+  padding-bottom: 6mm;
+  margin-bottom: 8mm;
+  break-after: page;
+  page-break-after: always;
+}
+
+.list-bundle__kicker {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 8.5pt;
+  margin: 0 0 6mm;
+}
+
+.list-bundle__title {
+  font-size: 28pt;
+  margin: 0 0 4mm;
+  letter-spacing: -0.005em;
+}
+
+.list-bundle__deck {
+  font-style: italic;
+  font-size: 12pt;
+  max-width: 38em;
+  margin: 0 auto 6mm;
+}
+
+.list-bundle__byline {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  font-size: 8.5pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// ----- Curator intro --------------------------------------------------------
+.list-bundle__intro {
+  max-width: 34em;
+  margin: 0 auto 8mm;
+  font-size: 11pt;
+  break-after: page;
+  page-break-after: always;
+}
+
+// ----- Table of contents ----------------------------------------------------
+.list-bundle__toc {
+  border-top: 0.5pt solid #000;
+  border-bottom: 0.5pt solid #000;
+  padding: 4mm 0;
+  margin-bottom: 10mm;
+  break-after: page;
+  page-break-after: always;
+}
+
+.list-bundle__toc h2 {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10pt;
+  margin: 0 0 4mm;
+}
+
+.list-bundle__toc ol {
+  padding-left: 1.6em;
+  margin: 0;
+}
+
+.list-bundle__toc li {
+  margin-bottom: 1.2mm;
+}
+
+.list-bundle__toc-byline {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  font-size: 8.5pt;
+  color: #444;
+  margin-left: 0.4em;
+}
+
+// ----- Article -------------------------------------------------------------
+.list-bundle__article {
+  break-before: page;
+  page-break-before: always;
+}
+
+.list-bundle__article-head {
+  margin-bottom: 6mm;
+  border-bottom: 0.5pt solid #000;
+  padding-bottom: 4mm;
+}
+
+.list-bundle__article-kicker {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 8pt;
+  margin: 0 0 2mm;
+}
+
+.list-bundle__article-title {
+  font-size: 20pt;
+  margin: 0 0 2mm;
+}
+
+.list-bundle__article-deck {
+  font-style: italic;
+  font-size: 11.5pt;
+  margin: 0 0 3mm;
+}
+
+.list-bundle__article-byline {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  font-size: 8.5pt;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.list-bundle__annotation {
+  border-left: 2pt solid #000;
+  padding: 2mm 4mm;
+  margin: 0 0 6mm;
+  background: #f4f4f4;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.list-bundle__annotation-label {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 8pt;
+  margin: 0 0 1mm;
+}
+
+.list-bundle__annotation p:last-child { margin-bottom: 0; }
+
+.list-bundle__article-body h2 { font-size: 15pt; margin: 1.4em 0 0.4em; }
+.list-bundle__article-body h3 { font-size: 12pt; margin: 1.2em 0 0.3em; }
+.list-bundle__article-body figure { margin: 1em 0; }
+.list-bundle__article-body figcaption {
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  font-size: 8.5pt;
+  color: #444;
+  margin-top: 0.4em;
+}
+
+// ----- Colophon ------------------------------------------------------------
+.list-bundle__colophon {
+  border-top: 0.5pt solid #000;
+  margin-top: 12mm;
+  padding-top: 4mm;
+  font-family: "IBM Plex Mono", Menlo, monospace;
+  font-size: 8pt;
+  color: #444;
+  break-before: page;
+  page-break-before: always;
+}

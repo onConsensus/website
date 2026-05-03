@@ -85,6 +85,7 @@ jobs:
           ruby scripts/build_embargoes.rb
           ruby scripts/build_permaids.rb
           ruby scripts/build_feeds.rb
+          ruby scripts/build_list_bundles.rb
 
       - name: Build with Jekyll
         run: bundle exec jekyll build --trace

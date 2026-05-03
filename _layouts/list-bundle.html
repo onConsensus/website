@@ -1,0 +1,101 @@
+---
+layout: null
+sitemap: false
+---
+{%- comment -%}
+  list-bundle.html — single-document print HTML for a reading list,
+  rendered to PDF by `scripts/render_list_bundles.js`.
+
+  Frontmatter on the source stub at `lists/<slug>/bundle.html`:
+    list_slug — slug of the `_lists/<slug>.md` entry to bundle.
+
+  The page concatenates every visible (non-embargoed) entry of the
+  list, in editorial order, with the curator note up front and the
+  per-entry annotations inline. Embargo gating is mirrored from the
+  on-page list via `axis-posts.html` (axis: list).
+{%- endcomment -%}
+{%- assign _list = site.lists | where: "slug", page.list_slug | first -%}
+{%- assign curator = site.authors | where: "slug", _list.curator | first -%}
+{% include axis-posts.html axis="list" axis_value=page.list_slug %}
+<!doctype html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <title>{{ _list.title }} — On Consensus reading list</title>
+  <meta name="generator" content="On Consensus list bundle · build {{ site.github.build_revision | default: 'local' | slice: 0, 7 }}">
+  <link rel="stylesheet" href="{{ '/assets/css/list-bundle.css' | relative_url }}">
+</head>
+<body class="list-bundle" data-list="{{ _list.slug }}">
+
+  <header class="list-bundle__masthead">
+    <p class="list-bundle__kicker">On Consensus · Reading list</p>
+    <h1 class="list-bundle__title">{{ _list.title }}</h1>
+    {%- if _list.description -%}
+      <p class="list-bundle__deck">{{ _list.description | strip_newlines }}</p>
+    {%- endif -%}
+    <p class="list-bundle__byline">
+      {%- if curator -%}Curated by {{ curator.name }}{%- endif -%}
+      {%- if _list.last_revised -%}
+        · Revised {{ _list.last_revised | date: "%-d %B %Y" }}
+      {%- endif -%}
+      · {{ axis_posts.size }} entr{% if axis_posts.size == 1 %}y{% else %}ies{% endif %}
+    </p>
+  </header>
+
+  {%- if _list.content and _list.content != "" -%}
+    <section class="list-bundle__intro">
+      {{ _list.content }}
+    </section>
+  {%- endif -%}
+
+  <nav class="list-bundle__toc" aria-labelledby="list-bundle-toc-heading">
+    <h2 id="list-bundle-toc-heading">Contents</h2>
+    {%- if axis_posts.size == 0 -%}
+      <p><em>No entries are currently available.</em></p>
+    {%- else -%}
+      <ol>
+        {%- for p in axis_posts -%}
+          {%- assign a = site.authors | where: "slug", p.author | first -%}
+          <li>
+            <a href="#post-{{ p.slug }}">{{ p.title }}</a>
+            <span class="list-bundle__toc-byline">— {{ a.name | default: p.author }}</span>
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+  </nav>
+
+  {%- for p in axis_posts -%}
+    {%- assign s = site.data.sections | where: "slug", p.section | first -%}
+    {%- assign a = site.authors | where: "slug", p.author | first -%}
+    {%- assign entry_meta = _list.entries | where: "slug", p.slug | first -%}
+    <article class="list-bundle__article" id="post-{{ p.slug }}">
+      <header class="list-bundle__article-head">
+        <p class="list-bundle__article-kicker">Entry {{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ s.title | default: p.section | upcase }}</p>
+        <h2 class="list-bundle__article-title">{{ p.title }}</h2>
+        {%- if p.subtitle -%}
+          <p class="list-bundle__article-deck">{{ p.subtitle }}</p>
+        {%- endif -%}
+        <p class="list-bundle__article-byline">
+          By {{ a.name | default: p.author }}
+          · <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: "%-d %B %Y" }}</time>
+        </p>
+      </header>
+      {%- if entry_meta.annotation -%}
+        <aside class="list-bundle__annotation">
+          <p class="list-bundle__annotation-label">Curator's note</p>
+          <p>{{ entry_meta.annotation | strip_newlines }}</p>
+        </aside>
+      {%- endif -%}
+      <div class="list-bundle__article-body">
+        {{ p.content }}
+      </div>
+    </article>
+  {%- endfor -%}
+
+  <footer class="list-bundle__colophon">
+    <p>© {{ site.time | date: "%Y" }} On Consensus contributors. Released under {{ site.license.content | default: "CC-BY-SA-4.0" }}. Reading list bundle · build {{ site.github.build_revision | default: 'local' | slice: 0, 7 }} · <a href="{{ site.url }}{{ _list.url | relative_url }}">{{ site.url }}{{ _list.url }}</a>.</p>
+  </footer>
+
+</body>
+</html>

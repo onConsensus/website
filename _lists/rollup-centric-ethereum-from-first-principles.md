@@ -31,8 +31,8 @@ entries:
       research that touches sequencer coordination. Embargoed at time
       of writing — its body lifts on the date in the seal.
 bundle:
-  pdf: ""
-  epub: ""
+  pdf: /lists/rollup-centric-ethereum-from-first-principles.pdf
+  epub: /lists/rollup-centric-ethereum-from-first-principles.epub
 ---
 
 This list is a curated reading path — not a recommendation algorithm,
