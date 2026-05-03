@@ -73,10 +73,44 @@
                  placeholder="Search · press /"
                  {% unless page.url == '/search/' %}data-search-input{% endunless %}>
         </form>
-        <a class="masthead__tool" href="{{ '/feed.xml' | relative_url }}" aria-label="RSS feed">
-          <span aria-hidden="true">»</span>
-          <span>RSS</span>
-        </a>
+        {%- comment -%}
+          Follow disclosure — exposes the feed granularity (per section,
+          author, series, tag, glossary term, reading list) without an
+          email capture or any tracking. The default link points to the
+          site-wide Atom feed; the disclosure surfaces the per-axis
+          indices where readers can pick a single tag/term/list to
+          subscribe to.
+        {%- endcomment -%}
+        <details class="masthead__follow" data-follow>
+          <summary class="masthead__tool masthead__follow-summary"
+                   aria-label="Follow — subscribe to a feed">
+            <span aria-hidden="true">»</span>
+            <span>Follow</span>
+          </summary>
+          <div class="masthead__follow-panel" role="group" aria-label="Subscribe to a feed">
+            <p class="masthead__follow-lede">
+              Every desk, byline, series, tag, glossary term, and reading list has its own RSS, Atom, and JSON Feed. Pick the axis you want — no email, no tracker.
+            </p>
+            <ul class="masthead__follow-list">
+              <li>
+                <a href="{{ '/feed.xml' | relative_url }}" rel="alternate" type="application/atom+xml">Everything</a>
+                <span class="masthead__follow-aux">
+                  · <a href="{{ '/atom.xml' | relative_url }}" rel="alternate" type="application/atom+xml">Atom</a>
+                  · <a href="{{ '/feed.json' | relative_url }}" rel="alternate" type="application/feed+json">JSON</a>
+                </span>
+              </li>
+              <li><a href="{{ '/sections/' | relative_url }}">By section</a> <span class="masthead__follow-aux">— one feed per desk</span></li>
+              <li><a href="{{ '/authors/' | relative_url }}">By editor</a> <span class="masthead__follow-aux">— one feed per byline</span></li>
+              <li><a href="{{ '/series/' | relative_url }}">By series</a> <span class="masthead__follow-aux">— one feed per running thread</span></li>
+              <li><a href="{{ '/tags/' | relative_url }}">By tag</a> <span class="masthead__follow-aux">— one feed per topic</span></li>
+              <li><a href="{{ '/glossary/' | relative_url }}">By glossary term</a> <span class="masthead__follow-aux">— track a single concept</span></li>
+              <li><a href="{{ '/lists/' | relative_url }}">By reading list</a> <span class="masthead__follow-aux">— curated paths</span></li>
+            </ul>
+            <p class="masthead__follow-foot">
+              <a href="{{ '/standards/#feeds' | relative_url }}">How to subscribe →</a>
+            </p>
+          </div>
+        </details>
       </div>
     </nav>
 

@@ -1,0 +1,43 @@
+---
+layout: default
+title: Series
+permalink: /series/
+description: Every running editorial series on On Consensus, each with its own RSS, Atom, and JSON Feed.
+sitemap: true
+---
+
+<section class="tag-index container container--wide">
+  <header class="page-article__head">
+    <p class="page-article__kicker">Index</p>
+    <h1 class="page-article__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="page-article__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+  </header>
+
+  {% include visible-posts.html %}
+
+  {%- if site.series.size > 0 -%}
+    <ul class="tag-index__list">
+      {%- assign sorted_series = site.series | sort: "title" -%}
+      {%- for series in sorted_series -%}
+        {%- assign matches = "" | split: "" -%}
+        {%- for post in visible_posts -%}
+          {%- if post.series == series.slug -%}
+            {%- assign matches = matches | push: post -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <li class="tag-index__item">
+          <a class="tag-index__link" href="{{ series.url | relative_url }}">
+            <span class="tag-index__name">{{ series.title }}</span>
+            <span class="tag-index__count">{{ matches | size }}</span>
+          </a>
+          {%- if series.description -%}
+            <p class="tag-index__desc">{{ series.description }}</p>
+          {%- endif -%}
+          {% include feed-icons.html base=series.url label=series.title %}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>

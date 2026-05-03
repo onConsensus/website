@@ -1,0 +1,49 @@
+---
+layout: default
+title: Sections
+permalink: /sections/
+description: Every editorial desk on On Consensus, each with its own RSS, Atom, and JSON Feed.
+sitemap: true
+---
+
+<section class="tag-index container container--wide">
+  <header class="page-article__head">
+    <p class="page-article__kicker">Index</p>
+    <h1 class="page-article__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="page-article__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+  </header>
+
+  {% include visible-posts.html %}
+
+  {%- comment -%}
+    One row per section listed in `_data/sections.yml`. Counts come from
+    visible_posts so unpublished/embargoed posts don't inflate the
+    figure. Each row links to the section archive (which itself carries
+    `<link rel="alternate">` headers and a feed-icons row).
+  {%- endcomment -%}
+  {%- if site.data.sections.size > 0 -%}
+    <ul class="tag-index__list">
+      {%- for section in site.data.sections -%}
+        {%- assign matches = "" | split: "" -%}
+        {%- for post in visible_posts -%}
+          {%- if post.section == section.slug -%}
+            {%- assign matches = matches | push: post -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign section_url = '/sections/' | append: section.slug | append: '/' -%}
+        <li class="tag-index__item">
+          <a class="tag-index__link" href="{{ section_url | relative_url }}">
+            <span class="tag-index__name">{{ section.title }}</span>
+            <span class="tag-index__count">{{ matches | size }}</span>
+          </a>
+          {%- if section.blurb -%}
+            <p class="tag-index__desc">{{ section.blurb }}</p>
+          {%- endif -%}
+          {% include feed-icons.html base=section_url label=section.title %}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>

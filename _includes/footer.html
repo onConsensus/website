@@ -47,11 +47,17 @@
     </div>
 
     <div class="colophon__col colophon__col--feeds">
-      <h2 class="colophon__heading">Subscribe</h2>
+      <h2 class="colophon__heading">Follow</h2>
       <ul class="colophon__list">
-        <li><a href="{{ '/feed.xml'  | relative_url }}" rel="alternate" type="application/atom+xml">Atom</a></li>
-        <li><a href="{{ '/atom.xml'  | relative_url }}" rel="alternate" type="application/atom+xml">Atom (editorial)</a></li>
-        <li><a href="{{ '/feed.json' | relative_url }}" rel="alternate" type="application/feed+json">JSON Feed</a></li>
+        <li><a href="{{ '/feed.xml'  | relative_url }}" rel="alternate" type="application/atom+xml">Everything · Atom</a></li>
+        <li><a href="{{ '/feed.json' | relative_url }}" rel="alternate" type="application/feed+json">Everything · JSON</a></li>
+        <li><a href="{{ '/sections/' | relative_url }}">By section</a></li>
+        <li><a href="{{ '/authors/' | relative_url }}">By editor</a></li>
+        <li><a href="{{ '/series/'   | relative_url }}">By series</a></li>
+        <li><a href="{{ '/tags/'     | relative_url }}">By tag</a></li>
+        <li><a href="{{ '/glossary/' | relative_url }}">By glossary term</a></li>
+        <li><a href="{{ '/lists/'    | relative_url }}">By reading list</a></li>
+        <li><a href="{{ '/standards/#feeds' | relative_url }}">How to subscribe →</a></li>
         {%- if site.social.mastodon -%}
         <li><a href="{{ site.social.mastodon }}" rel="me">Mastodon</a></li>
         {%- endif -%}

@@ -30,6 +30,7 @@ last_revised: 2026-04-29
     <li class="ethos__toc-item"><a class="ethos__toc-link" href="#anonymity"><span class="ethos__toc-title">Anonymity &amp; source protection</span><span class="ethos__toc-summary">How we evaluate, accept, and protect anonymous sources.</span></a></li>
     <li class="ethos__toc-item"><a class="ethos__toc-link" href="#ai"><span class="ethos__toc-title">AI-generated content</span><span class="ethos__toc-summary">What machines may and may not do under our byline.</span></a></li>
     <li class="ethos__toc-item"><a class="ethos__toc-link" href="#changes"><span class="ethos__toc-title">Changing this document</span><span class="ethos__toc-summary">How standards are revised; how revisions are announced.</span></a></li>
+    <li class="ethos__toc-item"><a class="ethos__toc-link" href="#feeds"><span class="ethos__toc-title">Subscribing to a feed</span><span class="ethos__toc-summary">How to follow a single tag, term, series, or reading list — no email required.</span></a></li>
   </ol>
 </nav>
 
@@ -227,6 +228,49 @@ A change to these standards is effective the moment it is merged. We
 do not retroactively apply new standards to old pieces; we *do* apply
 them to any piece whose corrections, retractions, or republication
 falls after the effective date.
+
+  </div>
+</article>
+
+<article class="ethos__principle" id="feeds">
+  <header class="ethos__principle-head">
+    <p class="ethos__principle-kicker">§ 08 · Feeds</p>
+    <h2 class="ethos__principle-title">Subscribing to a feed</h2>
+    <p class="ethos__principle-summary">Every axis of the archive — section, byline, series, tag, glossary term, reading list — has its own RSS, Atom, and JSON Feed. No email, no tracker, no behavioural signal.</p>
+  </header>
+  <div class="ethos__principle-body article__body" markdown="1">
+
+We do not run a newsletter. We do not capture email addresses. The
+only mechanism we offer for following the desk is the open feed — and
+because every page that lists posts is itself a feed, you can subscribe
+to exactly the slice of the archive you care about.
+
+**Site-wide feeds.** Three formats, identical content:
+[`/feed.xml`](/feed.xml) (Atom), [`/atom.xml`](/atom.xml) (Atom,
+editorial), and [`/feed.json`](/feed.json) (JSON Feed 1.1). Point any
+reader at one of those URLs.
+
+**Per-axis feeds.** Each index page lists every value on its axis and
+links to the per-value feed:
+
+- [Sections](/sections/) — one feed per desk (research, governance, &c.).
+- [Editors](/authors/) — one feed per byline; useful for following a single editor across desks.
+- [Series](/series/) — one feed per running thread.
+- [Tags](/tags/) — one feed per topic. If you only want to read about, say, *folding schemes* or *fork choice*, this is the right axis.
+- [Glossary](/glossary/) — one feed per term. New piece touches that concept, the entry's feed updates.
+- [Reading lists](/lists/) — one feed per curated path.
+
+**How to subscribe to a single tag or term.** Open the index, click
+through to the tag (e.g. `/tags/folding/`) or term (e.g.
+`/glossary/finality/`), and copy the `feed.xml`, `feed.atom`, or
+`feed.json` link from the *Subscribe* row at the top of the page.
+Most readers also auto-discover the right URL if you paste the page
+URL itself, because every archive page advertises its feeds via
+`<link rel="alternate">` in the document head.
+
+**No email capture.** If you want to be notified when a specific tag
+updates, that is what feeds are for. We will not build a mailing list,
+because a mailing list is a tracker we would have to defend.
 
   </div>
 </article>
