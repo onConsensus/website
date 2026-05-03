@@ -116,9 +116,15 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  min-width: 0;            // permit shrink when toolbar is wide
   overflow-x: auto;
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
+
+  // Leading hairline so the first item (Governance) reads as inset by the
+  // same rule + padding pair as every subsequent item — otherwise the first
+  // glyph sits flush against the container edge and the bar looks unbalanced.
+  border-left: var(--rule-hairline);
 }
 
 .masthead__nav-item {
