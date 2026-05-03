@@ -378,13 +378,33 @@
   margin: var(--space-l) 0 var(--space-s);
 }
 
+.colophon__social {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin: 0 0 var(--space-s);
+
+  .social-icons__label {
+    margin: 0 0 var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+  }
+}
+
 .colophon__legal {
   grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2xs) var(--space-m);
   align-items: baseline;
+  justify-content: center;
+  text-align: center;
   font-size: var(--step--2);
+  padding-top: var(--space-s);
+  border-top: var(--rule-hairline);
 
   a {
     color: var(--muted);

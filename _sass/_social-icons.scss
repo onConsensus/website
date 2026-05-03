@@ -66,15 +66,23 @@
   border-top: 0.5pt solid currentColor;
 }
 
-// Inside the colophon Follow column: drop borders so the icons read
-// as a quiet badge row rather than a buttons strip.
-.colophon__col--feeds .social-icons {
-  margin-top: 0.6rem;
+// Inside the colophon social row: centered, generous spacing, quiet
+// badge treatment (no button outlines) so the icons read as a wire-
+// service strip rather than a buttons rack.
+.colophon__social .social-icons {
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0.75rem 0 0;
 
   .social-icons__link {
     border-color: transparent;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .social-icons__svg {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 

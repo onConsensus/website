@@ -14,7 +14,7 @@
   `_includes/social-icons-defs.html`.
 {%- endcomment -%}
 
-{%- assign _social_order = "mastodon,bluesky,nostr,github,farcaster,twitter,facebook,linkedin,instagram,youtube,tiktok,tumblr" | split: "," -%}
+{%- assign _social_order = "facebook,linkedin,twitter,tumblr,instagram,youtube,tiktok" | split: "," -%}
 
 {%- assign _has_any = false -%}
 {%- for key in _social_order -%}
@@ -30,16 +30,6 @@
     {%- for key in _social_order -%}
       {%- assign url = site.social[key] -%}
       {%- if url and url != "" -%}
-        {%- assign rel = "me noopener" -%}
-        {%- comment -%}
-          Mastodon and Bluesky support `rel="me"` verification; the
-          centralized mirrors do not, so they get plain `noopener`
-          to keep referrer leakage minimal.
-        {%- endcomment -%}
-        {%- case key -%}
-          {%- when "facebook","linkedin","twitter","instagram","youtube","tiktok","tumblr" -%}
-            {%- assign rel = "noopener external" -%}
-        {%- endcase -%}
         {%- case key -%}
           {%- when "twitter"   -%}{%- assign label = "Twitter / X" -%}
           {%- when "facebook"  -%}{%- assign label = "Facebook"    -%}
@@ -48,19 +38,9 @@
           {%- when "youtube"   -%}{%- assign label = "YouTube"     -%}
           {%- when "tiktok"    -%}{%- assign label = "TikTok"      -%}
           {%- when "tumblr"    -%}{%- assign label = "Tumblr"      -%}
-          {%- when "mastodon"  -%}{%- assign label = "Mastodon"    -%}
-          {%- when "bluesky"   -%}{%- assign label = "Bluesky"     -%}
-          {%- when "nostr"     -%}{%- assign label = "Nostr"       -%}
-          {%- when "github"    -%}{%- assign label = "GitHub"      -%}
-          {%- when "farcaster" -%}{%- assign label = "Farcaster"   -%}
         {%- endcase -%}
-        {%- if key == "nostr" -%}
-          {%- assign href = "https://njump.me/" | append: url -%}
-        {%- else -%}
-          {%- assign href = url -%}
-        {%- endif -%}
         <li class="social-icons__item social-icons__item--{{ key }}">
-          <a class="social-icons__link" href="{{ href }}" rel="{{ rel }}" aria-label="{{ label }}" title="{{ label }}">
+          <a class="social-icons__link" href="{{ url }}" rel="noopener external" aria-label="{{ label }}" title="{{ label }}">
             <svg class="social-icons__svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
               <use href="#oc-social-{{ key }}"></use>
             </svg>

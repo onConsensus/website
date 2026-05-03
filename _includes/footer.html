@@ -59,12 +59,6 @@
         <li><a href="{{ '/lists/'    | relative_url }}">By reading list</a></li>
         <li><a href="{{ '/standards/#feeds' | relative_url }}">How to subscribe →</a></li>
       </ul>
-      {%- comment -%}
-        Social mirrors. Editorial activity lives on the decentralized
-        stack (mastodon, bluesky, nostr, farcaster); the centralized
-        accounts are mirrors maintained for reach.
-      {%- endcomment -%}
-      {% include social-icons.html label="On the social web" %}
     </div>
 
     <div class="colophon__col colophon__col--build">
@@ -86,6 +80,15 @@
     </div>
 
     <hr class="colophon__rule" aria-hidden="true">
+
+    {%- comment -%}
+      Social mirrors — full-width row above the legal line so the icons
+      read as a quiet badge strip rather than a cramped sub-grid inside
+      the Follow column.
+    {%- endcomment -%}
+    <div class="colophon__social">
+      {% include social-icons.html label="Elsewhere on the web" %}
+    </div>
 
     <div class="colophon__legal">
       <span>&copy; <time datetime="{{ site.time | date: '%Y' }}">{{ site.time | date: "%Y" }}</time> {{ site.title }}.</span>
