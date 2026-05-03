@@ -21,7 +21,7 @@ folding-schemes-without-romance:
   attested_at:
   status: unstamped
 on-the-wire-april-twenty-ninth:
-  sha256: 77fa0d351bd2ec5ff2f90ab08b6be1b67d639289d8d2ea26281b541661b464d0
+  sha256: a001c75129558937f9c070d13e09d801f6cc05e32c6dabee16a07e7e66d51511
   ots_path: "/timestamps/on-the-wire-april-twenty-ninth.ots"
   ots_present: false
   block_height:

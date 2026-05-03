@@ -29,5 +29,10 @@ quiet-violence-of-emergency-multisigs:
   date: '2026-05-02T21:07:42Z'
   subject: 'Task #6 — Reading experience polish.'
   url: https://github.com/onConsensus/onconsensus/commit/b5ad1817d6991915041df3dd90d4b22a82fb32eb
-on-the-wire-april-twenty-ninth: []
+on-the-wire-april-twenty-ninth:
+- sha: 04b0a3a7ea04a4adcce3144ba9210d61b9c6995b
+  short: 04b0a3a
+  date: '2026-05-03T08:47:28Z'
+  subject: Expand Vale house-style linter to cover L1/L2/L3 and TVL conventions
+  url: https://github.com/onConsensus/onconsensus/commit/04b0a3a7ea04a4adcce3144ba9210d61b9c6995b
 coordination-disclosure-window: []
