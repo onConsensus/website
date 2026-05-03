@@ -112,6 +112,7 @@
 .masthead__nav-list {
   display: flex;
   flex-wrap: nowrap;
+  align-items: stretch;
   gap: 0;
   margin: 0;
   padding: 0;
@@ -120,22 +121,22 @@
   overflow-x: auto;
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
-
-  // Leading hairline so the first item (Governance) reads as inset by the
-  // same rule + padding pair as every subsequent item — otherwise the first
-  // glyph sits flush against the container edge and the bar looks unbalanced.
-  border-left: var(--rule-hairline);
 }
 
 .masthead__nav-item {
   flex: 0 0 auto;
-  + .masthead__nav-item {
-    border-left: var(--rule-hairline);
-  }
+  display: flex;           // so the link can stretch + center inside the cell
+  align-items: stretch;
+
+  // Every item — including the first — carries its own leading hairline.
+  // Putting the rule on the LI (not the UL) guarantees identical height,
+  // baseline, and corner treatment for Governance and every section after it.
+  border-left: var(--rule-hairline);
 }
 
 .masthead__nav-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: var(--space-2xs) var(--space-s);
   font-family: var(--font-mono);
   font-size: var(--step--1);
