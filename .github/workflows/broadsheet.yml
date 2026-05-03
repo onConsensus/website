@@ -6,6 +6,13 @@ name: broadsheet
 # the previous month's `_site/print/YYYY-MM/index.html` to a four-
 # column A3 PDF via headless Chromium, and commit the resulting
 # `print/YYYY-MM.pdf` so the next deploy picks it up.
+#
+# Layout regressions are guarded by `broadsheet-vrt.yml`, which runs
+# on every PR that touches the broadsheet template, its stylesheet,
+# `_sass/`, or the rendering script and diffs per-page PNG rasters
+# against committed baselines under `tests/broadsheet/baselines/`.
+# Refresh those baselines via the `accept-broadsheet-baseline`
+# (`refresh_baselines: true`) workflow_dispatch on broadsheet-vrt.
 
 on:
   schedule:

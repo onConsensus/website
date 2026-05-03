@@ -6,6 +6,18 @@
  * Usage:
  *   node scripts/render_print.js                # render every month
  *   node scripts/render_print.js 2026-04        # render one month
+ *   node scripts/render_print.js --png 2026-04  # also rasterise PDF to
+ *                                               # one PNG per page at
+ *                                               # _site/print/2026-04-page-NN.png
+ *                                               # (used by the broadsheet
+ *                                               #  visual-regression check)
+ *
+ * The --png mode shells out to `pdftoppm` (poppler-utils). On CI we
+ * install it via apt; locally `brew install poppler` or
+ * `apt-get install poppler-utils` does the trick. Default raster DPI
+ * is 120 — high enough to catch column-break, drop-cap and
+ * `column-span: all` regressions, low enough that baselines stay
+ * cheap to commit.
  *
  * Reproducible locally:
  *   npm i -D playwright && npx playwright install --with-deps chromium
@@ -17,6 +29,7 @@
 const fs   = require('fs');
 const http = require('http');
 const path = require('path');
+const { spawnSync } = require('child_process');
 
 const SITE = path.resolve(__dirname, '..', '_site');
 const PRINT_DIR = path.join(SITE, 'print');
@@ -102,6 +115,7 @@ async function renderMonth(browser, baseUrl, ym) {
   if (!cssOk) {
     throw new Error('[render_print] broadsheet stylesheet did not load — aborting to avoid shipping an unstyled PDF');
   }
+  const opts = browser.__renderOpts || {};
   await page.pdf({
     path: out,
     width: '297mm',
@@ -118,7 +132,59 @@ async function renderMonth(browser, baseUrl, ym) {
   });
   await ctx.close();
   console.log('[render_print] wrote', path.relative(SITE, out));
+
+  if (opts.png) {
+    rasterizePdf(out, ym, opts.pngDpi);
+  }
   return true;
+}
+
+// Rasterise the PDF to one PNG per page using pdftoppm. Output files
+// are written next to the PDF as `<ym>-page-NN.png` (zero-padded to
+// match `pdftoppm -W 2`-style sort order). The broadsheet visual-
+// regression workflow diffs these against committed baselines under
+// `tests/broadsheet/baselines/`.
+function rasterizePdf(pdfPath, ym, dpi) {
+  const which = spawnSync('pdftoppm', ['-v'], { encoding: 'utf8' });
+  if (which.error) {
+    throw new Error('[render_print] --png requires pdftoppm (poppler-utils): ' + which.error.message);
+  }
+  // Clear any stale page PNGs from a previous run.
+  for (const f of fs.readdirSync(PRINT_DIR)) {
+    if (f.startsWith(`${ym}-page-`) && f.endsWith('.png')) {
+      fs.unlinkSync(path.join(PRINT_DIR, f));
+    }
+  }
+  const prefix = path.join(PRINT_DIR, `${ym}-page`);
+  const r = spawnSync('pdftoppm', [
+    '-r', String(dpi || 120),
+    '-png',
+    '-aa', 'yes',
+    '-aaVector', 'yes',
+    pdfPath,
+    prefix
+  ], { encoding: 'utf8' });
+  if (r.status !== 0) {
+    throw new Error('[render_print] pdftoppm failed: ' + (r.stderr || r.stdout || '').trim());
+  }
+  // pdftoppm names files `<prefix>-1.png` (or `-01.png` for >9 pages).
+  // Normalise to a fixed two-digit zero-padded suffix so baselines
+  // sort lexically and a 9→10 page transition doesn't reshuffle the
+  // list.
+  const pages = fs.readdirSync(PRINT_DIR)
+    .filter((f) => f.startsWith(`${ym}-page-`) && f.endsWith('.png'));
+  for (const f of pages) {
+    const m = f.match(/^(.*-page-)(\d+)\.png$/);
+    if (!m) continue;
+    const padded = m[1] + m[2].padStart(2, '0') + '.png';
+    if (padded !== f) {
+      fs.renameSync(path.join(PRINT_DIR, f), path.join(PRINT_DIR, padded));
+    }
+  }
+  const finalPages = fs.readdirSync(PRINT_DIR)
+    .filter((f) => f.startsWith(`${ym}-page-`) && f.endsWith('.png'))
+    .sort();
+  console.log(`[render_print] rasterised ${finalPages.length} page(s) of ${ym}.pdf at ${dpi || 120} dpi`);
 }
 
 (async () => {
@@ -136,9 +202,23 @@ async function renderMonth(browser, baseUrl, ym) {
     process.exit(2);
   }
 
-  const arg = process.argv[2];
-  const months = arg
-    ? [arg]
+  // CLI: a single optional `YYYY-MM` positional, plus optional flags
+  //   --png             also emit per-page PNGs of the rendered PDF
+  //   --png-dpi=<n>     raster DPI for --png (default 120)
+  const argv = process.argv.slice(2);
+  const opts = { png: false, pngDpi: 120 };
+  let positional = null;
+  for (const a of argv) {
+    if (a === '--png') opts.png = true;
+    else if (a.startsWith('--png-dpi=')) opts.pngDpi = parseInt(a.split('=')[1], 10) || 120;
+    else if (/^\d{4}-\d{2}$/.test(a)) positional = a;
+    else {
+      console.error(`[render_print] unrecognised arg: ${a}`);
+      process.exit(2);
+    }
+  }
+  const months = positional
+    ? [positional]
     : fs.readdirSync(PRINT_DIR)
         .filter((d) => /^\d{4}-\d{2}$/.test(d))
         .filter((d) => fs.statSync(path.join(PRINT_DIR, d)).isDirectory())
@@ -154,6 +234,7 @@ async function renderMonth(browser, baseUrl, ym) {
   console.log(`[render_print] static server at ${baseUrl} (rooted at _site/)`);
 
   const browser = await chromium.launch();
+  browser.__renderOpts = opts;
   let ok = 0;
   try {
     for (const m of months) {
