@@ -1,0 +1,17 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+#
+# 'ZKP' (Zero-Knowledge Proof) is widely used but covers a family
+# of constructions with quite different properties (SNARKs, STARKs,
+# Bulletproofs, sigma protocols). Expanding on first use signals to
+# the reader which level of abstraction the piece is operating at,
+# and prevents the acronym from doing rhetorical work the underlying
+# construction has not earned.
+extends: conditional
+message: "Acronym 'ZKP' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Zero-Knowledge Proof (ZKP)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bZKP\b'
+second: '\bZKP\b\s*\([^)]+\)|\([^)]+\)\s*\bZKP\b'

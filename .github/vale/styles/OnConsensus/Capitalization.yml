@@ -17,6 +17,13 @@ ignorecase: false
 #     ('zk-snark', 'ZkSnark', 'zksnark' all become 'ZK-SNARK'.)
 #   · 'mainnet' and 'testnet' are one word, lowercase.
 #   · 'EVM' is always all-caps.
+#   · Layer-one / layer-two / layer-three networks are written as
+#     'L1' / 'L2' / 'L3' in body prose. The publication treats these
+#     as established terms of art rather than expandable acronyms;
+#     spelling them out ('Layer 2', 'layer-2', 'layer2') reads as
+#     either marketing copy or a tutorial register, neither of which
+#     matches house voice. The canonical form keeps the prose terse
+#     and consistent across rollup, restaking, and DeFi coverage.
 swap:
   '\bBitCoin\b':       Bitcoin
   '\bBITCOIN\b':       Bitcoin
@@ -48,3 +55,21 @@ swap:
   '\bTEST-NET\b':      testnet
   '\bevm\b':           EVM
   '\bEvm\b':           EVM
+  '\bLayer 1\b':       L1
+  '\bLayer-1\b':       L1
+  '\blayer 1\b':       L1
+  '\blayer-1\b':       L1
+  '\blayer1\b':        L1
+  '\bLayer1\b':        L1
+  '\bLayer 2\b':       L2
+  '\bLayer-2\b':       L2
+  '\blayer 2\b':       L2
+  '\blayer-2\b':       L2
+  '\blayer2\b':        L2
+  '\bLayer2\b':        L2
+  '\bLayer 3\b':       L3
+  '\bLayer-3\b':       L3
+  '\blayer 3\b':       L3
+  '\blayer-3\b':       L3
+  '\blayer3\b':        L3
+  '\bLayer3\b':        L3

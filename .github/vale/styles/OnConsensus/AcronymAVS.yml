@@ -1,0 +1,15 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+#
+# 'AVS' (Actively Validated Service) is a restaking-era term whose
+# meaning is still being negotiated across protocols. Expansion on
+# first use forces the writer to commit to a definition rather than
+# leaning on the acronym's connotations.
+extends: conditional
+message: "Acronym 'AVS' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Actively Validated Service (AVS)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bAVS\b'
+second: '\bAVS\b\s*\([^)]+\)|\([^)]+\)\s*\bAVS\b'

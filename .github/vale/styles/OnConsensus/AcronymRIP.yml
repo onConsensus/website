@@ -1,0 +1,15 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+#
+# 'RIP' (Rollup Improvement Proposal) parallels Ethereum's EIP
+# process for the rollup ecosystem. Outside that context the
+# three letters read as the unrelated funereal idiom, so expansion
+# on first use is essential to keep the reader oriented.
+extends: conditional
+message: "Acronym 'RIP' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Rollup Improvement Proposal (RIP)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bRIP\b'
+second: '\bRIP\b\s*\([^)]+\)|\([^)]+\)\s*\bRIP\b'

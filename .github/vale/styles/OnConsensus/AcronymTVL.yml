@@ -1,0 +1,16 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+#
+# 'TVL' (Total Value Locked) is the headline DeFi metric and one of
+# the most over-quoted, under-defined numbers in the space. The
+# publication's standard is to expand on first use so readers can
+# see the definition in-line and decide for themselves whether the
+# metric is being measured the way they expect.
+extends: conditional
+message: "Acronym 'TVL' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Total Value Locked (TVL)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bTVL\b'
+second: '\bTVL\b\s*\([^)]+\)|\([^)]+\)\s*\bTVL\b'

@@ -14,7 +14,7 @@ to with a longer piece.
 
 ## Sequencer failover at $L2_REDACTED
 
-A widely-used Layer-2 quietly executed a sequencer failover on Tuesday
+A widely-used L2 quietly executed a sequencer failover on Tuesday
 afternoon. The official status page reported a "scheduled maintenance
 window." Operator chatter suggests the failover was triggered by a memory
 leak that had been accumulating for weeks. We are looking for sources.

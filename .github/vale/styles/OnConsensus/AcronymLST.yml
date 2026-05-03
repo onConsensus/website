@@ -1,0 +1,15 @@
+# Per-acronym first-use-expansion check (sibling of Acronyms.yml).
+# See Acronyms.yml for the editorial rationale on why each acronym
+# gets its own file rather than a unioned rule.
+#
+# 'LST' (Liquid Staking Token) is easily confused with 'LRT'
+# (Liquid Restaking Token) by readers new to the staking-derivatives
+# stack. Expansion on first use disambiguates the two and anchors
+# the reader before the prose accumulates further acronyms.
+extends: conditional
+message: "Acronym 'LST' is used without a parenthesised expansion in this file. Expand on first use, e.g. 'Liquid Staking Token (LST)'."
+level: warning
+scope: text
+ignorecase: false
+first:  '\bLST\b'
+second: '\bLST\b\s*\([^)]+\)|\([^)]+\)\s*\bLST\b'
