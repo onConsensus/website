@@ -1,4 +1,7 @@
 _site/
+# Throwaway diff PNGs from the broadsheet visual-regression check;
+# baselines under tests/broadsheet/baselines/ ARE committed.
+tests/broadsheet/diffs/
 .jekyll-cache/
 .jekyll-metadata
 .sass-cache/
