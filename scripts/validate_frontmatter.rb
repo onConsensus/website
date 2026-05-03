@@ -64,7 +64,8 @@ def all_keys(kind)       ; required_keys(kind) + optional_keys(kind) end
 #   :date_or_time, :array_of_strings, :hash, :url
 # Custom symbols (per kind) are handled inline:
 #   :section_slug, :author_slug, :series_slug, :corrections,
-#   :retracted, :disclosures, :author_links, :list_entries, :bundle.
+#   :retracted, :disclosures, :author_links, :list_entries, :bundle,
+#   :excerpt, :featured_image, :pgp_fingerprint.
 TYPES = {
   'post' => {
     'title'                  => :nonempty_string,
@@ -74,8 +75,8 @@ TYPES = {
     'subtitle'                => :nonempty_string,
     'series'                  => :series_slug,
     'tags'                    => :array_of_strings,
-    'excerpt'                 => :nonempty_string,
-    'featured_image'          => :nonempty_string,
+    'excerpt'                 => :excerpt,
+    'featured_image'          => :featured_image,
     'featured_caption'        => :nonempty_string,
     'image'                   => :nonempty_string,
     'reading_time_override'   => :positive_int,
@@ -96,7 +97,7 @@ TYPES = {
     'slug'                    => :nonempty_string,
     'bio'                     => :nonempty_string,
     'avatar'                  => :nonempty_string,
-    'pgp_fingerprint'         => :nonempty_string,
+    'pgp_fingerprint'         => :pgp_fingerprint,
     'joined_date'             => :date_or_time,
     'links'                   => :author_links,
     'disclosures'             => :disclosures,
@@ -240,10 +241,43 @@ def check_type(kind, key, val, errors, file)
       err(errors, file, key, 'must be a map of {provider: url}')
     else
       val.each do |provider, link|
-        next if provider == 'nostr' && link.is_a?(String) && link.start_with?('npub')
-        unless url?(link)
-          err(errors, file, "#{key}.#{provider}", "must be an http(s) URL (or `npub…` for nostr); got #{link.inspect}")
+        if provider == 'nostr'
+          unless link.is_a?(String) && link.match?(/\Anpub1[a-z0-9]+\z/)
+            err(errors, file, "#{key}.nostr", "must be an `npub1…` bech32 string; got #{link.inspect}")
+          end
+        else
+          unless url?(link)
+            err(errors, file, "#{key}.#{provider}", "must be an http(s) URL; got #{link.inspect}")
+          end
         end
+      end
+    end
+
+  when :excerpt
+    if !val.is_a?(String) || val.strip.empty?
+      err(errors, file, key, 'must be a non-empty string')
+    elsif val.length > 300
+      err(errors, file, key, "is #{val.length} characters; cap is 300 (truncates badly in cards/feeds)")
+    end
+
+  when :featured_image
+    if !val.is_a?(String) || val.strip.empty?
+      err(errors, file, key, 'must be a non-empty string path under `/images/`')
+    else
+      rel = val.start_with?('/') ? val[1..] : val
+      disk = File.join(ROOT, rel)
+      unless File.file?(disk)
+        err(errors, file, key, "references missing file `#{val}` (looked for #{relpath(disk)})")
+      end
+    end
+
+  when :pgp_fingerprint
+    if !val.is_a?(String) || val.strip.empty?
+      err(errors, file, key, 'must be a non-empty string')
+    else
+      compact = val.gsub(/\s+/, '')
+      unless compact.match?(/\A[0-9A-Fa-f]{40}\z/)
+        err(errors, file, key, "must be a 40-hex-character fingerprint (whitespace allowed); got #{val.inspect}")
       end
     end
   when :disclosures
@@ -329,7 +363,16 @@ def validate_file(kind, path, errors)
     check_type(kind, k, fm[k], errors, rel)
   end
 
-  # 3. Slug ↔ filename coupling for non-post collections.
+  # 3. Cross-field invariants. featured_image requires featured_caption
+  #    (an image without alt-text/credit is an editorial regression).
+  if kind == 'post' && fm['featured_image'].is_a?(String) && !fm['featured_image'].strip.empty?
+    cap = fm['featured_caption']
+    if !cap.is_a?(String) || cap.strip.empty?
+      errors << "[#{rel}] field `featured_caption` is required when `featured_image` is set"
+    end
+  end
+
+  # 4. Slug ↔ filename coupling for non-post collections.
   if %w[author series list].include?(kind) && fm['slug'].is_a?(String) && fm['slug'] != File.basename(path, '.md')
     errors << "[#{rel}] field `slug` (`#{fm['slug']}`) must equal the filename (`#{File.basename(path, '.md')}`)"
   end

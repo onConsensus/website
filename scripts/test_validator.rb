@@ -193,6 +193,66 @@ status, output = run_validator(dir)
 status == 1 && output.include?('date') ? pass!('bad date caught') : fail!(failures, 'bad date caught', output)
 FileUtils.rm_rf dir
 
+# Test 7a: excerpt over 300 chars.
+puts "[test_validator] 7a. overlong excerpt"
+dir = fixture_root
+post = File.join(dir, '_posts', '2026-01-01-hello-world.md')
+long = 'x' * 301
+File.write(post, File.read(post).sub('excerpt: "A test post."', "excerpt: \"#{long}\""))
+status, output = run_validator(dir)
+status == 1 && output.include?('301') && output.include?('300') ? pass!('overlong excerpt caught') : fail!(failures, 'overlong excerpt caught', output)
+FileUtils.rm_rf dir
+
+# Test 7b: featured_image referencing a missing file.
+puts "[test_validator] 7b. featured_image missing on disk"
+dir = fixture_root
+post = File.join(dir, '_posts', '2026-01-01-hello-world.md')
+File.write(post, File.read(post).sub("excerpt: \"A test post.\"\n",
+                                       "excerpt: \"A test post.\"\nfeatured_image: /images/nope.svg\nfeatured_caption: \"x\"\n"))
+status, output = run_validator(dir)
+status == 1 && output.include?('nope.svg') ? pass!('missing featured_image caught') : fail!(failures, 'missing featured_image caught', output)
+FileUtils.rm_rf dir
+
+# Test 7c: featured_image without featured_caption.
+puts "[test_validator] 7c. featured_image without featured_caption"
+dir = fixture_root
+FileUtils.mkdir_p File.join(dir, 'images')
+File.write(File.join(dir, 'images', 'cover.svg'), '<svg/>')
+post = File.join(dir, '_posts', '2026-01-01-hello-world.md')
+File.write(post, File.read(post).sub("excerpt: \"A test post.\"\n",
+                                       "excerpt: \"A test post.\"\nfeatured_image: /images/cover.svg\n"))
+status, output = run_validator(dir)
+status == 1 && output.include?('featured_caption') ? pass!('missing featured_caption caught') : fail!(failures, 'missing featured_caption caught', output)
+FileUtils.rm_rf dir
+
+# Test 7d: malformed pgp_fingerprint.
+puts "[test_validator] 7d. malformed pgp_fingerprint"
+dir = fixture_root
+auth = File.join(dir, '_authors', 'a-test.md')
+File.write(auth, File.read(auth).sub("links:\n", "pgp_fingerprint: \"NOTHEX 1234\"\nlinks:\n"))
+status, output = run_validator(dir)
+status == 1 && output.include?('pgp_fingerprint') ? pass!('bad pgp_fingerprint caught') : fail!(failures, 'bad pgp_fingerprint caught', output)
+FileUtils.rm_rf dir
+
+# Test 7e: well-formed 40-hex pgp_fingerprint with whitespace passes.
+puts "[test_validator] 7e. spaced 40-hex pgp_fingerprint accepted"
+dir = fixture_root
+auth = File.join(dir, '_authors', 'a-test.md')
+fp = '9F4E 22B7 1A0C 5E84 D3F6  8B71 4E20 9C5A 6F0D 33E1'
+File.write(auth, File.read(auth).sub("links:\n", "pgp_fingerprint: \"#{fp}\"\nlinks:\n"))
+status, output = run_validator(dir)
+status == 0 ? pass!('spaced fingerprint accepted') : fail!(failures, 'spaced fingerprint accepted', output)
+FileUtils.rm_rf dir
+
+# Test 7f: malformed nostr npub.
+puts "[test_validator] 7f. malformed nostr key"
+dir = fixture_root
+auth = File.join(dir, '_authors', 'a-test.md')
+File.write(auth, File.read(auth).sub('npub1aaaa', 'npub-bogus'))
+status, output = run_validator(dir)
+status == 1 && output.include?('nostr') ? pass!('bad nostr key caught') : fail!(failures, 'bad nostr key caught', output)
+FileUtils.rm_rf dir
+
 # Test 8: Vale per-acronym rule integrity.
 puts "[test_validator] 8. Vale acronym rules — first/second token agreement"
 yaml_files = Dir[File.join(VALE_DIR, 'Acronym*.yml')]
