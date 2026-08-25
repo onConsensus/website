@@ -44,15 +44,26 @@ jobs:
         # any rule with `level: error` (hype words, banned phrases,
         # capitalization). `level: warning` rules surface as comments
         # but do not fail the run.
+        #
+        # `filter_mode: added` scopes reviewdog's reporting to lines the
+        # PR actually touches. With `nofilter`, Vale re-lints every
+        # markdown file in the repo on every PR, so a PR that never
+        # touches prose still surfaces every pre-existing warning
+        # repo-wide — and once that count crosses GitHub's 50-annotation
+        # cap, reviewdog itself exits non-zero ("Too many results
+        # (annotations) in diff"), failing the check for reasons
+        # unrelated to the PR's own diff.
         uses: errata-ai/vale-action@reviewdog
         with:
           version: 3.7.1
           fail_on_error: true
-          filter_mode: nofilter
+          filter_mode: added
           reporter: github-pr-review
-          # Lint every markdown file in the repo. `.vale.ini` scopes
+          # Lint every markdown file in the repo — `.vale.ini` scopes
           # which extensions are linted (`*.{md,markdown}`); fenced
-          # code blocks and YAML frontmatter are skipped natively.
+          # code blocks and YAML frontmatter are skipped natively — but
+          # `filter_mode: added` above means only findings on lines the
+          # diff added are ever reported or counted against `fail_on_error`.
           files: '.'
           vale_flags: "--config=.vale.ini --minAlertLevel=suggestion --glob=*.{md,markdown}"
         env:
