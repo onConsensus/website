@@ -35,7 +35,8 @@ sitemap: true
           {%- if series.description -%}
             <p class="tag-index__desc">{{ series.description }}</p>
           {%- endif -%}
-          {% include feed-icons.html base=series.url label=series.title %}
+          {%- capture _series_feed_base -%}/series/{{ series.slug }}/{%- endcapture -%}
+          {% include feed-icons.html base=_series_feed_base label=series.title %}
         </li>
       {%- endfor -%}
     </ul>
