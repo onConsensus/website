@@ -32,7 +32,8 @@ Before this paper, Byzantine agreement was something you cited. After it, it
 was something you could run. The word doing the work in the title is
 *practical*, and the measured claim behind it — around 3% overhead over an
 unreplicated system, in a real NFS implementation — is why every BFT
-blockchain protocol traces its quorum arithmetic to here.
+(Byzantine fault tolerance) blockchain protocol traces its quorum arithmetic
+to here.
 
 ## Why $$3f+1$$, and why that bound is tight
 
@@ -70,10 +71,11 @@ makes the ordering durable *across* views: a replica that reaches
 carry it into any future view.
 
 This is why PBFT is $$O(n^2)$$ in messages: prepare and commit are both
-all-to-all. Every leader-based BFT protocol since — Tendermint, HotStuff and
-its descendants — is in some sense an argument about how to keep the safety
+all-to-all. Every leader-based BFT protocol since — Tendermint (now
+CometBFT), HotStuff (which routes the phases through the leader) and its
+descendants — is in some sense an argument about how to keep the safety
 property of that third phase while reducing its cost. HotStuff's contribution
-is precisely to linearise it by routing through the leader and adding a phase.
+is precisely to linearise it, at the price of an extra phase.
 
 ## The optimisations are the actual contribution
 
@@ -102,7 +104,7 @@ advance. There is no Sybil resistance here and none is claimed; PBFT answers
 "how do these $$N$$ known parties agree", not "who gets to be a party". That
 second question is what proof-of-work and proof-of-stake exist to answer, and
 [Bitcoin](/papers/bitcoin-a-peer-to-peer-electronic-cash-system/) is best read
-as an attack on it rather than on this.
+as an attack on it, not on this.
 
 **It does not scale to large $$N$$.** Quadratic message complexity and the
 view-change protocol's cost mean PBFT is comfortable in the tens of replicas.
@@ -115,7 +117,7 @@ safety proof does not cover.
 
 The fault model is stated first and honestly, safety is separated from
 liveness with the timing assumption confined to the latter, the bound is
-proved optimal rather than asserted, and the optimisations are measured
+proved optimal, not asserted, and the optimisations are measured
 against a real workload. Twenty-seven years on, the structure of the argument
 is still the template — and a fair number of protocols we cover would be
 improved by copying the structure even where they cannot copy the protocol.

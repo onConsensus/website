@@ -46,7 +46,7 @@ at most one leader.
 
 The cost is real and worth naming. Under a strong leader every write pays a
 round trip to the leader even when a closer replica could have served it,
-leader failover stalls all writes rather than degrading, and the leader is a
+leader failover stalls all writes instead of degrading them, and the leader is a
 throughput ceiling. Raft trades steady-state flexibility for a smaller number
 of reachable states. Whether that trade is right depends entirely on whether
 your team will ever have to debug the thing at 3am — which is to say, it is
@@ -91,7 +91,7 @@ appear to work until a partition heals.
 
 **Persisting before responding.** `currentTerm`, `votedFor`, and the log must
 be on stable storage before an RPC is answered. Skip the fsync and the tests
-still pass; the protocol is simply no longer correct across a crash.
+still pass; the protocol is no longer correct across a crash.
 
 None of these are ambiguities in the paper. They are places where the
 specification is complete and the reader skimmed — which is a meaningfully

@@ -7,7 +7,7 @@ Provenance: extracted from the official npm tarball `katex@0.16.11`
 which ships the prebuilt `dist/`. The GitHub repository contains source only —
 `dist/` is produced by the project's rollup build and is not committed there.
 
-Vendored rather than loaded from a CDN, for the same reason the body faces and
+Vendored, not loaded from a CDN, for the same reason the body faces and
 Lunr are vendored: pages on this site make no third-party network calls. See
 `_includes/head.html` and `js/search.js`.
 

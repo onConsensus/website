@@ -50,7 +50,7 @@ $$|S_1| + |S_2| > N$$ for any two majorities of $$N$$ acceptors,
 $$S_1 \cap S_2 \neq \emptyset$$.
 
 That is it. The two-phase structure everyone memorises — *prepare/promise*,
-then *accept/accepted* — is just the mechanism for discovering (b) safely. The
+then *accept/accepted* — is the mechanism for discovering (b) safely. The
 prepare phase is a read; the accept phase is a write; the proposal number is a
 logical clock that lets acceptors reject stale writers.
 
@@ -80,7 +80,7 @@ stable, and at the reconfiguration problem. It does not specify any of them.
 Practitioners call the result *Multi-Paxos*, but there is no canonical
 Multi-Paxos to point at — which is exactly the complaint Ongaro and Ousterhout
 [open Raft with](/papers/in-search-of-an-understandable-consensus-algorithm/).
-Two engineers who have both "implemented Paxos" have very likely implemented
+Two engineers who have both "implemented Paxos" have probably implemented
 different protocols, and the difference usually lives in log compaction,
 membership change, or leader handover: the three areas this paper does not
 cover.
@@ -107,7 +107,7 @@ extra all-to-all round.
 ## Why the desk keeps returning to it
 
 The reason to reread *Paxos Made Simple* is not to implement Paxos. It is that
-the paper models a discipline we mostly lack: it states its safety property
+the paper models a discipline the field lacks: it states its safety property
 precisely, proves it from one structural fact, and then says plainly which
 property it cannot provide and why. Most protocol write-ups we cover invert
 this — extensive liveness benchmarking, gestural safety argument, and no clear

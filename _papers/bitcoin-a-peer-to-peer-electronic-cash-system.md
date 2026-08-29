@@ -49,8 +49,9 @@ of hashpower trying to catch up from $$z$$ blocks behind is a random walk with
 negative drift, and for $$q < 0.5$$ the success probability decays exponentially
 in $$z$$. "Six confirmations" is a risk threshold, not a state transition.
 
-**A bounded-fault assumption becomes an economic one.** BFT tolerates $$f$$
-arbitrary faults with no assumption about *why* a replica misbehaves. Bitcoin
+**A bounded-fault assumption becomes an economic one.** BFT (Byzantine fault
+tolerance) tolerates $$f$$ arbitrary faults with no assumption about *why* a
+replica misbehaves. Bitcoin
 assumes the honest majority is honest because deviating is unprofitable. That
 is a strictly weaker guarantee against a well-funded adversary who does not
 care about profit, and a strictly stronger one against the open-membership
@@ -88,7 +89,7 @@ hashpower is exogenous — not itself a strategic response to the reward.
 Relax any of those and the picture moves. Selfish mining (Eyal and Sirer,
 2014) shows a miner with materially less than 50% can gain by strategically
 withholding blocks, because propagation is *not* instantaneous. Pool
-formation makes "hashpower distribution" a governance variable rather than a
+formation makes "hashpower distribution" a governance variable, not a
 constant. Fee-market dynamics as the subsidy declines introduce incentives the
 1% honest-majority framing does not model. None of this refutes Section 11;
 all of it lies outside the model, and the paper is regularly cited as though
@@ -110,4 +111,4 @@ sequencer-decentralisation proposal, every [prover
 market](/feed/prover-markets-against-themselves) we cover is arguing about
 the same thing: not whether the protocol is safe if participants follow it,
 but whether anyone will. Nine pages, and the durable idea turned out to be the
-economics rather than the hashcash.
+economics, not the hashcash.
