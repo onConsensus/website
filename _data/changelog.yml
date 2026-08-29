@@ -1,13 +1,38 @@
 ---
 against-the-protocol-as-literature: []
-folding-schemes-without-romance: []
-postmortem-shadow-fork-of-march-third: []
-prover-markets-against-themselves: []
-quiet-violence-of-emergency-multisigs: []
+folding-schemes-without-romance:
+- sha: b5ad1817d6991915041df3dd90d4b22a82fb32eb
+  short: b5ad181
+  date: '2026-05-02T21:07:42Z'
+  subject: 'Task #6 — Reading experience polish.'
+  url: https://github.com/onConsensus/onconsensus/commit/b5ad1817d6991915041df3dd90d4b22a82fb32eb
+postmortem-shadow-fork-of-march-third:
+- sha: b5ad1817d6991915041df3dd90d4b22a82fb32eb
+  short: b5ad181
+  date: '2026-05-02T21:07:42Z'
+  subject: 'Task #6 — Reading experience polish.'
+  url: https://github.com/onConsensus/onconsensus/commit/b5ad1817d6991915041df3dd90d4b22a82fb32eb
+prover-markets-against-themselves:
+- sha: b5ad1817d6991915041df3dd90d4b22a82fb32eb
+  short: b5ad181
+  date: '2026-05-02T21:07:42Z'
+  subject: 'Task #6 — Reading experience polish.'
+  url: https://github.com/onConsensus/onconsensus/commit/b5ad1817d6991915041df3dd90d4b22a82fb32eb
+quiet-violence-of-emergency-multisigs:
+- sha: 87095e924d8408c75e0a2335388c9994dd8ec756
+  short: 87095e9
+  date: '2026-05-02T21:46:40Z'
+  subject: 'Task #9 — Editorial trust signals.'
+  url: https://github.com/onConsensus/onconsensus/commit/87095e924d8408c75e0a2335388c9994dd8ec756
+- sha: b5ad1817d6991915041df3dd90d4b22a82fb32eb
+  short: b5ad181
+  date: '2026-05-02T21:07:42Z'
+  subject: 'Task #6 — Reading experience polish.'
+  url: https://github.com/onConsensus/onconsensus/commit/b5ad1817d6991915041df3dd90d4b22a82fb32eb
 on-the-wire-april-twenty-ninth:
 - sha: 04b0a3a7ea04a4adcce3144ba9210d61b9c6995b
   short: 04b0a3a
-  date: '2026-05-03T08:47:28+00:00'
+  date: '2026-05-03T08:47:28Z'
   subject: Expand Vale house-style linter to cover L1/L2/L3 and TVL conventions
   url: https://github.com/onConsensus/onconsensus/commit/04b0a3a7ea04a4adcce3144ba9210d61b9c6995b
 coordination-disclosure-window: []

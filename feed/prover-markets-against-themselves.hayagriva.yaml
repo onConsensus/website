@@ -7,5 +7,3 @@ vellum2026prover:
   url: https://onconsensus.com/feed/prover-markets-against-themselves
   serial-number:
     oc: oc:2026/0004
-  archive: "OpenTimestamps"
-  archive-location: https://onconsensus.com/timestamps/prover-markets-against-themselves.ots
