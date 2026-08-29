@@ -88,10 +88,29 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
 
       - name: Install Playwright + diff deps
+        # Playwright is pinned to an EXACT version, not a caret range, and
+        # that is load-bearing for a visual-regression test.
+        #
+        # `playwright@^1.47` resolves to the newest 1.x at install time, and
+        # each Playwright release ships a different bundled Chromium. So the
+        # renderer silently changed underneath the committed baselines: the
+        # 2026-05-03 baselines were rasterised by one Chromium, and by
+        # 2026-08 `^1.47` was resolving to 1.62.1 (Chromium build 1234,
+        # Chrome for Testing 151.0.7922.34). Every page then drifted
+        # 0.4-3.9% against a 0.2% threshold on content that had not changed
+        # at all — the PDF was byte-identical, only the rasteriser moved.
+        #
+        # A VRT whose renderer floats cannot distinguish "the design broke"
+        # from "the browser was updated", which is the only question it
+        # exists to answer. Bump this deliberately and refresh the baselines
+        # in the same commit (workflow_dispatch with refresh_baselines: true).
+        #
+        # pixelmatch/pngjs stay on caret ranges: they compare images rather
+        # than produce them, and neither was implicated here.
         run: |
           npm init -y >/dev/null
           npm install --no-save \
-            playwright@^1.47 \
+            playwright@1.62.1 \
             pixelmatch@^5.3 \
             pngjs@^7.0
           npx playwright install --with-deps chromium
