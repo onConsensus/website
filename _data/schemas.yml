@@ -91,7 +91,7 @@ paper:
     annotator: "Slug of an entry in `_authors/` — who wrote the desk notes."
     deck: "One-line editorial framing shown on the paper page and the /papers/ index."
   optional:
-    abstract: "The paper's abstract, quoted verbatim. Rendered set apart from anything the desk wrote."
+    abstract: "The paper's abstract, quoted verbatim from the published PDF. Omit it rather than paraphrase or reconstruct: the field asserts a quotation, and an approximate one in a bibliographic record is worse than none. Verify against the source before adding."
     doi: "Bare DOI, without the https://doi.org/ prefix (e.g. 10.1145/571637.571640)."
     arxiv: "Bare arXiv identifier (e.g. 1807.04938)."
     pdf_url: "Direct PDF link, when it differs from `paper_url`. Suppressed in the rendered record when identical."

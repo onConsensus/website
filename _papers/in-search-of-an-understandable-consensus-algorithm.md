@@ -17,7 +17,10 @@ abstract: |
   In order to enhance understandability, Raft separates the key elements of
   consensus, such as leader election, log replication, and safety, and it
   enforces a stronger degree of coherency to reduce the number of states that
-  must be considered.
+  must be considered. Results from a user study demonstrate that Raft is easier
+  for students to learn than Paxos. Raft also includes a new mechanism for
+  changing the cluster membership, which uses overlapping majorities to
+  guarantee safety.
 key_results:
   - "Decomposes consensus into three separable problems — leader election, log replication, and safety — each specifiable on its own."
   - "Adopts a **strong leader**: log entries flow only from leader to followers, which removes the state space Paxos admits by allowing any node to propose."
