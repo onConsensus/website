@@ -8,17 +8,6 @@ paper_url: "https://pmg.csail.mit.edu/papers/osdi99.pdf"
 annotator: m-vellum
 annotated: 2026-06-09
 deck: "The paper that moved Byzantine agreement from a complexity result to something you could actually deploy — and set the quorum arithmetic every modern BFT chain still inherits."
-abstract: |
-  This paper describes a new replication algorithm that is able to tolerate
-  Byzantine faults. We believe that Byzantine-fault-tolerant algorithms will
-  be increasingly important in the future because malicious attacks and
-  software errors are increasingly common and can cause faulty nodes to
-  exhibit arbitrary behavior. Whereas previous algorithms assumed a
-  synchronous system or were too slow to be used in practice, the algorithm
-  described in this paper is practical: it works in asynchronous environments
-  like the Internet and incorporates several important optimizations that
-  improve the response time of previous algorithms by more than an order of
-  magnitude.
 key_results:
   - "Tolerates $$f$$ Byzantine faults with $$3f+1$$ replicas — and the paper shows $$3f+1$$ is optimal, not merely sufficient."
   - "Three-phase commit (**pre-prepare → prepare → commit**) provides total order under arbitrary faults; the third phase is what survives view changes."
