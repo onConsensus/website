@@ -116,7 +116,7 @@ A material interest in this publication includes:
 Where a material interest exists, the editor is recused from writing
 the piece, from editing it, and from the second-eyes sign-off. Where a
 non-material interest exists, the piece runs with an explicit
-[disclosures](/about/#disclosures) note in the byline.
+disclosures note in the byline.
 
   </div>
 </article>
