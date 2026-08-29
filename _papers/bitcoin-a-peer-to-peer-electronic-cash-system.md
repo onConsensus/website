@@ -20,7 +20,7 @@ abstract: |
 key_results:
   - "Replaces a **known, fixed validator set** with an open one weighted by computational work — the Sybil problem the classical literature had assumed away."
   - "Substitutes **probabilistic finality** for the deterministic finality of BFT: confirmation confidence rises with depth but never reaches certainty."
-  - "Section 11 models an attacker's catch-up as a random walk and shows failure probability decays exponentially in confirmations $z$, given honest majority hashpower."
+  - "Section 11 models an attacker's catch-up as a random walk and shows failure probability decays exponentially in confirmations $$z$$, given honest majority hashpower."
   - "The security argument is **economic, not fault-tolerant**: it assumes a rational majority, not a bounded number of arbitrary faults."
 tags: [consensus, bitcoin, proof-of-work, nakamoto, classical]
 math: true
@@ -30,8 +30,8 @@ The most useful way to read this paper in 2026 is as a document that solves a
 *different* problem from the one it is usually filed under, and gets its
 strength from the substitution.
 
-[PBFT](/papers/practical-byzantine-fault-tolerance/) answers: given $3f+1$
-known replicas, how do they agree despite $f$ liars? That question presumes
+[PBFT](/papers/practical-byzantine-fault-tolerance/) answers: given $$3f+1$$
+known replicas, how do they agree despite $$f$$ liars? That question presumes
 someone has already decided who the replicas are. Nakamoto attacks the
 presumption. The contribution is not a better agreement protocol — by every
 classical metric it is a worse one — it is a membership rule that does not
@@ -44,12 +44,12 @@ Three things, and all three are still the live design axes.
 **Deterministic finality becomes probabilistic.** PBFT commits: once
 `committed-local`, the ordering is final, full stop. Bitcoin never commits.
 A block six deep is overwhelmingly likely to be permanent and is *not*
-guaranteed to be. Section 11 gives the model: an attacker with a fraction $q$
-of hashpower trying to catch up from $z$ blocks behind is a random walk with
-negative drift, and for $q < 0.5$ the success probability decays exponentially
-in $z$. "Six confirmations" is a risk threshold, not a state transition.
+guaranteed to be. Section 11 gives the model: an attacker with a fraction $$q$$
+of hashpower trying to catch up from $$z$$ blocks behind is a random walk with
+negative drift, and for $$q < 0.5$$ the success probability decays exponentially
+in $$z$$. "Six confirmations" is a risk threshold, not a state transition.
 
-**A bounded-fault assumption becomes an economic one.** BFT tolerates $f$
+**A bounded-fault assumption becomes an economic one.** BFT tolerates $$f$$
 arbitrary faults with no assumption about *why* a replica misbehaves. Bitcoin
 assumes the honest majority is honest because deviating is unprofitable. That
 is a strictly weaker guarantee against a well-funded adversary who does not
@@ -57,8 +57,8 @@ care about profit, and a strictly stronger one against the open-membership
 problem, which BFT cannot address at all.
 
 **Message complexity falls out of the design.** PBFT's all-to-all rounds are
-$O(n^2)$ and cap $n$ in the tens. Gossip plus longest-chain is closer to
-$O(n)$ and admits an unbounded, unknown, churning participant set. This is the
+$$O(n^2)$$ and cap $$n$$ in the tens. Gossip plus longest-chain is closer to
+$$O(n)$$ and admits an unbounded, unknown, churning participant set. This is the
 purchase the other two trades pay for.
 
 ## It does not solve the Byzantine Generals Problem
@@ -80,7 +80,7 @@ result. It did not; it changed the question.
 Section 11 is a clean piece of work with a narrow scope, and the gap between
 its scope and its citation is wide.
 
-It models one attack: a miner with $q < 0.5$ attempting a private-chain
+It models one attack: a miner with $$q < 0.5$$ attempting a private-chain
 double-spend, against a network of otherwise honest miners. It assumes block
 discovery is Poisson, mining is independent, propagation is instantaneous, and
 hashpower is exogenous — not itself a strategic response to the reward.

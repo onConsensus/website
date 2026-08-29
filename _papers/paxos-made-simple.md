@@ -36,17 +36,18 @@ Acceptors accept numbered proposals. A value is chosen when a majority accept
 the same numbered proposal. The entire correctness burden falls on one
 constraint on proposers, `P2c`:
 
-> For any $v$ and $n$, if a proposal with value $v$ and number $n$ is issued,
-> then there is a set $S$ consisting of a majority of acceptors such that
-> either (a) no acceptor in $S$ has accepted any proposal numbered less than
-> $n$, or (b) $v$ is the value of the highest-numbered proposal among all
-> proposals numbered less than $n$ accepted by the acceptors in $S$.
+> For any $$v$$ and $$n$$, if a proposal with value $$v$$ and number $$n$$ is issued,
+> then there is a set $$S$$ consisting of a majority of acceptors such that
+> either (a) no acceptor in $$S$$ has accepted any proposal numbered less than
+> $$n$$, or (b) $$v$$ is the value of the highest-numbered proposal among all
+> proposals numbered less than $$n$$ accepted by the acceptors in $$S$$.
 
 Clause (b) is the whole algorithm. A proposer is not free to propose its own
 value; if the quorum it polls has already accepted something, it must adopt
 that something. Because any two majorities share at least one acceptor, a
-later proposer cannot miss an earlier chosen value. Since $|S_1| + |S_2| >
-N$ for any two majorities of $N$ acceptors, $S_1 \cap S_2 \neq \emptyset$.
+later proposer cannot miss an earlier chosen value. Since
+$$|S_1| + |S_2| > N$$ for any two majorities of $$N$$ acceptors,
+$$S_1 \cap S_2 \neq \emptyset$$.
 
 That is it. The two-phase structure everyone memorises — *prepare/promise*,
 then *accept/accepted* — is just the mechanism for discovering (b) safely. The
@@ -94,13 +95,13 @@ cost as Raft, the same cost as the commit phase of PBFT without the Byzantine
 overhead. The prepare phase is amortised away. What is slow is *leader
 churn*, which is the undocumented part.
 
-The second is that Paxos "tolerates $f$ failures with $2f+1$ nodes" as though
+The second is that Paxos "tolerates $$f$$ failures with $$2f+1$$ nodes" as though
 that were a Byzantine claim. It is not. Paxos assumes crash-stop or omission
 faults and a non-adversarial network: acceptors may die, messages may be lost,
 delayed, duplicated or reordered, but nothing lies. An acceptor that sends
 different promises to different proposers breaks the safety argument outright.
 For that threat model you need
-[PBFT](/papers/practical-byzantine-fault-tolerance/), $3f+1$ replicas, and an
+[PBFT](/papers/practical-byzantine-fault-tolerance/), $$3f+1$$ replicas, and an
 extra all-to-all round.
 
 ## Why the desk keeps returning to it

@@ -20,7 +20,7 @@ abstract: |
   improve the response time of previous algorithms by more than an order of
   magnitude.
 key_results:
-  - "Tolerates $f$ Byzantine faults with $3f+1$ replicas — and the paper shows $3f+1$ is optimal, not merely sufficient."
+  - "Tolerates $$f$$ Byzantine faults with $$3f+1$$ replicas — and the paper shows $$3f+1$$ is optimal, not merely sufficient."
   - "Three-phase commit (**pre-prepare → prepare → commit**) provides total order under arbitrary faults; the third phase is what survives view changes."
   - "Safety holds under **full asynchrony**; only liveness depends on partial synchrony, which is the correct place to put the timing assumption."
   - "Optimisations — MAC-based authentication instead of public-key signatures on the common path, request batching, tentative execution — bring overhead to roughly 3% over an unreplicated NFS."
@@ -34,31 +34,31 @@ was something you could run. The word doing the work in the title is
 unreplicated system, in a real NFS implementation — is why every BFT
 blockchain protocol traces its quorum arithmetic to here.
 
-## Why $3f+1$, and why that bound is tight
+## Why $$3f+1$$, and why that bound is tight
 
 The number is not a safety margin someone chose. It falls out of a
 requirement that cannot be relaxed.
 
-A replica must make progress after hearing from $N - f$ others, because $f$
-may be crashed and will never answer. So quorums have size $N - f$. But the
-$f$ silent replicas might merely be slow, and the $f$ faulty ones might be
+A replica must make progress after hearing from $$N - f$$ others, because $$f$$
+may be crashed and will never answer. So quorums have size $$N - f$$. But the
+$$f$$ silent replicas might merely be slow, and the $$f$$ faulty ones might be
 among those that *did* answer. For any two quorums to agree on history, their
 intersection must contain at least one honest replica:
 
 $$2(N-f) - N > f \;\;\Longrightarrow\;\; N > 3f$$
 
-With $N = 3f+1$ any two quorums of size $2f+1$ overlap in at least $f+1$
+With $$N = 3f+1$$ any two quorums of size $$2f+1$$ overlap in at least $$f+1$$
 replicas, of which at least one is honest — and one honest witness is enough,
 because an honest replica will not testify to two conflicting histories.
 Crash-fault protocols like [Paxos](/papers/paxos-made-simple/) need only
-$2f+1$ because a non-faulty-but-slow replica still tells the truth when it
+$$2f+1$$ because a non-faulty-but-slow replica still tells the truth when it
 speaks; here the overlap has to survive replicas that lie.
 
 ## The third phase is the one people delete
 
 Pre-prepare assigns a sequence number. Prepare establishes that a quorum
 agrees on that assignment *within the current view*. It is tempting to stop
-there — after prepare, $2f+1$ replicas hold the same ordering, which looks
+there — after prepare, $$2f+1$$ replicas hold the same ordering, which looks
 sufficient.
 
 It is not, and the reason is view change. `prepared` is a statement about one
@@ -66,10 +66,10 @@ view only. Without the commit phase, a request could be prepared at some
 replicas, the view could change before others learn of it, and the new primary
 could legitimately assign that sequence number to a different request. Commit
 makes the ordering durable *across* views: a replica that reaches
-`committed-local` knows $f+1$ honest replicas hold the same order and will
+`committed-local` knows $$f+1$$ honest replicas hold the same order and will
 carry it into any future view.
 
-This is why PBFT is $O(n^2)$ in messages: prepare and commit are both
+This is why PBFT is $$O(n^2)$$ in messages: prepare and commit are both
 all-to-all. Every leader-based BFT protocol since — Tendermint, HotStuff and
 its descendants — is in some sense an argument about how to keep the safety
 property of that third phase while reducing its cost. HotStuff's contribution
@@ -97,14 +97,14 @@ engineering is where "practical" is earned:
 Two limits are routinely elided when this paper is invoked as a blockchain
 ancestor.
 
-**It assumes a fixed, known membership.** All $3f+1$ replicas are known in
+**It assumes a fixed, known membership.** All $$3f+1$$ replicas are known in
 advance. There is no Sybil resistance here and none is claimed; PBFT answers
-"how do these $N$ known parties agree", not "who gets to be a party". That
+"how do these $$N$$ known parties agree", not "who gets to be a party". That
 second question is what proof-of-work and proof-of-stake exist to answer, and
 [Bitcoin](/papers/bitcoin-a-peer-to-peer-electronic-cash-system/) is best read
 as an attack on it rather than on this.
 
-**It does not scale to large $N$.** Quadratic message complexity and the
+**It does not scale to large $$N$$.** Quadratic message complexity and the
 view-change protocol's cost mean PBFT is comfortable in the tens of replicas.
 Every modern deployment that claims "PBFT-based" with hundreds of validators
 has changed something structural — committee sampling, threshold signatures,
