@@ -31,9 +31,9 @@ math: true
 Before this paper, Byzantine agreement was something you cited. After it, it
 was something you could run. The word doing the work in the title is
 *practical*, and the measured claim behind it — around 3% overhead over an
-unreplicated system, in a real NFS implementation — is why every BFT
-(Byzantine fault tolerance) blockchain protocol traces its quorum arithmetic
-to here.
+unreplicated system, in a real NFS implementation — is why every
+BFT (Byzantine fault tolerance) blockchain protocol traces its quorum
+arithmetic to here.
 
 ## Why $$3f+1$$, and why that bound is tight
 
@@ -71,9 +71,10 @@ makes the ordering durable *across* views: a replica that reaches
 carry it into any future view.
 
 This is why PBFT is $$O(n^2)$$ in messages: prepare and commit are both
-all-to-all. Every leader-based BFT protocol since — Tendermint (now
-CometBFT), HotStuff (which routes the phases through the leader) and its
-descendants — is in some sense an argument about how to keep the safety
+all-to-all. Every leader-based BFT protocol since —
+Tendermint (now CometBFT), HotStuff (which routes the phases through the
+leader) and its descendants — is in some sense an argument about how to
+keep the safety
 property of that third phase while reducing its cost. HotStuff's contribution
 is precisely to linearise it, at the price of an extra phase.
 

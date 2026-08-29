@@ -49,9 +49,9 @@ of hashpower trying to catch up from $$z$$ blocks behind is a random walk with
 negative drift, and for $$q < 0.5$$ the success probability decays exponentially
 in $$z$$. "Six confirmations" is a risk threshold, not a state transition.
 
-**A bounded-fault assumption becomes an economic one.** BFT (Byzantine fault
-tolerance) tolerates $$f$$ arbitrary faults with no assumption about *why* a
-replica misbehaves. Bitcoin
+**A bounded-fault assumption becomes an economic one.**
+BFT (Byzantine fault tolerance) tolerates $$f$$ arbitrary faults with no
+assumption about *why* a replica misbehaves. Bitcoin
 assumes the honest majority is honest because deviating is unprofitable. That
 is a strictly weaker guarantee against a well-funded adversary who does not
 care about profit, and a strictly stronger one against the open-membership
