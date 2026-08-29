@@ -1,0 +1,230 @@
+// =============================================================================
+// _paper.scss
+// Annotated-paper pages (`_layouts/paper.html`).
+//
+// The page is two registers stacked. The bibliographic record reads as
+// reference material — mono labels, hairline rules, tabular rhythm — and the
+// desk notes below it read as ordinary long-form prose. The seam between them
+// is a thick rule, so the reader always knows whether they are looking at the
+// paper or at us.
+//
+// Every value is a token from `_tokens.scss`; nothing here hard-codes a colour
+// or a size, so dark mode and print inherit for free.
+// =============================================================================
+
+.paper {
+  padding-block: var(--space-xl) var(--space-2xl);
+}
+
+// -----------------------------------------------------------------------------
+// Head
+// -----------------------------------------------------------------------------
+.paper__head {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-bottom: var(--space-m);
+  border-bottom: var(--rule-thick);
+}
+
+.paper__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 var(--space-2xs);
+}
+
+.paper__deck {
+  color: var(--ink-2);
+}
+
+.paper__byline {
+  margin-top: var(--space-s);
+}
+
+// -----------------------------------------------------------------------------
+// Bibliographic record
+// -----------------------------------------------------------------------------
+.paper__record {
+  max-width: var(--measure);
+  margin: var(--space-l) auto 0;
+  padding: var(--space-m);
+  background: var(--paper-2);
+  border: var(--rule-hairline);
+}
+
+.paper__record-heading,
+.paper__notes-heading {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--space-s);
+  font-weight: 400;
+}
+
+.paper__meta {
+  margin: 0;
+}
+
+// Label / value rows. Two columns once there is room for them; stacked
+// below --bp-m so long author lists never get crushed into a sliver.
+.paper__meta-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3xs);
+  padding-block: var(--space-2xs);
+  border-top: var(--rule-hairline);
+
+  &:first-child { border-top: 0; padding-top: 0; }
+
+  @media (min-width: 30em) { // --bp-s
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-s);
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--ink);
+  }
+
+  code {
+    font-size: 0.95em;
+    word-break: break-all;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Abstract — quoted verbatim from the original, so it is visually set apart
+// from anything the desk wrote.
+// -----------------------------------------------------------------------------
+.paper__abstract {
+  margin: var(--space-m) 0 0;
+  padding-left: var(--space-s);
+  border-left: var(--rule-accent);
+
+  p { font-size: var(--step--1); line-height: var(--lh-body); color: var(--ink-2); }
+  p:last-child { margin-bottom: 0; }
+}
+
+.paper__abstract-label {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--space-2xs);
+}
+
+// -----------------------------------------------------------------------------
+// Key results
+// -----------------------------------------------------------------------------
+.paper__key-results {
+  margin-top: var(--space-m);
+  padding-top: var(--space-s);
+  border-top: var(--rule-hairline);
+}
+
+.paper__key-heading {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 var(--space-2xs);
+  font-weight: 400;
+}
+
+.paper__key-list {
+  margin: 0;
+  padding-left: var(--space-m);
+
+  li {
+    font-size: var(--step--1);
+    line-height: var(--lh-body);
+    margin-bottom: var(--space-2xs);
+  }
+  li:last-child { margin-bottom: 0; }
+}
+
+// -----------------------------------------------------------------------------
+// Desk notes — the editorial half.
+// -----------------------------------------------------------------------------
+.paper__notes {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-m);
+  border-top: var(--rule-thick);
+}
+
+.paper__notes-heading {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+// -----------------------------------------------------------------------------
+// Tags
+// -----------------------------------------------------------------------------
+.paper__foot {
+  max-width: var(--measure);
+  margin: var(--space-xl) auto 0;
+  padding-top: var(--space-s);
+  border-top: var(--rule-hairline);
+}
+
+.paper__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.paper__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  padding: var(--space-3xs) var(--space-2xs);
+  border: var(--rule-hairline);
+  text-decoration: none;
+  color: var(--ink-2);
+}
+
+a.paper__tag {
+  &:hover,
+  &:focus-visible { background: var(--ink); color: var(--paper); }
+}
+
+// A paper-only tag with no /tags/ archive behind it (see paper.html). Dashed
+// border marks it as a label rather than a link, so the affordance matches
+// the behaviour.
+.paper__tag--plain {
+  border-style: dashed;
+  color: var(--muted);
+  cursor: default;
+}
+
+// -----------------------------------------------------------------------------
+// Index page — byline line under each entry on /papers/.
+// -----------------------------------------------------------------------------
+.tag-index__byline {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: var(--tracking-mono);
+  color: var(--muted);
+  margin: var(--space-3xs) 0 0;
+}

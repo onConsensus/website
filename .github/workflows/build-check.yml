@@ -79,14 +79,22 @@ jobs:
           fi
 
       - name: Generate timestamp / methodology / embargo data
+        # Run under `bundle exec`: these generators are not all
+        # dependency-free. `build_list_bundles.rb` requires kramdown,
+        # which lives in the bundle — and with `BUNDLE_PATH: vendor/bundle`
+        # set above, bundled gems are NOT on a bare `ruby`'s load path.
+        # Invoking them with plain `ruby` fails with
+        # `cannot load such file -- kramdown (LoadError)` before Jekyll
+        # ever builds. (It resolves locally only where kramdown also
+        # happens to be installed as a system gem.)
         run: |
-          ruby scripts/build_timestamps.rb
-          ruby scripts/build_methodology.rb
-          ruby scripts/build_embargoes.rb
-          ruby scripts/build_permaids.rb
-          ruby scripts/build_citations.rb
-          ruby scripts/build_feeds.rb
-          ruby scripts/build_list_bundles.rb
+          bundle exec ruby scripts/build_timestamps.rb
+          bundle exec ruby scripts/build_methodology.rb
+          bundle exec ruby scripts/build_embargoes.rb
+          bundle exec ruby scripts/build_permaids.rb
+          bundle exec ruby scripts/build_citations.rb
+          bundle exec ruby scripts/build_feeds.rb
+          bundle exec ruby scripts/build_list_bundles.rb
 
       - name: Check permaid immutability (no silent drift)
         # Re-runs scripts/build_permaids.rb against the previously
@@ -101,6 +109,17 @@ jobs:
         run: bundle exec jekyll build --trace
 
       - name: Run htmlproofer on _site/
+        # The ignored `/print/*.pdf` and `/lists/*.pdf` URLs are real links to
+        # real artifacts — they are just not built *here*. The monthly print
+        # PDFs come from `broadsheet.yml` (build_print.rb + a Playwright render)
+        # and the list bundles from `list-bundles.yml`; neither runs in
+        # build-check, which is a fast compile-and-lint gate. Without these
+        # ignores htmlproofer flags seven post footers and the /print/ index
+        # for files that only ever exist in the deploy artifact.
+        #
+        # This surfaced only once the generator step above was fixed to run
+        # under `bundle exec`: before that, build-check died at
+        # `build_list_bundles.rb` and never reached htmlproofer at all.
         run: |
           htmlproofer ./_site \
             --disable-external \
@@ -110,5 +129,5 @@ jobs:
             --enforce-https \
             --ignore-empty-alt \
             --ignore-missing-alt \
-            --ignore-urls "/^https:\/\/onconsensus\.com/,/example\.(com|org)/,/^npub1/" \
+            --ignore-urls "/^https:\/\/onconsensus\.com/,/example\.(com|org)/,/^npub1/,/^\/print\/.*\.pdf$/,/^\/lists\/.*\.(pdf|epub)$/" \
             --ignore-files "/_site\/admin\//"

@@ -59,8 +59,12 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Refresh stubs and build site
+        # `build_list_bundles.rb` requires kramdown, which lives in the
+        # bundle. With `BUNDLE_PATH: vendor/bundle` set above, bundled
+        # gems are not on a bare `ruby`'s load path, so this must run
+        # under `bundle exec` like the `jekyll build` beneath it.
         run: |
-          ruby scripts/build_list_bundles.rb
+          bundle exec ruby scripts/build_list_bundles.rb
           bundle exec jekyll build
 
       - name: Render list bundle PDFs

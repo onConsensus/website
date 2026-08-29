@@ -37,11 +37,13 @@ the result with `htmlproofer` (see
 | ---- | ---------------- |
 | `_config.yml` | Site identity, plugins, collections, defaults. |
 | `_posts/` | Articles. `YYYY-MM-DD-slug.md`. Permalink: `/feed/:slug`. |
-| `_authors/`, `_series/`, `_pages/` | Collections. |
+| `_papers/` | Annotated papers — desk notes on external literature. Permalink: `/papers/:name/`. |
+| `_authors/`, `_series/`, `_lists/`, `_pages/` | Collections. |
 | `_data/` | `sections.yml` (taxonomy), `principles.yml`, `schemas.yml`, `glossary.yml`, `signatures.yml`. |
 | `_layouts/`, `_includes/` | Liquid templates. |
 | `_sass/`, `assets/css/main.scss` | *Plaintext Cypherpunk Broadsheet* design system. |
 | `assets/fonts/` | Self-hosted woff2. |
+| `assets/katex/`, `js/vendor/` | Vendored third-party code (KaTeX, Lunr). Pages make no third-party network calls. |
 | `signatures/` | Detached PGP signatures (kept outside `_posts/` so Jekyll never ingests them). |
 | `admin/` | Decap CMS — editorial admin (see below). |
 | `.github/` | PR and issue templates, build-check workflow. |
@@ -64,6 +66,69 @@ Three states, all backed by GitHub pull requests:
 Pitches go through `.github/ISSUE_TEMPLATE/pitch.md`; corrections through
 `correction.md`. Editorial principles are documented at
 [`/ethos/`](https://onconsensus.com/ethos/).
+
+## Adding an annotated paper
+
+A **paper** is a desk annotation of a work published elsewhere: a faithful
+bibliographic record of the original plus our notes on it. It is not a post —
+nothing is filed to a desk, it takes no `section:`, and it gets no per-axis
+feed. Add one as `_papers/<slug>.md`:
+
+```yaml
+---
+title: "Paxos Made Simple"          # the paper's own title, verbatim
+slug: paxos-made-simple             # must equal the filename
+paper_authors: ["Leslie Lamport"]   # names as published — NOT _authors/ slugs
+venue: "ACM SIGACT News 32(4), pp. 51–58"
+year: 2001
+paper_url: "https://…"              # NOT `url:` — see below
+annotator: m-vellum                 # slug of an entry in _authors/
+deck: "One line of editorial framing."
+# optional: abstract, doi, arxiv, pdf_url, key_results, tags, annotated, math
+---
+
+Desk notes in Markdown.
+```
+
+Two traps the schema enforces:
+
+- The external link is **`paper_url`, not `url`**. Jekyll always populates
+  `page.url` with the page's own permalink, so an external `url:` key is
+  silently shadowed.
+- **`paper_authors` are external researchers**, never desk bylines. Only
+  `annotator` resolves against `_authors/`.
+
+Tags render as plain labels unless a `/tags/<slug>/` archive already exists
+from a post carrying the same tag — those archives list posts, and a paper is
+not in that taxonomy.
+
+`_data/schemas.yml` is the contract; `scripts/validate_frontmatter.rb` enforces
+it and fails CI on drift. Adding a field means adding it in **both** places —
+the validator's drift detector requires every schema field to appear in its
+`TYPES` map.
+
+## Maths
+
+Set `math: true` in a page's front matter. That, and only that, loads the
+vendored KaTeX (`assets/katex/`, ~600KB with faces) — so it never reaches
+pages with no equations on them.
+
+Write maths with **double** dollars, inline and display alike:
+
+```markdown
+Quorums intersect when $$2(N-f) - N > f$$.
+
+$$
+N > 3f
+$$
+```
+
+A single `$…$` is deliberately *not* maths: this desk writes about fee markets
+and block subsidies, and `$` in prose is currency. kramdown marks the maths at
+build time (`math_engine: ~`) and `js/math.js` renders only those elements —
+KaTeX's auto-render extension is not vendored, precisely because it would scan
+prose and typeset the currency. If KaTeX fails to load, the source TeX stays
+visible and readable.
 
 ## Decap CMS — `/admin/`
 

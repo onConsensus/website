@@ -79,3 +79,23 @@ list:
   optional:
     last_revised: "ISO date of the most recent edit to the list."
     bundle: "`{pdf, epub}` map of relative URLs to the bundled exports when the export pipeline lands. Empty strings are treated as 'pending' and surface a colophon link instead."
+
+paper:
+  required:
+    title: "The paper's own title, verbatim as published."
+    slug: "URL slug. Must equal the filename without `.md`."
+    paper_authors: "Array of author names *as published*. These are external researchers, not desk bylines — never `_authors/` slugs."
+    venue: "Journal, conference, or publisher as published."
+    year: "Publication year (integer)."
+    paper_url: "Canonical link to the paper itself. Named `paper_url`, not `url`: Jekyll always populates `page.url` with the page's own permalink, so an external `url:` key would be shadowed."
+    annotator: "Slug of an entry in `_authors/` — who wrote the desk notes."
+    deck: "One-line editorial framing shown on the paper page and the /papers/ index."
+  optional:
+    abstract: "The paper's abstract, quoted verbatim. Rendered set apart from anything the desk wrote."
+    doi: "Bare DOI, without the https://doi.org/ prefix (e.g. 10.1145/571637.571640)."
+    arxiv: "Bare arXiv identifier (e.g. 1807.04938)."
+    pdf_url: "Direct PDF link, when it differs from `paper_url`. Suppressed in the rendered record when identical."
+    key_results: "Array of short strings — what the paper actually establishes, as distinct from what it is popularly cited for."
+    tags: "Array of tag strings; each links to the shared /tags/ axis."
+    annotated: "ISO date the desk notes were last revised."
+    math: "Bool. When true the page loads KaTeX and renders $…$ / $$…$$ delimiters."

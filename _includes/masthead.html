@@ -35,7 +35,17 @@
       <p class="masthead__tagline">{{ site.tagline }}</p>
     {%- endif -%}
 
-    {%- comment -%} Section nav. Sections come from `_data/sections.yml`. {%- endcomment -%}
+    {%- comment -%}
+      Section nav. The six desks come from `_data/sections.yml`; Papers and
+      Glossary are appended after them.
+
+      Those two are standing *reference* surfaces, not desks: nothing is
+      filed to them, they have no editor, and no post carries
+      `section: papers`. They sit in the same bar because that is where a
+      reader looks for them, but they are deliberately outside the
+      `sections.yml` loop — adding them there would give them section feeds,
+      a section archive, and a slot in every "by desk" listing on the site.
+    {%- endcomment -%}
     <nav class="masthead__nav" aria-label="Sections">
       <ul class="masthead__nav-list">
         {%- for section in site.data.sections -%}
@@ -48,6 +58,24 @@
             </a>
           </li>
         {%- endfor -%}
+        {%- comment -%}
+          `page.url contains` rather than `==` so a paper or glossary entry
+          keeps its parent lit, not just the index itself.
+        {%- endcomment -%}
+        <li class="masthead__nav-item masthead__nav-item--reference">
+          <a class="masthead__nav-link"
+             href="{{ '/papers/' | relative_url }}"
+             {% if page.url contains '/papers/' %}aria-current="page"{% endif %}>
+            Papers
+          </a>
+        </li>
+        <li class="masthead__nav-item masthead__nav-item--reference">
+          <a class="masthead__nav-link"
+             href="{{ '/glossary/' | relative_url }}"
+             {% if page.url contains '/glossary/' %}aria-current="page"{% endif %}>
+            Glossary
+          </a>
+        </li>
       </ul>
 
       <div class="masthead__tools">

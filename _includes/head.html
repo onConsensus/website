@@ -128,6 +128,22 @@
           data-search-index="{{ '/search.json' | relative_url }}"></script>
 
   {%- comment -%}
+    TeX rendering, opt-in per page via `math: true`. KaTeX is vendored under
+    /assets/katex/ (see the README there) rather than pulled from a CDN, for
+    the same reason as the body faces and Lunr: no third-party network calls.
+
+    Gated on the frontmatter flag so the ~300KB renderer and its woff2 faces
+    never load on the overwhelming majority of pages that carry no equations.
+    Load order is deterministic — deferred scripts execute in source order, so
+    katex.min.js is defined before js/math.js runs.
+  {%- endcomment -%}
+  {%- if page.math -%}
+    <link rel="stylesheet" href="{{ '/assets/katex/katex.min.css' | relative_url }}">
+    <script defer src="{{ '/assets/katex/katex.min.js' | relative_url }}"></script>
+    <script defer src="{{ '/js/math.js' | relative_url }}"></script>
+  {%- endif -%}
+
+  {%- comment -%}
     Reading-Experience JS: footnote rail, glossary popovers, reading-progress
     JS fallback. Post-pages-only — drop caps, pull-quotes, and the
     scroll-timeline progress bar are CSS-only and ride for free elsewhere.
