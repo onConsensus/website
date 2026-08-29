@@ -109,6 +109,17 @@ jobs:
         run: bundle exec jekyll build --trace
 
       - name: Run htmlproofer on _site/
+        # The ignored `/print/*.pdf` and `/lists/*.pdf` URLs are real links to
+        # real artifacts — they are just not built *here*. The monthly print
+        # PDFs come from `broadsheet.yml` (build_print.rb + a Playwright render)
+        # and the list bundles from `list-bundles.yml`; neither runs in
+        # build-check, which is a fast compile-and-lint gate. Without these
+        # ignores htmlproofer flags seven post footers and the /print/ index
+        # for files that only ever exist in the deploy artifact.
+        #
+        # This surfaced only once the generator step above was fixed to run
+        # under `bundle exec`: before that, build-check died at
+        # `build_list_bundles.rb` and never reached htmlproofer at all.
         run: |
           htmlproofer ./_site \
             --disable-external \
@@ -118,5 +129,5 @@ jobs:
             --enforce-https \
             --ignore-empty-alt \
             --ignore-missing-alt \
-            --ignore-urls "/^https:\/\/onconsensus\.com/,/example\.(com|org)/,/^npub1/" \
+            --ignore-urls "/^https:\/\/onconsensus\.com/,/example\.(com|org)/,/^npub1/,/^\/print\/.*\.pdf$/,/^\/lists\/.*\.(pdf|epub)$/" \
             --ignore-files "/_site\/admin\//"

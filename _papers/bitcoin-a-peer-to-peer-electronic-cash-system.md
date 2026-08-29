@@ -107,7 +107,7 @@ it.
 
 That framing is now assumed everywhere. Every staking design, every
 sequencer-decentralisation proposal, every [prover
-market](/feed/prover-markets-against-themselves/) we cover is arguing about
+market](/feed/prover-markets-against-themselves) we cover is arguing about
 the same thing: not whether the protocol is safe if participants follow it,
 but whether anyone will. Nine pages, and the durable idea turned out to be the
 economics rather than the hashcash.

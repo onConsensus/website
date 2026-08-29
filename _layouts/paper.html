@@ -150,12 +150,25 @@ layout: default
     </section>
   {%- endif -%}
 
+  {%- comment -%}
+    Tags. `scripts/build_feeds.rb` mints a /tags/<slug>/ archive only for tags
+    that appear on a *post*, and those archives list posts — a paper is not in
+    that taxonomy. So a tag is linked only when its archive actually exists
+    (`site.tags` is Jekyll's post-tag index); otherwise it renders as a plain
+    label. Linking unconditionally would mint a dangling href for every
+    paper-only tag — `paxos`, `bft`, `nakamoto` — and htmlproofer would fail
+    the build on them, correctly.
+  {%- endcomment -%}
   {%- if page.tags and page.tags.size > 0 -%}
     <footer class="paper__foot">
       <ul class="paper__tags">
         {%- for tag in page.tags -%}
           {%- assign tag_slug = tag | slugify -%}
-          <li><a class="paper__tag" href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">{{ tag }}</a></li>
+          {%- if site.tags[tag] -%}
+            <li><a class="paper__tag" href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">{{ tag }}</a></li>
+          {%- else -%}
+            <li><span class="paper__tag paper__tag--plain">{{ tag }}</span></li>
+          {%- endif -%}
         {%- endfor -%}
       </ul>
     </footer>

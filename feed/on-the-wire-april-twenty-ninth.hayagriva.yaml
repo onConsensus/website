@@ -7,3 +7,5 @@ okafor2026on:
   url: https://onconsensus.com/feed/on-the-wire-april-twenty-ninth
   serial-number:
     oc: oc:2026/0006
+  archive: "OpenTimestamps"
+  archive-location: https://onconsensus.com/timestamps/on-the-wire-april-twenty-ninth.ots

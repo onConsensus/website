@@ -202,9 +202,20 @@
   border: var(--rule-hairline);
   text-decoration: none;
   color: var(--ink-2);
+}
 
+a.paper__tag {
   &:hover,
   &:focus-visible { background: var(--ink); color: var(--paper); }
+}
+
+// A paper-only tag with no /tags/ archive behind it (see paper.html). Dashed
+// border marks it as a label rather than a link, so the affordance matches
+// the behaviour.
+.paper__tag--plain {
+  border-style: dashed;
+  color: var(--muted);
+  cursor: default;
 }
 
 // -----------------------------------------------------------------------------
