@@ -79,14 +79,22 @@ jobs:
           fi
 
       - name: Generate timestamp / methodology / embargo data
+        # Run under `bundle exec`: these generators are not all
+        # dependency-free. `build_list_bundles.rb` requires kramdown,
+        # which lives in the bundle — and with `BUNDLE_PATH: vendor/bundle`
+        # set above, bundled gems are NOT on a bare `ruby`'s load path.
+        # Invoking them with plain `ruby` fails with
+        # `cannot load such file -- kramdown (LoadError)` before Jekyll
+        # ever builds. (It resolves locally only where kramdown also
+        # happens to be installed as a system gem.)
         run: |
-          ruby scripts/build_timestamps.rb
-          ruby scripts/build_methodology.rb
-          ruby scripts/build_embargoes.rb
-          ruby scripts/build_permaids.rb
-          ruby scripts/build_citations.rb
-          ruby scripts/build_feeds.rb
-          ruby scripts/build_list_bundles.rb
+          bundle exec ruby scripts/build_timestamps.rb
+          bundle exec ruby scripts/build_methodology.rb
+          bundle exec ruby scripts/build_embargoes.rb
+          bundle exec ruby scripts/build_permaids.rb
+          bundle exec ruby scripts/build_citations.rb
+          bundle exec ruby scripts/build_feeds.rb
+          bundle exec ruby scripts/build_list_bundles.rb
 
       - name: Check permaid immutability (no silent drift)
         # Re-runs scripts/build_permaids.rb against the previously
