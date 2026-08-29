@@ -120,13 +120,32 @@ jobs:
         # This surfaced only once the generator step above was fixed to run
         # under `bundle exec`: before that, build-check died at
         # `build_list_bundles.rb` and never reached htmlproofer at all.
+        #
+        # The flag set is html-proofer 5.x. The step previously passed
+        # `--check-html`, `--check-img-http` and `--check-opengraph`, which are
+        # 3.x/4.x spellings that 5.x rejects outright:
+        #
+        #     invalid option: --check-html (OptionParser::InvalidOption)
+        #
+        # so htmlproofer exited 1 without proofing a single file. `gem install
+        # html-proofer --version "~> 5.0"` has been resolving to 5.x for a long
+        # time; the mismatch was simply never reached, because the generator
+        # step above killed the job first. In 5.x the individual --check-* flags
+        # were folded into one --checks list, --check-img-http is subsumed by
+        # --enforce-https, and HTML *validity* checking was dropped upstream
+        # with no replacement — so `--check-html` has no 5.x equivalent to port.
+        #
+        # `--allow-missing-href` is needed because /documentation/ and
+        # /partners/ use old-style `<a name="N">` fragment targets, which are
+        # deliberate anchor markup in the source, not links with a forgotten
+        # href. 5.x flags href-less anchors by default; without this it reports
+        # 56 of them.
         run: |
           htmlproofer ./_site \
             --disable-external \
-            --check-html \
-            --check-img-http \
-            --check-opengraph \
+            --checks "Links,Images,Scripts,OpenGraph" \
             --enforce-https \
+            --allow-missing-href \
             --ignore-empty-alt \
             --ignore-missing-alt \
             --ignore-urls "/^https:\/\/onconsensus\.com/,/example\.(com|org)/,/^npub1/,/^\/print\/.*\.pdf$/,/^\/lists\/.*\.(pdf|epub)$/" \

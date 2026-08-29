@@ -154,4 +154,4 @@ what that promise is and where it ends.
 
 [ots]: https://opentimestamps.org/
 [onchain-src]: https://github.com/onConsensus/onconsensus/blob/main/js/onchain.js
-[rep]: /standards/#reproducibility
+[rep]: /standards/
