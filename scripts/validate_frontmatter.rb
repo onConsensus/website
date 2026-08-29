@@ -123,6 +123,27 @@ TYPES = {
     'last_revised'            => :date_or_time,
     'bundle'                  => :bundle,
   },
+  # `paper_authors` is :array_of_strings, NOT :author_slug — these are the
+  # external researchers who wrote the paper, and must never be resolved
+  # against `_authors/`. Only `annotator` (who wrote our notes) is a desk slug.
+  'paper' => {
+    'title'                   => :nonempty_string,
+    'slug'                    => :nonempty_string,
+    'paper_authors'           => :array_of_strings,
+    'venue'                   => :nonempty_string,
+    'year'                    => :int,
+    'paper_url'               => :url,
+    'annotator'               => :author_slug,
+    'deck'                    => :nonempty_string,
+    'abstract'                => :nonempty_string,
+    'doi'                     => :nonempty_string,
+    'arxiv'                   => :nonempty_string,
+    'pdf_url'                 => :url,
+    'key_results'             => :array_of_strings,
+    'tags'                    => :array_of_strings,
+    'annotated'               => :date_or_time,
+    'math'                    => :bool,
+  },
 }
 
 # ---------------------------------------------------------------------------
@@ -404,14 +425,17 @@ def run
   Dir[File.join(ROOT, '_authors', '*.md')].sort.each { |p| validate_file('author', p, errors) }
   Dir[File.join(ROOT, '_series',  '*.md')].sort.each { |p| validate_file('series', p, errors) }
   Dir[File.join(ROOT, '_lists',   '*.md')].sort.each { |p| validate_file('list',   p, errors) }
+  Dir[File.join(ROOT, '_papers',  '*.md')].sort.each { |p| validate_file('paper',  p, errors) }
 
   if errors.empty?
     puts "[validate_frontmatter] ok — " \
          "#{REF[:posts].size} posts, #{REF[:authors].size} authors, " \
-         "#{REF[:series].size} series, #{Dir[File.join(ROOT, '_lists', '*.md')].size} lists " \
+         "#{REF[:series].size} series, #{Dir[File.join(ROOT, '_lists', '*.md')].size} lists, " \
+         "#{Dir[File.join(ROOT, '_papers', '*.md')].size} papers " \
          "(schema source: _data/schemas.yml; required: " \
          "post=#{required_keys('post').size}, author=#{required_keys('author').size}, " \
-         "series=#{required_keys('series').size}, list=#{required_keys('list').size})"
+         "series=#{required_keys('series').size}, list=#{required_keys('list').size}, " \
+         "paper=#{required_keys('paper').size})"
     return 0
   else
     warn "[validate_frontmatter] FAIL — #{errors.size} issue(s):"

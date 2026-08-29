@@ -1,0 +1,164 @@
+---
+layout: default
+---
+{%- comment -%}
+  paper.html — annotated-paper page.
+
+  A "paper" is a desk annotation of a work published *elsewhere*. The page
+  is therefore two things stacked: a faithful bibliographic record of the
+  original, and our editorial notes on it. The record is rendered as a
+  definition list so it reads as reference material rather than prose; the
+  notes are the Markdown body and get the normal article shell.
+
+  Frontmatter on a `_papers/<slug>.md` file:
+    title       — the paper's own title, verbatim
+    slug        — must equal the filename without `.md`
+    paper_authors — array of author names as published (NOT `_authors/` slugs)
+    venue       — journal / conference / publisher as published
+    year        — publication year (integer)
+    paper_url   — canonical link to the paper itself. Named `paper_url`, not
+                  `url`: Jekyll always populates `page.url` with the page's
+                  own permalink, so an external `url:` key would be shadowed.
+    annotator   — slug of an entry in `_authors/` (who wrote our notes)
+    annotated   — ISO date our notes were last revised
+    abstract    — the paper's abstract, quoted
+    deck        — our one-line editorial framing
+    doi         — optional DOI, bare (e.g. 10.1145/571637.571640)
+    arxiv       — optional arXiv id (e.g. 1807.04938)
+    pdf_url     — optional direct PDF link when it differs from `url`
+    key_results — optional array of short strings; what the paper establishes
+    tags        — optional array
+    math        — optional bool; loads KaTeX when true
+
+  `paper_authors` is deliberately distinct from the posts' `author` field:
+  these are external researchers, not desk bylines, so they must never be
+  resolved against `_authors/` or linked as if they wrote for us.
+{%- endcomment -%}
+
+{%- assign annotator = site.authors | where: "slug", page.annotator | first -%}
+
+<article class="paper container container--wide">
+
+  <header class="paper__head">
+    <p class="paper__kicker">Annotated paper</p>
+    <h1 class="paper__title article__title">{{ page.title }}</h1>
+    {%- if page.deck -%}
+      <p class="paper__deck article__deck">{{ page.deck | strip_newlines }}</p>
+    {%- endif -%}
+
+    <div class="paper__byline byline">
+      {%- if annotator -%}
+        <span class="byline__group">
+          <span class="byline__label">Annotated by</span>
+          <a class="byline__author" href="{{ annotator.url | relative_url }}">{{ annotator.name }}</a>
+        </span>
+      {%- endif -%}
+      {%- if page.annotated -%}
+        <span class="byline__group">
+          <time datetime="{{ page.annotated }}">{{ page.annotated | date: "%-d %B %Y" }}</time>
+        </span>
+      {%- endif -%}
+    </div>
+  </header>
+
+  {%- comment -%}
+    The bibliographic record. `<dl>` rather than a `<table>`: these are
+    name/value pairs about one work, not a grid of comparable rows.
+  {%- endcomment -%}
+  <section class="paper__record" aria-labelledby="paper-record-heading">
+    <h2 class="paper__record-heading" id="paper-record-heading">The paper</h2>
+    <dl class="paper__meta">
+      {%- if page.paper_authors and page.paper_authors.size > 0 -%}
+        <div class="paper__meta-row">
+          <dt>{% if page.paper_authors.size == 1 %}Author{% else %}Authors{% endif %}</dt>
+          <dd>{{ page.paper_authors | join: " · " }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if page.venue -%}
+        <div class="paper__meta-row">
+          <dt>Venue</dt>
+          <dd>{{ page.venue }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if page.year -%}
+        <div class="paper__meta-row">
+          <dt>Year</dt>
+          <dd>{{ page.year }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if page.doi -%}
+        <div class="paper__meta-row">
+          <dt>DOI</dt>
+          <dd><a href="https://doi.org/{{ page.doi }}" rel="external noopener"><code>{{ page.doi }}</code></a></dd>
+        </div>
+      {%- endif -%}
+      {%- if page.arxiv -%}
+        <div class="paper__meta-row">
+          <dt>arXiv</dt>
+          <dd><a href="https://arxiv.org/abs/{{ page.arxiv }}" rel="external noopener"><code>{{ page.arxiv }}</code></a></dd>
+        </div>
+      {%- endif -%}
+      {%- comment -%}
+        Read-it links. `pdf_url` is only surfaced when it actually differs
+        from `url`, so a paper whose canonical link *is* the PDF shows one
+        link, not the same href twice under two labels.
+      {%- endcomment -%}
+      {%- assign _url = page.paper_url | default: "" | strip -%}
+      {%- assign _pdf = page.pdf_url | default: "" | strip -%}
+      {%- if _url != "" or _pdf != "" -%}
+        <div class="paper__meta-row">
+          <dt>Read</dt>
+          <dd>
+            {%- if _url != "" -%}
+              <a href="{{ _url }}" rel="external noopener">Original</a>
+            {%- endif -%}
+            {%- if _url != "" and _pdf != "" and _pdf != _url %} · {% endif -%}
+            {%- if _pdf != "" and _pdf != _url -%}
+              <a href="{{ _pdf }}" rel="external noopener">PDF</a>
+            {%- endif -%}
+          </dd>
+        </div>
+      {%- endif -%}
+    </dl>
+
+    {%- if page.abstract -%}
+      <blockquote class="paper__abstract">
+        <p class="paper__abstract-label">Abstract, as published</p>
+        {{ page.abstract | markdownify }}
+      </blockquote>
+    {%- endif -%}
+
+    {%- if page.key_results and page.key_results.size > 0 -%}
+      <div class="paper__key-results">
+        <h3 class="paper__key-heading">What it establishes</h3>
+        <ul class="paper__key-list">
+          {%- for result in page.key_results -%}
+            <li>{{ result | strip_newlines | markdownify | remove: "<p>" | remove: "</p>" }}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%} Our notes — the editorial payload. {%- endcomment -%}
+  {%- if content and content != "" -%}
+    <section class="paper__notes" aria-labelledby="paper-notes-heading">
+      <h2 class="paper__notes-heading" id="paper-notes-heading">Desk notes</h2>
+      <div class="paper__body article__body container--measure">
+        {{ content }}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if page.tags and page.tags.size > 0 -%}
+    <footer class="paper__foot">
+      <ul class="paper__tags">
+        {%- for tag in page.tags -%}
+          {%- assign tag_slug = tag | slugify -%}
+          <li><a class="paper__tag" href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">{{ tag }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </footer>
+  {%- endif -%}
+
+</article>

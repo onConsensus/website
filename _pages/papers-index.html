@@ -1,0 +1,43 @@
+---
+layout: default
+title: Papers
+permalink: /papers/
+description: Desk annotations of the foundational consensus literature — what each paper actually proves, and what gets misquoted from it.
+sitemap: true
+---
+
+<section class="tag-index container container--wide">
+  <header class="page-article__head">
+    <p class="page-article__kicker">Index</p>
+    <h1 class="page-article__title article__title">{{ page.title }}</h1>
+    {%- if page.description -%}
+      <p class="page-article__deck article__deck">{{ page.description }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if site.papers.size > 0 -%}
+    {%- comment -%}
+      Sorted oldest-first: the reading order of this corpus is
+      chronological, because each paper is answering the one before it.
+    {%- endcomment -%}
+    {%- assign sorted_papers = site.papers | sort: "year" -%}
+    <ul class="tag-index__list">
+      {%- for paper in sorted_papers -%}
+        <li class="tag-index__item">
+          <a class="tag-index__link" href="{{ paper.url | relative_url }}">
+            <span class="tag-index__name">{{ paper.title }}</span>
+            <span class="tag-index__count">{{ paper.year }}</span>
+          </a>
+          {%- if paper.paper_authors and paper.paper_authors.size > 0 -%}
+            <p class="tag-index__byline">{{ paper.paper_authors | join: " · " }}{% if paper.venue %} — {{ paper.venue }}{% endif %}</p>
+          {%- endif -%}
+          {%- if paper.deck -%}
+            <p class="tag-index__desc">{{ paper.deck | strip_newlines }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    <p class="tag-index__empty"><em>No annotated papers yet.</em></p>
+  {%- endif -%}
+</section>

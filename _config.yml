@@ -83,6 +83,13 @@ collections:
   lists:
     output: true
     permalink: /lists/:name/
+  # Annotated papers — desk notes on foundational external literature.
+  # Deliberately *not* an `axis`: a paper annotates a work published
+  # elsewhere, it is not a taxonomy over our own posts, so it gets no
+  # per-axis feed stubs from scripts/build_feeds.rb.
+  papers:
+    output: true
+    permalink: /papers/:name/
 
 
 #-------------------------------
@@ -122,6 +129,11 @@ defaults:
     values:
       layout: "list"
       axis: "list"
+  - scope:
+      path: ""
+      type: "papers"
+    values:
+      layout: "paper"
   - scope:
       path: "_pages/sections"
     values:
